@@ -1,0 +1,21 @@
+language: python
+python:
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8"
+cache: pip
+services:
+  - postgresql
+addons:
+  postgresql: "10"
+  apt:
+    packages:
+    - postgresql-10
+    - postgresql-client-10
+install:
+  - sh install.sh
+    #before_script:
+    #- psql -c 'create database travis_ci_test;' -U postgres
+script:
+  - python3 -m pytest 
