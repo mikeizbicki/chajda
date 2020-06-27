@@ -90,7 +90,7 @@ def lemmatize(
         lang,
         text,
         lower_case=True,
-        no_special_chars=True,
+        remove_special_chars=True,
         remove_stopwords=True,
         add_positions=False
         ):
@@ -113,7 +113,7 @@ def lemmatize(
     if lower_case:
         text = text.lower()
 
-    if no_special_chars:
+    if remove_special_chars:
         text = text.translate(unicode_CPS)
 
     try:

@@ -49,7 +49,7 @@ def make_golden_tests(input_file='tests/input.csv', golden_file='tests/golden.cs
     # the kwargss list will contain for each keyword all combinations of True/False
     keywords = [
         'lower_case',
-        'no_special_chars',
+        'remove_special_chars',
         'remove_stopwords',
         'add_positions',
         ]
