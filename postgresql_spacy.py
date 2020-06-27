@@ -20,6 +20,12 @@ for _, lang_iso, is_lang in pkgutil.iter_modules(spacy.lang.__path__):
         valid_langs.append(lang_iso)
 logger.info("valid_langs="+str(valid_langs))
 
+# the korean list of stop words isn't big enough,
+# so we add some more stop words here
+import spacy.lang.ko
+for stopword in ['이거','이것','는','은','가','이','을','를','기','에']:
+    spacy.lang.ko.stop_words.STOP_WORDS.add(stopword)
+
 # this function loads a spacy language model
 # it is used for lazily loading languages as they are needed
 # FIXME:
