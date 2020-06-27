@@ -6,7 +6,11 @@ import spacy
 
 # initialize logging
 import logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    format='%(asctime)s:%(levelname)s:%(name)s:%(message)s',
+    level=logging.INFO,
+    datefmt='%Y-%m-%d %H:%M:%S',
+    )
 logger = logging.getLogger(__name__)
 
 # calculate the valid languages for the installed spacy version
@@ -18,8 +22,12 @@ logger.info("valid_langs="+str(valid_langs))
 
 # this function loads a spacy language model
 # it is used for lazily loading languages as they are needed
+# FIXME:
+# I'm pretty sure there should be an easier way to load a language model from the iso code,
+# but I couldn't figure out a native way to do this.
 def load_lang(lang_iso):
 
+    logger.info('initializing '+lang_iso)
     module_name = 'spacy.lang.'+lang_iso
     lang_module = importlib.import_module(module_name)
 
@@ -47,9 +55,22 @@ def load_lang(lang_iso):
     #  ('ChineseDefaults', <class 'spacy.lang.zh.ChineseDefaults'>),
     #  ('ChineseTokenizer', <class 'spacy.lang.zh.ChineseTokenizer'>)]
     shortest_name_length = min([ len(name) for name,obj in filtered_classes ])
-    nlp = list(filter(lambda x: len(x[0])==shortest_name_length, filtered_classes))[0][1]()
+    nlp_constructor = list(filter(lambda x: len(x[0])==shortest_name_length, filtered_classes))[0][1]
+    
+    # once we have the nlp_constructor, 
+    # we want to create the model with non-lemmatization related components disabled
+    # this will speedup calculations and save memory
+    return nlp_constructor(disable=['ner','parser'])
 
-    return nlp
+
+def load_all_languages():
+    '''
+    In typical usage, we want spacy's languages loaded lazily.
+    When debugging and testing, however, it can be useful to force the immediate loading of all languages.
+    '''
+    for lang in valid_langs:
+        load_lang(lang)
+
 
 # the nlp dictionary will hold the loaded spacy models,
 # and entry of None indicates that the model still needs to be loaded
@@ -65,19 +86,30 @@ import sys
 unicode_CPS = dict.fromkeys(i for i in range(0, sys.maxunicode + 1) if unicodedata.category(chr(i)).startswith(('P', 'S', 'C')))
 
 # this is the main function that gets called from postgresql
-def lemmatize(lang,text,lower_case=True,no_special_chars=True,add_positions=False):
+def lemmatize(
+        lang,
+        text,
+        lower_case=True,
+        no_special_chars=True,
+        remove_stopwords=True,
+        add_positions=False
+        ):
 
+    # if any input is None (NULL in postgres),
+    # then we return None
     if lang is None or text is None:
         return None
 
+    # if the language is not yet loaded, then load it
+    # if the language is not supported, then use spacy's multilingual model ('xx')
     if nlp[lang] is None:
         if lang in valid_langs:
-            logger.info('initializing '+lang)
             nlp[lang] = load_lang(lang)
         else:
             logger.warn('lang="'+lang+'" not in valid_langs, using lang="xx"')
             nlp[lang] = nlp['xx']
 
+    # process the text according to input flags
     if lower_case:
         text = text.lower()
 
@@ -87,18 +119,42 @@ def lemmatize(lang,text,lower_case=True,no_special_chars=True,add_positions=Fals
     try:
         doc = nlp[lang](text) 
     except ValueError as e:
-        logger.error(str(e))
+        # FIXME:
+        # How should we handle parsing errors?
+        # Currently we simply panic and return None.
+        # This means that the text will not be indexable from within postgres.
+        # A more sophisticated strategy might try to remove the offending portion of text
+        # so that the remainder of the text can still be indexed.
+        #
+        # Currently, the only known parsing error is that the Korean parser
+        # panics when there is an emoji in the input.
+        # It would be easy to manually remove emojis before passing to the Korean parser.
+        logger.error(str(e)+' ; lang='+lang+', text='+text)
         return None
 
-    if add_positions:
-        lemmas = ' '.join([ token.lemma_+':'+str(i+1) for i,token in enumerate(doc) ])
-    else:
-        lemmas = ' '.join([ token.lemma_ for token in doc ])
+    def format_token(token,i):
+        if add_positions:
+            if token.lemma_==' ':
+                return ' '
+            else:
+                return token.lemma_+':'+str(i+1)
+        else:
+            return token.lemma_
+
+    def include_token(token):
+        if remove_stopwords:
+            return not token.is_stop
+        else:
+            return True
+
+    lemmas = [ format_token(token,i) for i,token in enumerate(doc) if include_token(token) ]
+    lemmas_joined = ' '.join(lemmas)
     
     # NOTE:
-    # The Japanese lemmatizer capitalizes proper nouns even if the input text is lowercase.
+    # Some lemmatizers capitalize proper nouns even if the input text is lowercase.
     # That's why we need to lower case here and before doing the lemmatization.
-    if lower_case:
-        lemmas = lemmas.lower()
+    if lower_case and lang in ['ja','hr']:
+        lemmas_joined = lemmas_joined.lower()
 
-    return lemmas
+    return lemmas_joined
+
