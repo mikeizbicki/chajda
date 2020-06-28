@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('cs',' "Toto je můj příklad zkušební věty' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+        spacy_lemmatize        
+-------------------------------
+   příklad:5 zkušební:6 věty:7
+(1 row)
+
+SELECT spacy_lemmatize('cs',' "Toto je můj příklad zkušební věty' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+     spacy_lemmatize     
+-------------------------
+   příklad zkušební věty
+(1 row)
+
+SELECT spacy_lemmatize('cs',' "Toto je můj příklad zkušební věty' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                 spacy_lemmatize                 
+-------------------------------------------------
+   toto:2 je:3 můj:4 příklad:5 zkušební:6 věty:7
+(1 row)
+
+SELECT spacy_lemmatize('cs',' "Toto je můj příklad zkušební věty' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+           spacy_lemmatize           
+-------------------------------------
+   toto je můj příklad zkušební věty
+(1 row)
+
+SELECT spacy_lemmatize('cs',' "Toto je můj příklad zkušební věty' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+          spacy_lemmatize          
+-----------------------------------
+   ":2 příklad:6 zkušební:7 věty:8
+(1 row)
+
+SELECT spacy_lemmatize('cs',' "Toto je můj příklad zkušební věty' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+      spacy_lemmatize      
+---------------------------
+   " příklad zkušební věty
+(1 row)
+
+SELECT spacy_lemmatize('cs',' "Toto je můj příklad zkušební věty' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                   spacy_lemmatize                   
+-----------------------------------------------------
+   ":2 toto:3 je:4 můj:5 příklad:6 zkušební:7 věty:8
+(1 row)
+
+SELECT spacy_lemmatize('cs',' "Toto je můj příklad zkušební věty' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+            spacy_lemmatize            
+---------------------------------------
+   " toto je můj příklad zkušební věty
+(1 row)
+
+SELECT spacy_lemmatize('cs',' "Toto je můj příklad zkušební věty' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+        spacy_lemmatize        
+-------------------------------
+   příklad:5 zkušební:6 věty:7
+(1 row)
+
+SELECT spacy_lemmatize('cs',' "Toto je můj příklad zkušební věty' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+     spacy_lemmatize     
+-------------------------
+   příklad zkušební věty
+(1 row)
+
+SELECT spacy_lemmatize('cs',' "Toto je můj příklad zkušební věty' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                 spacy_lemmatize                 
+-------------------------------------------------
+   Toto:2 je:3 můj:4 příklad:5 zkušební:6 věty:7
+(1 row)
+
+SELECT spacy_lemmatize('cs',' "Toto je můj příklad zkušební věty' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+           spacy_lemmatize           
+-------------------------------------
+   Toto je můj příklad zkušební věty
+(1 row)
+
+SELECT spacy_lemmatize('cs',' "Toto je můj příklad zkušební věty' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+          spacy_lemmatize          
+-----------------------------------
+   ":2 příklad:6 zkušební:7 věty:8
+(1 row)
+
+SELECT spacy_lemmatize('cs',' "Toto je můj příklad zkušební věty' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+      spacy_lemmatize      
+---------------------------
+   " příklad zkušební věty
+(1 row)
+
+SELECT spacy_lemmatize('cs',' "Toto je můj příklad zkušební věty' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                   spacy_lemmatize                   
+-----------------------------------------------------
+   ":2 Toto:3 je:4 můj:5 příklad:6 zkušební:7 věty:8
+(1 row)
+
+SELECT spacy_lemmatize('cs',' "Toto je můj příklad zkušební věty' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+            spacy_lemmatize            
+---------------------------------------
+   " Toto je můj příklad zkušební věty
+(1 row)
+
+SELECT spacy_tsvector('cs',' "Toto je můj příklad zkušební věty');
+          spacy_tsvector           
+-----------------------------------
+ 'příklad':5 'věty':7 'zkušební':6
+(1 row)
+

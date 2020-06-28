@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('hy',' "Սա իմ օրինակելի թեստային նախադասությունն է' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                 spacy_lemmatize                 
+-------------------------------------------------
+   իմ:3 օրինակելի:4 թեստային:5 նախադասությունն:6
+(1 row)
+
+SELECT spacy_lemmatize('hy',' "Սա իմ օրինակելի թեստային նախադասությունն է' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+             spacy_lemmatize             
+-----------------------------------------
+   իմ օրինակելի թեստային նախադասությունն
+(1 row)
+
+SELECT spacy_lemmatize('hy',' "Սա իմ օրինակելի թեստային նախադասությունն է' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                     spacy_lemmatize                      
+----------------------------------------------------------
+   սա:2 իմ:3 օրինակելի:4 թեստային:5 նախադասությունն:6 է:7
+(1 row)
+
+SELECT spacy_lemmatize('hy',' "Սա իմ օրինակելի թեստային նախադասությունն է' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+               spacy_lemmatize                
+----------------------------------------------
+   սա իմ օրինակելի թեստային նախադասությունն է
+(1 row)
+
+SELECT spacy_lemmatize('hy',' "Սա իմ օրինակելի թեստային նախադասությունն է' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                   spacy_lemmatize                   
+-----------------------------------------------------
+   ":2 իմ:4 օրինակելի:5 թեստային:6 նախադասությունն:7
+(1 row)
+
+SELECT spacy_lemmatize('hy',' "Սա իմ օրինակելի թեստային նախադասությունն է' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+              spacy_lemmatize              
+-------------------------------------------
+   " իմ օրինակելի թեստային նախադասությունն
+(1 row)
+
+SELECT spacy_lemmatize('hy',' "Սա իմ օրինակելի թեստային նախադասությունն է' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                       spacy_lemmatize                        
+--------------------------------------------------------------
+   ":2 սա:3 իմ:4 օրինակելի:5 թեստային:6 նախադասությունն:7 է:8
+(1 row)
+
+SELECT spacy_lemmatize('hy',' "Սա իմ օրինակելի թեստային նախադասությունն է' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                spacy_lemmatize                 
+------------------------------------------------
+   " սա իմ օրինակելի թեստային նախադասությունն է
+(1 row)
+
+SELECT spacy_lemmatize('hy',' "Սա իմ օրինակելի թեստային նախադասությունն է' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                 spacy_lemmatize                 
+-------------------------------------------------
+   իմ:3 օրինակելի:4 թեստային:5 նախադասությունն:6
+(1 row)
+
+SELECT spacy_lemmatize('hy',' "Սա իմ օրինակելի թեստային նախադասությունն է' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+             spacy_lemmatize             
+-----------------------------------------
+   իմ օրինակելի թեստային նախադասությունն
+(1 row)
+
+SELECT spacy_lemmatize('hy',' "Սա իմ օրինակելի թեստային նախադասությունն է' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                     spacy_lemmatize                      
+----------------------------------------------------------
+   Սա:2 իմ:3 օրինակելի:4 թեստային:5 նախադասությունն:6 է:7
+(1 row)
+
+SELECT spacy_lemmatize('hy',' "Սա իմ օրինակելի թեստային նախադասությունն է' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+               spacy_lemmatize                
+----------------------------------------------
+   Սա իմ օրինակելի թեստային նախադասությունն է
+(1 row)
+
+SELECT spacy_lemmatize('hy',' "Սա իմ օրինակելի թեստային նախադասությունն է' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                   spacy_lemmatize                   
+-----------------------------------------------------
+   ":2 իմ:4 օրինակելի:5 թեստային:6 նախադասությունն:7
+(1 row)
+
+SELECT spacy_lemmatize('hy',' "Սա իմ օրինակելի թեստային նախադասությունն է' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+              spacy_lemmatize              
+-------------------------------------------
+   " իմ օրինակելի թեստային նախադասությունն
+(1 row)
+
+SELECT spacy_lemmatize('hy',' "Սա իմ օրինակելի թեստային նախադասությունն է' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                       spacy_lemmatize                        
+--------------------------------------------------------------
+   ":2 Սա:3 իմ:4 օրինակելի:5 թեստային:6 նախադասությունն:7 է:8
+(1 row)
+
+SELECT spacy_lemmatize('hy',' "Սա իմ օրինակելի թեստային նախադասությունն է' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                spacy_lemmatize                 
+------------------------------------------------
+   " Սա իմ օրինակելի թեստային նախադասությունն է
+(1 row)
+
+SELECT spacy_tsvector('hy',' "Սա իմ օրինակելի թեստային նախադասությունն է');
+                    spacy_tsvector                     
+-------------------------------------------------------
+ 'թեստային':5 'իմ':3 'նախադասությունն':6 'օրինակելի':4
+(1 row)
+

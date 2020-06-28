@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('ru',' "Это мое примерное тестовое предложение' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+            spacy_lemmatize             
+----------------------------------------
+   примерное:4 тестовое:5 предложение:6
+(1 row)
+
+SELECT spacy_lemmatize('ru',' "Это мое примерное тестовое предложение' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+         spacy_lemmatize          
+----------------------------------
+   примерное тестовое предложение
+(1 row)
+
+SELECT spacy_lemmatize('ru',' "Это мое примерное тестовое предложение' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                  spacy_lemmatize                   
+----------------------------------------------------
+   это:2 мое:3 примерное:4 тестовое:5 предложение:6
+(1 row)
+
+SELECT spacy_lemmatize('ru',' "Это мое примерное тестовое предложение' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+             spacy_lemmatize              
+------------------------------------------
+   это мое примерное тестовое предложение
+(1 row)
+
+SELECT spacy_lemmatize('ru',' "Это мое примерное тестовое предложение' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+              spacy_lemmatize               
+--------------------------------------------
+   ":2 примерное:5 тестовое:6 предложение:7
+(1 row)
+
+SELECT spacy_lemmatize('ru',' "Это мое примерное тестовое предложение' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+          spacy_lemmatize           
+------------------------------------
+   " примерное тестовое предложение
+(1 row)
+
+SELECT spacy_lemmatize('ru',' "Это мое примерное тестовое предложение' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                    spacy_lemmatize                     
+--------------------------------------------------------
+   ":2 это:3 мое:4 примерное:5 тестовое:6 предложение:7
+(1 row)
+
+SELECT spacy_lemmatize('ru',' "Это мое примерное тестовое предложение' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+              spacy_lemmatize               
+--------------------------------------------
+   " это мое примерное тестовое предложение
+(1 row)
+
+SELECT spacy_lemmatize('ru',' "Это мое примерное тестовое предложение' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+            spacy_lemmatize             
+----------------------------------------
+   примерное:4 тестовое:5 предложение:6
+(1 row)
+
+SELECT spacy_lemmatize('ru',' "Это мое примерное тестовое предложение' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+         spacy_lemmatize          
+----------------------------------
+   примерное тестовое предложение
+(1 row)
+
+SELECT spacy_lemmatize('ru',' "Это мое примерное тестовое предложение' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                  spacy_lemmatize                   
+----------------------------------------------------
+   Это:2 мое:3 примерное:4 тестовое:5 предложение:6
+(1 row)
+
+SELECT spacy_lemmatize('ru',' "Это мое примерное тестовое предложение' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+             spacy_lemmatize              
+------------------------------------------
+   Это мое примерное тестовое предложение
+(1 row)
+
+SELECT spacy_lemmatize('ru',' "Это мое примерное тестовое предложение' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+              spacy_lemmatize               
+--------------------------------------------
+   ":2 примерное:5 тестовое:6 предложение:7
+(1 row)
+
+SELECT spacy_lemmatize('ru',' "Это мое примерное тестовое предложение' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+          spacy_lemmatize           
+------------------------------------
+   " примерное тестовое предложение
+(1 row)
+
+SELECT spacy_lemmatize('ru',' "Это мое примерное тестовое предложение' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                    spacy_lemmatize                     
+--------------------------------------------------------
+   ":2 Это:3 мое:4 примерное:5 тестовое:6 предложение:7
+(1 row)
+
+SELECT spacy_lemmatize('ru',' "Это мое примерное тестовое предложение' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+              spacy_lemmatize               
+--------------------------------------------
+   " Это мое примерное тестовое предложение
+(1 row)
+
+SELECT spacy_tsvector('ru',' "Это мое примерное тестовое предложение');
+               spacy_tsvector               
+--------------------------------------------
+ 'предложение':6 'примерное':4 'тестовое':5
+(1 row)
+

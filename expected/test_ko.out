@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                       spacy_lemmatize                                        
+----------------------------------------------------------------------------------------------
+ 테스트:3 케이스:4 생성:6 위하:9 google:10 translate:11 넣:13 예제:15 테스트:16 문장:17 이:18
+(1 row)
+
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                         spacy_lemmatize                         
+-----------------------------------------------------------------
+ 테스트 케이스 생성 위하 google translate 넣 예제 테스트 문장 이
+(1 row)
+
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                           spacy_lemmatize                                                           
+-------------------------------------------------------------------------------------------------------------------------------------
+ 이거:1 은:2 테스트:3 케이스:4 를:5 생성:6 하:7 기:8 위하:9 google:10 translate:11 에:12 넣:13 은:14 예제:15 테스트:16 문장:17 이:18
+(1 row)
+
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                    spacy_lemmatize                                     
+----------------------------------------------------------------------------------------
+ 이거 은 테스트 케이스 를 생성 하 기 위하 google translate 에 넣 은 예제 테스트 문장 이
+(1 row)
+
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                               spacy_lemmatize                                               
+-------------------------------------------------------------------------------------------------------------
+ ":1 테스트:4 케이스:5 생성:7 위하:10 google:11 translate:12 넣:14 예제:16 테스트:17 문장:18 이:19 .:20 ":21
+(1 row)
+
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                            spacy_lemmatize                            
+-----------------------------------------------------------------------
+ " 테스트 케이스 생성 위하 google translate 넣 예제 테스트 문장 이 . "
+(1 row)
+
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                  spacy_lemmatize                                                                   
+----------------------------------------------------------------------------------------------------------------------------------------------------
+ ":1 이거:2 은:3 테스트:4 케이스:5 를:6 생성:7 하:8 기:9 위하:10 google:11 translate:12 에:13 넣:14 은:15 예제:16 테스트:17 문장:18 이:19 .:20 ":21
+(1 row)
+
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                       spacy_lemmatize                                        
+----------------------------------------------------------------------------------------------
+ " 이거 은 테스트 케이스 를 생성 하 기 위하 google translate 에 넣 은 예제 테스트 문장 이 . "
+(1 row)
+
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                       spacy_lemmatize                                        
+----------------------------------------------------------------------------------------------
+ 테스트:3 케이스:4 생성:6 위하:9 Google:10 Translate:11 넣:13 예제:15 테스트:16 문장:17 이:18
+(1 row)
+
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                         spacy_lemmatize                         
+-----------------------------------------------------------------
+ 테스트 케이스 생성 위하 Google Translate 넣 예제 테스트 문장 이
+(1 row)
+
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                           spacy_lemmatize                                                           
+-------------------------------------------------------------------------------------------------------------------------------------
+ 이거:1 은:2 테스트:3 케이스:4 를:5 생성:6 하:7 기:8 위하:9 Google:10 Translate:11 에:12 넣:13 은:14 예제:15 테스트:16 문장:17 이:18
+(1 row)
+
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                    spacy_lemmatize                                     
+----------------------------------------------------------------------------------------
+ 이거 은 테스트 케이스 를 생성 하 기 위하 Google Translate 에 넣 은 예제 테스트 문장 이
+(1 row)
+
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                               spacy_lemmatize                                               
+-------------------------------------------------------------------------------------------------------------
+ ":1 테스트:4 케이스:5 생성:7 위하:10 Google:11 Translate:12 넣:14 예제:16 테스트:17 문장:18 이:19 .:20 ":21
+(1 row)
+
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                            spacy_lemmatize                            
+-----------------------------------------------------------------------
+ " 테스트 케이스 생성 위하 Google Translate 넣 예제 테스트 문장 이 . "
+(1 row)
+
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                  spacy_lemmatize                                                                   
+----------------------------------------------------------------------------------------------------------------------------------------------------
+ ":1 이거:2 은:3 테스트:4 케이스:5 를:6 생성:7 하:8 기:9 위하:10 Google:11 Translate:12 에:13 넣:14 은:15 예제:16 테스트:17 문장:18 이:19 .:20 ":21
+(1 row)
+
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                       spacy_lemmatize                                        
+----------------------------------------------------------------------------------------------
+ " 이거 은 테스트 케이스 를 생성 하 기 위하 Google Translate 에 넣 은 예제 테스트 문장 이 . "
+(1 row)
+
+SELECT spacy_tsvector('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."');
+                                              spacy_tsvector                                               
+-----------------------------------------------------------------------------------------------------------
+ 'google':10 'translate':11 '넣':13 '문장':17 '생성':6 '예제':15 '위하':9 '이':18 '케이스':4 '테스트':3,16
+(1 row)
+

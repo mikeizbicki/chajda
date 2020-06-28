@@ -1,0 +1,2 @@
+comment = 'adds support for multilingual search using python''s spacy library'
+default_version = 1.0

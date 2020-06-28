@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('ja',' "これは、テストケースを生成するためにGoogle翻訳に入力する私のテスト文の例です。"' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                 spacy_lemmatize                                  
+----------------------------------------------------------------------------------
+   テスト:4 ケース:5 生成:7 google:11 翻訳:12 入力:14 私:16 テスト:18 文:19 例:21
+(1 row)
+
+SELECT spacy_lemmatize('ja',' "これは、テストケースを生成するためにGoogle翻訳に入力する私のテスト文の例です。"' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                    spacy_lemmatize                    
+-------------------------------------------------------
+   テスト ケース 生成 google 翻訳 入力 私 テスト 文 例
+(1 row)
+
+SELECT spacy_lemmatize('ja',' "これは、テストケースを生成するためにGoogle翻訳に入力する私のテスト文の例です。"' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                                     spacy_lemmatize                                                                     
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+   これ:2 は:3 テスト:4 ケース:5 を:6 生成:7 する:8 ため:9 に:10 google:11 翻訳:12 に:13 入力:14 する:15 私:16 の:17 テスト:18 文:19 の:20 例:21 です:22
+(1 row)
+
+SELECT spacy_lemmatize('ja',' "これは、テストケースを生成するためにGoogle翻訳に入力する私のテスト文の例です。"' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                         spacy_lemmatize                                          
+--------------------------------------------------------------------------------------------------
+   これ は テスト ケース を 生成 する ため に google 翻訳 に 入力 する 私 の テスト 文 の 例 です
+(1 row)
+
+SELECT spacy_lemmatize('ja',' "これは、テストケースを生成するためにGoogle翻訳に入力する私のテスト文の例です。"' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                            spacy_lemmatize                                             
+--------------------------------------------------------------------------------------------------------
+   ＂:2 、:5 テスト:6 ケース:7 生成:9 google:13 翻訳:14 入力:16 私:18 テスト:20 文:21 例:23 。:25 ＂:26
+(1 row)
+
+SELECT spacy_lemmatize('ja',' "これは、テストケースを生成するためにGoogle翻訳に入力する私のテスト文の例です。"' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                          spacy_lemmatize                          
+-------------------------------------------------------------------
+   ＂ 、 テスト ケース 生成 google 翻訳 入力 私 テスト 文 例 。 ＂
+(1 row)
+
+SELECT spacy_lemmatize('ja',' "これは、テストケースを生成するためにGoogle翻訳に入力する私のテスト文の例です。"' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                                 spacy_lemmatize                                                                                 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ＂:2 これ:3 は:4 、:5 テスト:6 ケース:7 を:8 生成:9 する:10 ため:11 に:12 google:13 翻訳:14 に:15 入力:16 する:17 私:18 の:19 テスト:20 文:21 の:22 例:23 です:24 。:25 ＂:26
+(1 row)
+
+SELECT spacy_lemmatize('ja',' "これは、テストケースを生成するためにGoogle翻訳に入力する私のテスト文の例です。"' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                               spacy_lemmatize                                                
+--------------------------------------------------------------------------------------------------------------
+   ＂ これ は 、 テスト ケース を 生成 する ため に google 翻訳 に 入力 する 私 の テスト 文 の 例 です 。 ＂
+(1 row)
+
+SELECT spacy_lemmatize('ja',' "これは、テストケースを生成するためにGoogle翻訳に入力する私のテスト文の例です。"' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                 spacy_lemmatize                                  
+----------------------------------------------------------------------------------
+   テスト:4 ケース:5 生成:7 Google:11 翻訳:12 入力:14 私:16 テスト:18 文:19 例:21
+(1 row)
+
+SELECT spacy_lemmatize('ja',' "これは、テストケースを生成するためにGoogle翻訳に入力する私のテスト文の例です。"' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                    spacy_lemmatize                    
+-------------------------------------------------------
+   テスト ケース 生成 Google 翻訳 入力 私 テスト 文 例
+(1 row)
+
+SELECT spacy_lemmatize('ja',' "これは、テストケースを生成するためにGoogle翻訳に入力する私のテスト文の例です。"' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                                     spacy_lemmatize                                                                     
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+   これ:2 は:3 テスト:4 ケース:5 を:6 生成:7 する:8 ため:9 に:10 Google:11 翻訳:12 に:13 入力:14 する:15 私:16 の:17 テスト:18 文:19 の:20 例:21 です:22
+(1 row)
+
+SELECT spacy_lemmatize('ja',' "これは、テストケースを生成するためにGoogle翻訳に入力する私のテスト文の例です。"' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                         spacy_lemmatize                                          
+--------------------------------------------------------------------------------------------------
+   これ は テスト ケース を 生成 する ため に Google 翻訳 に 入力 する 私 の テスト 文 の 例 です
+(1 row)
+
+SELECT spacy_lemmatize('ja',' "これは、テストケースを生成するためにGoogle翻訳に入力する私のテスト文の例です。"' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                            spacy_lemmatize                                             
+--------------------------------------------------------------------------------------------------------
+   ＂:2 、:5 テスト:6 ケース:7 生成:9 Google:13 翻訳:14 入力:16 私:18 テスト:20 文:21 例:23 。:25 ＂:26
+(1 row)
+
+SELECT spacy_lemmatize('ja',' "これは、テストケースを生成するためにGoogle翻訳に入力する私のテスト文の例です。"' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                          spacy_lemmatize                          
+-------------------------------------------------------------------
+   ＂ 、 テスト ケース 生成 Google 翻訳 入力 私 テスト 文 例 。 ＂
+(1 row)
+
+SELECT spacy_lemmatize('ja',' "これは、テストケースを生成するためにGoogle翻訳に入力する私のテスト文の例です。"' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                                 spacy_lemmatize                                                                                 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ＂:2 これ:3 は:4 、:5 テスト:6 ケース:7 を:8 生成:9 する:10 ため:11 に:12 Google:13 翻訳:14 に:15 入力:16 する:17 私:18 の:19 テスト:20 文:21 の:22 例:23 です:24 。:25 ＂:26
+(1 row)
+
+SELECT spacy_lemmatize('ja',' "これは、テストケースを生成するためにGoogle翻訳に入力する私のテスト文の例です。"' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                               spacy_lemmatize                                                
+--------------------------------------------------------------------------------------------------------------
+   ＂ これ は 、 テスト ケース を 生成 する ため に Google 翻訳 に 入力 する 私 の テスト 文 の 例 です 。 ＂
+(1 row)
+
+SELECT spacy_tsvector('ja',' "これは、テストケースを生成するためにGoogle翻訳に入力する私のテスト文の例です。"');
+                                      spacy_tsvector                                       
+-------------------------------------------------------------------------------------------
+ 'google':11 'ケース':5 'テスト':4,18 '例':21 '入力':14 '文':19 '生成':7 '私':16 '翻訳':12
+(1 row)
+

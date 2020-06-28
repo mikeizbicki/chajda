@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('tr',' "Bu' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+ spacy_lemmatize 
+-----------------
+  
+(1 row)
+
+SELECT spacy_lemmatize('tr',' "Bu' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+ spacy_lemmatize 
+-----------------
+  
+(1 row)
+
+SELECT spacy_lemmatize('tr',' "Bu' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+ spacy_lemmatize 
+-----------------
+   bu:2
+(1 row)
+
+SELECT spacy_lemmatize('tr',' "Bu' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+ spacy_lemmatize 
+-----------------
+   bu
+(1 row)
+
+SELECT spacy_lemmatize('tr',' "Bu' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+ spacy_lemmatize 
+-----------------
+   ":2
+(1 row)
+
+SELECT spacy_lemmatize('tr',' "Bu' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+ spacy_lemmatize 
+-----------------
+   "
+(1 row)
+
+SELECT spacy_lemmatize('tr',' "Bu' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+ spacy_lemmatize 
+-----------------
+   ":2 bu:3
+(1 row)
+
+SELECT spacy_lemmatize('tr',' "Bu' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+ spacy_lemmatize 
+-----------------
+   " bu
+(1 row)
+
+SELECT spacy_lemmatize('tr',' "Bu' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+ spacy_lemmatize 
+-----------------
+  
+(1 row)
+
+SELECT spacy_lemmatize('tr',' "Bu' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+ spacy_lemmatize 
+-----------------
+  
+(1 row)
+
+SELECT spacy_lemmatize('tr',' "Bu' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+ spacy_lemmatize 
+-----------------
+   Bu:2
+(1 row)
+
+SELECT spacy_lemmatize('tr',' "Bu' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+ spacy_lemmatize 
+-----------------
+   Bu
+(1 row)
+
+SELECT spacy_lemmatize('tr',' "Bu' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+ spacy_lemmatize 
+-----------------
+   ":2
+(1 row)
+
+SELECT spacy_lemmatize('tr',' "Bu' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+ spacy_lemmatize 
+-----------------
+   "
+(1 row)
+
+SELECT spacy_lemmatize('tr',' "Bu' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+ spacy_lemmatize 
+-----------------
+   ":2 Bu:3
+(1 row)
+
+SELECT spacy_lemmatize('tr',' "Bu' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+ spacy_lemmatize 
+-----------------
+   " Bu
+(1 row)
+
+SELECT spacy_tsvector('tr',' "Bu');
+ spacy_tsvector 
+----------------
+ 
+(1 row)
+

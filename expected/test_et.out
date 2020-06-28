@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('et',' "See on minu näidislause' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+ spacy_lemmatize 
+-----------------
+   näidislause:5
+(1 row)
+
+SELECT spacy_lemmatize('et',' "See on minu näidislause' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+ spacy_lemmatize 
+-----------------
+   näidislause
+(1 row)
+
+SELECT spacy_lemmatize('et',' "See on minu näidislause' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+          spacy_lemmatize          
+-----------------------------------
+   see:2 on:3 minu:4 näidislause:5
+(1 row)
+
+SELECT spacy_lemmatize('et',' "See on minu näidislause' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+      spacy_lemmatize      
+---------------------------
+   see on minu näidislause
+(1 row)
+
+SELECT spacy_lemmatize('et',' "See on minu näidislause' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+   spacy_lemmatize   
+---------------------
+   ":2 näidislause:6
+(1 row)
+
+SELECT spacy_lemmatize('et',' "See on minu näidislause' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+ spacy_lemmatize 
+-----------------
+   " näidislause
+(1 row)
+
+SELECT spacy_lemmatize('et',' "See on minu näidislause' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+            spacy_lemmatize            
+---------------------------------------
+   ":2 see:3 on:4 minu:5 näidislause:6
+(1 row)
+
+SELECT spacy_lemmatize('et',' "See on minu näidislause' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+       spacy_lemmatize       
+-----------------------------
+   " see on minu näidislause
+(1 row)
+
+SELECT spacy_lemmatize('et',' "See on minu näidislause' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+ spacy_lemmatize 
+-----------------
+   näidislause:5
+(1 row)
+
+SELECT spacy_lemmatize('et',' "See on minu näidislause' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+ spacy_lemmatize 
+-----------------
+   näidislause
+(1 row)
+
+SELECT spacy_lemmatize('et',' "See on minu näidislause' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+          spacy_lemmatize          
+-----------------------------------
+   See:2 on:3 minu:4 näidislause:5
+(1 row)
+
+SELECT spacy_lemmatize('et',' "See on minu näidislause' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+      spacy_lemmatize      
+---------------------------
+   See on minu näidislause
+(1 row)
+
+SELECT spacy_lemmatize('et',' "See on minu näidislause' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+   spacy_lemmatize   
+---------------------
+   ":2 näidislause:6
+(1 row)
+
+SELECT spacy_lemmatize('et',' "See on minu näidislause' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+ spacy_lemmatize 
+-----------------
+   " näidislause
+(1 row)
+
+SELECT spacy_lemmatize('et',' "See on minu näidislause' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+            spacy_lemmatize            
+---------------------------------------
+   ":2 See:3 on:4 minu:5 näidislause:6
+(1 row)
+
+SELECT spacy_lemmatize('et',' "See on minu näidislause' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+       spacy_lemmatize       
+-----------------------------
+   " See on minu näidislause
+(1 row)
+
+SELECT spacy_tsvector('et',' "See on minu näidislause');
+ spacy_tsvector  
+-----------------
+ 'näidislause':5
+(1 row)
+

@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('sk',' "Toto je môj príklad testovacej vety' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+         spacy_lemmatize         
+---------------------------------
+   príklad:5 testovacej:6 vety:7
+(1 row)
+
+SELECT spacy_lemmatize('sk',' "Toto je môj príklad testovacej vety' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+      spacy_lemmatize      
+---------------------------
+   príklad testovacej vety
+(1 row)
+
+SELECT spacy_lemmatize('sk',' "Toto je môj príklad testovacej vety' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                  spacy_lemmatize                  
+---------------------------------------------------
+   toto:2 je:3 môj:4 príklad:5 testovacej:6 vety:7
+(1 row)
+
+SELECT spacy_lemmatize('sk',' "Toto je môj príklad testovacej vety' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+            spacy_lemmatize            
+---------------------------------------
+   toto je môj príklad testovacej vety
+(1 row)
+
+SELECT spacy_lemmatize('sk',' "Toto je môj príklad testovacej vety' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+           spacy_lemmatize           
+-------------------------------------
+   ":2 príklad:6 testovacej:7 vety:8
+(1 row)
+
+SELECT spacy_lemmatize('sk',' "Toto je môj príklad testovacej vety' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+       spacy_lemmatize       
+-----------------------------
+   " príklad testovacej vety
+(1 row)
+
+SELECT spacy_lemmatize('sk',' "Toto je môj príklad testovacej vety' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                    spacy_lemmatize                    
+-------------------------------------------------------
+   ":2 toto:3 je:4 môj:5 príklad:6 testovacej:7 vety:8
+(1 row)
+
+SELECT spacy_lemmatize('sk',' "Toto je môj príklad testovacej vety' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+             spacy_lemmatize             
+-----------------------------------------
+   " toto je môj príklad testovacej vety
+(1 row)
+
+SELECT spacy_lemmatize('sk',' "Toto je môj príklad testovacej vety' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+         spacy_lemmatize         
+---------------------------------
+   príklad:5 testovacej:6 vety:7
+(1 row)
+
+SELECT spacy_lemmatize('sk',' "Toto je môj príklad testovacej vety' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+      spacy_lemmatize      
+---------------------------
+   príklad testovacej vety
+(1 row)
+
+SELECT spacy_lemmatize('sk',' "Toto je môj príklad testovacej vety' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                  spacy_lemmatize                  
+---------------------------------------------------
+   Toto:2 je:3 môj:4 príklad:5 testovacej:6 vety:7
+(1 row)
+
+SELECT spacy_lemmatize('sk',' "Toto je môj príklad testovacej vety' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+            spacy_lemmatize            
+---------------------------------------
+   Toto je môj príklad testovacej vety
+(1 row)
+
+SELECT spacy_lemmatize('sk',' "Toto je môj príklad testovacej vety' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+           spacy_lemmatize           
+-------------------------------------
+   ":2 príklad:6 testovacej:7 vety:8
+(1 row)
+
+SELECT spacy_lemmatize('sk',' "Toto je môj príklad testovacej vety' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+       spacy_lemmatize       
+-----------------------------
+   " príklad testovacej vety
+(1 row)
+
+SELECT spacy_lemmatize('sk',' "Toto je môj príklad testovacej vety' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                    spacy_lemmatize                    
+-------------------------------------------------------
+   ":2 Toto:3 je:4 môj:5 príklad:6 testovacej:7 vety:8
+(1 row)
+
+SELECT spacy_lemmatize('sk',' "Toto je môj príklad testovacej vety' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+             spacy_lemmatize             
+-----------------------------------------
+   " Toto je môj príklad testovacej vety
+(1 row)
+
+SELECT spacy_tsvector('sk',' "Toto je môj príklad testovacej vety');
+           spacy_tsvector            
+-------------------------------------
+ 'príklad':5 'testovacej':6 'vety':7
+(1 row)
+

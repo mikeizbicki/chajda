@@ -1,0 +1,206 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('zh',' "这是我输入Google Translate生成测试用例的示例测试语句。"' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                             spacy_lemmatize                             
+-------------------------------------------------------------------------
+   输入:5 google:6 translate:7 生成:8 测试用例:9 示例:11 测试:12 语句:13
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "这是我输入Google Translate生成测试用例的示例测试语句。"' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                   spacy_lemmatize                    
+------------------------------------------------------
+   输入 google translate 生成 测试用例 示例 测试 语句
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "这是我输入Google Translate生成测试用例的示例测试语句。"' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                       spacy_lemmatize                                        
+----------------------------------------------------------------------------------------------
+   这:2 是:3 我:4 输入:5 google:6 translate:7 生成:8 测试用例:9 的:10 示例:11 测试:12 语句:13
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "这是我输入Google Translate生成测试用例的示例测试语句。"' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                         spacy_lemmatize                          
+------------------------------------------------------------------
+   这 是 我 输入 google translate 生成 测试用例 的 示例 测试 语句
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "这是我输入Google Translate生成测试用例的示例测试语句。"' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                             spacy_lemmatize                              
+--------------------------------------------------------------------------
+   输入:6 google:7 translate:8 生成:9 测试用例:10 示例:12 测试:13 语句:14
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "这是我输入Google Translate生成测试用例的示例测试语句。"' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                   spacy_lemmatize                    
+------------------------------------------------------
+   输入 google translate 生成 测试用例 示例 测试 语句
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "这是我输入Google Translate生成测试用例的示例测试语句。"' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                               spacy_lemmatize                                                
+--------------------------------------------------------------------------------------------------------------
+   ":2 这:3 是:4 我:5 输入:6 google:7 translate:8 生成:9 测试用例:10 的:11 示例:12 测试:13 语句:14 。:15 ":16
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "这是我输入Google Translate生成测试用例的示例测试语句。"' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                             spacy_lemmatize                             
+-------------------------------------------------------------------------
+   " 这 是 我 输入 google translate 生成 测试用例 的 示例 测试 语句 。 "
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "这是我输入Google Translate生成测试用例的示例测试语句。"' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                             spacy_lemmatize                             
+-------------------------------------------------------------------------
+   输入:5 Google:6 Translate:7 生成:8 测试用例:9 示例:11 测试:12 语句:13
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "这是我输入Google Translate生成测试用例的示例测试语句。"' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                   spacy_lemmatize                    
+------------------------------------------------------
+   输入 Google Translate 生成 测试用例 示例 测试 语句
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "这是我输入Google Translate生成测试用例的示例测试语句。"' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                       spacy_lemmatize                                        
+----------------------------------------------------------------------------------------------
+   这:2 是:3 我:4 输入:5 Google:6 Translate:7 生成:8 测试用例:9 的:10 示例:11 测试:12 语句:13
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "这是我输入Google Translate生成测试用例的示例测试语句。"' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                         spacy_lemmatize                          
+------------------------------------------------------------------
+   这 是 我 输入 Google Translate 生成 测试用例 的 示例 测试 语句
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "这是我输入Google Translate生成测试用例的示例测试语句。"' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                             spacy_lemmatize                              
+--------------------------------------------------------------------------
+   输入:6 Google:7 Translate:8 生成:9 测试用例:10 示例:12 测试:13 语句:14
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "这是我输入Google Translate生成测试用例的示例测试语句。"' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                   spacy_lemmatize                    
+------------------------------------------------------
+   输入 Google Translate 生成 测试用例 示例 测试 语句
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "这是我输入Google Translate生成测试用例的示例测试语句。"' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                               spacy_lemmatize                                                
+--------------------------------------------------------------------------------------------------------------
+   ":2 这:3 是:4 我:5 输入:6 Google:7 Translate:8 生成:9 测试用例:10 的:11 示例:12 测试:13 语句:14 。:15 ":16
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "这是我输入Google Translate生成测试用例的示例测试语句。"' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                             spacy_lemmatize                             
+-------------------------------------------------------------------------
+   " 这 是 我 输入 Google Translate 生成 测试用例 的 示例 测试 语句 。 "
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "這是我輸入Google Translate生成測試用例的示例測試語句。"' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                  spacy_lemmatize                                  
+-----------------------------------------------------------------------------------
+   這是:2 輸入:4 google:5 translate:6 生成:7 測試:8 用例:9 示例:11 測試:12 語句:13
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "這是我輸入Google Translate生成測試用例的示例測試語句。"' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                      spacy_lemmatize                       
+------------------------------------------------------------
+   這是 輸入 google translate 生成 測試 用例 示例 測試 語句
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "這是我輸入Google Translate生成測試用例的示例測試語句。"' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                       spacy_lemmatize                                        
+----------------------------------------------------------------------------------------------
+   這是:2 我:3 輸入:4 google:5 translate:6 生成:7 測試:8 用例:9 的:10 示例:11 測試:12 語句:13
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "這是我輸入Google Translate生成測試用例的示例測試語句。"' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                         spacy_lemmatize                          
+------------------------------------------------------------------
+   這是 我 輸入 google translate 生成 測試 用例 的 示例 測試 語句
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "這是我輸入Google Translate生成測試用例的示例測試語句。"' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                  spacy_lemmatize                                   
+------------------------------------------------------------------------------------
+   這是:3 輸入:5 google:6 translate:7 生成:8 測試:9 用例:10 示例:12 測試:13 語句:14
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "這是我輸入Google Translate生成測試用例的示例測試語句。"' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                      spacy_lemmatize                       
+------------------------------------------------------------
+   這是 輸入 google translate 生成 測試 用例 示例 測試 語句
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "這是我輸入Google Translate生成測試用例的示例測試語句。"' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                               spacy_lemmatize                                                
+--------------------------------------------------------------------------------------------------------------
+   ":2 這是:3 我:4 輸入:5 google:6 translate:7 生成:8 測試:9 用例:10 的:11 示例:12 測試:13 語句:14 。:15 ":16
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "這是我輸入Google Translate生成測試用例的示例測試語句。"' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                             spacy_lemmatize                             
+-------------------------------------------------------------------------
+   " 這是 我 輸入 google translate 生成 測試 用例 的 示例 測試 語句 。 "
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "這是我輸入Google Translate生成測試用例的示例測試語句。"' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                  spacy_lemmatize                                  
+-----------------------------------------------------------------------------------
+   這是:2 輸入:4 Google:5 Translate:6 生成:7 測試:8 用例:9 示例:11 測試:12 語句:13
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "這是我輸入Google Translate生成測試用例的示例測試語句。"' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                      spacy_lemmatize                       
+------------------------------------------------------------
+   這是 輸入 Google Translate 生成 測試 用例 示例 測試 語句
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "這是我輸入Google Translate生成測試用例的示例測試語句。"' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                       spacy_lemmatize                                        
+----------------------------------------------------------------------------------------------
+   這是:2 我:3 輸入:4 Google:5 Translate:6 生成:7 測試:8 用例:9 的:10 示例:11 測試:12 語句:13
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "這是我輸入Google Translate生成測試用例的示例測試語句。"' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                         spacy_lemmatize                          
+------------------------------------------------------------------
+   這是 我 輸入 Google Translate 生成 測試 用例 的 示例 測試 語句
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "這是我輸入Google Translate生成測試用例的示例測試語句。"' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                  spacy_lemmatize                                   
+------------------------------------------------------------------------------------
+   這是:3 輸入:5 Google:6 Translate:7 生成:8 測試:9 用例:10 示例:12 測試:13 語句:14
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "這是我輸入Google Translate生成測試用例的示例測試語句。"' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                      spacy_lemmatize                       
+------------------------------------------------------------
+   這是 輸入 Google Translate 生成 測試 用例 示例 測試 語句
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "這是我輸入Google Translate生成測試用例的示例測試語句。"' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                               spacy_lemmatize                                                
+--------------------------------------------------------------------------------------------------------------
+   ":2 這是:3 我:4 輸入:5 Google:6 Translate:7 生成:8 測試:9 用例:10 的:11 示例:12 測試:13 語句:14 。:15 ":16
+(1 row)
+
+SELECT spacy_lemmatize('zh',' "這是我輸入Google Translate生成測試用例的示例測試語句。"' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                             spacy_lemmatize                             
+-------------------------------------------------------------------------
+   " 這是 我 輸入 Google Translate 生成 測試 用例 的 示例 測試 語句 。 "
+(1 row)
+
+SELECT spacy_tsvector('zh',' "這是我輸入Google Translate生成測試用例的示例測試語句。"');
+                                        spacy_tsvector                                        
+----------------------------------------------------------------------------------------------
+ 'google':5 'translate':6 '測試':8,12 '生成':7 '用例':9 '示例':11 '語句':13 '輸入':4 '這是':2
+(1 row)
+
+SELECT spacy_tsvector('zh',' "這是我輸入Google Translate生成測試用例的示例測試語句。"');
+                                        spacy_tsvector                                        
+----------------------------------------------------------------------------------------------
+ 'google':5 'translate':6 '測試':8,12 '生成':7 '用例':9 '示例':11 '語句':13 '輸入':4 '這是':2
+(1 row)
+

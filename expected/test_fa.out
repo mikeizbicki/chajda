@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('fa',' "این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                          spacy_lemmatize                                           
+----------------------------------------------------------------------------------------------------
+   جمله:3 آزمایشی:4 نمونه:5 ای:6 تولید:11 موارد:12 آزمایشی:13 google:15 translate:16 قرار:17 دهم:19
+(1 row)
+
+SELECT spacy_lemmatize('fa',' "این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                            spacy_lemmatize                            
+-----------------------------------------------------------------------
+   جمله آزمایشی نمونه ای تولید موارد آزمایشی google translate قرار دهم
+(1 row)
+
+SELECT spacy_lemmatize('fa',' "این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                               spacy_lemmatize                                                                
+----------------------------------------------------------------------------------------------------------------------------------------------
+   این:2 جمله:3 آزمایشی:4 نمونه:5 ای:6 است:7 که:8 من:9 برای:10 تولید:11 موارد:12 آزمایشی:13 در:14 google:15 translate:16 قرار:17 می:18 دهم:19
+(1 row)
+
+SELECT spacy_lemmatize('fa',' "این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                        spacy_lemmatize                                         
+------------------------------------------------------------------------------------------------
+   این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در google translate قرار می دهم
+(1 row)
+
+SELECT spacy_lemmatize('fa',' "این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                                 spacy_lemmatize                                                  
+------------------------------------------------------------------------------------------------------------------
+   ":2 جمله:4 آزمایشی:5 نمونه:6 ای:7 تولید:12 موارد:13 آزمایشی:14 google:16 translate:17 قرار:18 دهم:20 .:21 ":22
+(1 row)
+
+SELECT spacy_lemmatize('fa',' "این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                               spacy_lemmatize                               
+-----------------------------------------------------------------------------
+   " جمله آزمایشی نمونه ای تولید موارد آزمایشی google translate قرار دهم . "
+(1 row)
+
+SELECT spacy_lemmatize('fa',' "این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                       spacy_lemmatize                                                                       
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 این:3 جمله:4 آزمایشی:5 نمونه:6 ای:7 است:8 که:9 من:10 برای:11 تولید:12 موارد:13 آزمایشی:14 در:15 google:16 translate:17 قرار:18 می:19 دهم:20 .:21 ":22
+(1 row)
+
+SELECT spacy_lemmatize('fa',' "این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                           spacy_lemmatize                                            
+------------------------------------------------------------------------------------------------------
+   " این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در google translate قرار می دهم . "
+(1 row)
+
+SELECT spacy_lemmatize('fa',' "این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                          spacy_lemmatize                                           
+----------------------------------------------------------------------------------------------------
+   جمله:3 آزمایشی:4 نمونه:5 ای:6 تولید:11 موارد:12 آزمایشی:13 Google:15 Translate:16 قرار:17 دهم:19
+(1 row)
+
+SELECT spacy_lemmatize('fa',' "این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                            spacy_lemmatize                            
+-----------------------------------------------------------------------
+   جمله آزمایشی نمونه ای تولید موارد آزمایشی Google Translate قرار دهم
+(1 row)
+
+SELECT spacy_lemmatize('fa',' "این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                               spacy_lemmatize                                                                
+----------------------------------------------------------------------------------------------------------------------------------------------
+   این:2 جمله:3 آزمایشی:4 نمونه:5 ای:6 است:7 که:8 من:9 برای:10 تولید:11 موارد:12 آزمایشی:13 در:14 Google:15 Translate:16 قرار:17 می:18 دهم:19
+(1 row)
+
+SELECT spacy_lemmatize('fa',' "این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                        spacy_lemmatize                                         
+------------------------------------------------------------------------------------------------
+   این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم
+(1 row)
+
+SELECT spacy_lemmatize('fa',' "این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                                 spacy_lemmatize                                                  
+------------------------------------------------------------------------------------------------------------------
+   ":2 جمله:4 آزمایشی:5 نمونه:6 ای:7 تولید:12 موارد:13 آزمایشی:14 Google:16 Translate:17 قرار:18 دهم:20 .:21 ":22
+(1 row)
+
+SELECT spacy_lemmatize('fa',' "این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                               spacy_lemmatize                               
+-----------------------------------------------------------------------------
+   " جمله آزمایشی نمونه ای تولید موارد آزمایشی Google Translate قرار دهم . "
+(1 row)
+
+SELECT spacy_lemmatize('fa',' "این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                       spacy_lemmatize                                                                       
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 این:3 جمله:4 آزمایشی:5 نمونه:6 ای:7 است:8 که:9 من:10 برای:11 تولید:12 موارد:13 آزمایشی:14 در:15 Google:16 Translate:17 قرار:18 می:19 دهم:20 .:21 ":22
+(1 row)
+
+SELECT spacy_lemmatize('fa',' "این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                           spacy_lemmatize                                            
+------------------------------------------------------------------------------------------------------
+   " این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم . "
+(1 row)
+
+SELECT spacy_tsvector('fa',' "این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم."');
+                                                spacy_tsvector                                                
+--------------------------------------------------------------------------------------------------------------
+ 'google':15 'translate':16 'آزمایشی':4,13 'ای':6 'تولید':11 'جمله':3 'دهم':19 'قرار':17 'موارد':12 'نمونه':5
+(1 row)
+

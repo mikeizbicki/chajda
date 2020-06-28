@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('ar',' "هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                    spacy_lemmatize                                    
+---------------------------------------------------------------------------------------
+   جملتي:4 التجريبية:5 أقوم:7 بوضعها:8 ترجمة:10 google:11 لإنشاء:12 حالات:13 اختبار:14
+(1 row)
+
+SELECT spacy_lemmatize('ar',' "هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                        spacy_lemmatize                         
+----------------------------------------------------------------
+   جملتي التجريبية أقوم بوضعها ترجمة google لإنشاء حالات اختبار
+(1 row)
+
+SELECT spacy_lemmatize('ar',' "هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                               spacy_lemmatize                                                
+--------------------------------------------------------------------------------------------------------------
+   هذا:2 هو:3 جملتي:4 التجريبية:5 التي:6 أقوم:7 بوضعها:8 في:9 ترجمة:10 google:11 لإنشاء:12 حالات:13 اختبار:14
+(1 row)
+
+SELECT spacy_lemmatize('ar',' "هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                spacy_lemmatize                                
+-------------------------------------------------------------------------------
+   هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة google لإنشاء حالات اختبار
+(1 row)
+
+SELECT spacy_lemmatize('ar',' "هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                           spacy_lemmatize                                           
+-----------------------------------------------------------------------------------------------------
+   ":2 جملتي:5 التجريبية:6 أقوم:8 بوضعها:9 ترجمة:11 google:12 لإنشاء:13 حالات:14 اختبار:15 .:16 ":17
+(1 row)
+
+SELECT spacy_lemmatize('ar',' "هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                           spacy_lemmatize                            
+----------------------------------------------------------------------
+   " جملتي التجريبية أقوم بوضعها ترجمة google لإنشاء حالات اختبار . "
+(1 row)
+
+SELECT spacy_lemmatize('ar',' "هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                       spacy_lemmatize                                                       
+-----------------------------------------------------------------------------------------------------------------------------
+   ":2 هذا:3 هو:4 جملتي:5 التجريبية:6 التي:7 أقوم:8 بوضعها:9 في:10 ترجمة:11 google:12 لإنشاء:13 حالات:14 اختبار:15 .:16 ":17
+(1 row)
+
+SELECT spacy_lemmatize('ar',' "هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                   spacy_lemmatize                                   
+-------------------------------------------------------------------------------------
+   " هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة google لإنشاء حالات اختبار . "
+(1 row)
+
+SELECT spacy_lemmatize('ar',' "هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                    spacy_lemmatize                                    
+---------------------------------------------------------------------------------------
+   جملتي:4 التجريبية:5 أقوم:7 بوضعها:8 ترجمة:10 Google:11 لإنشاء:12 حالات:13 اختبار:14
+(1 row)
+
+SELECT spacy_lemmatize('ar',' "هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                        spacy_lemmatize                         
+----------------------------------------------------------------
+   جملتي التجريبية أقوم بوضعها ترجمة Google لإنشاء حالات اختبار
+(1 row)
+
+SELECT spacy_lemmatize('ar',' "هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                               spacy_lemmatize                                                
+--------------------------------------------------------------------------------------------------------------
+   هذا:2 هو:3 جملتي:4 التجريبية:5 التي:6 أقوم:7 بوضعها:8 في:9 ترجمة:10 Google:11 لإنشاء:12 حالات:13 اختبار:14
+(1 row)
+
+SELECT spacy_lemmatize('ar',' "هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                spacy_lemmatize                                
+-------------------------------------------------------------------------------
+   هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار
+(1 row)
+
+SELECT spacy_lemmatize('ar',' "هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                           spacy_lemmatize                                           
+-----------------------------------------------------------------------------------------------------
+   ":2 جملتي:5 التجريبية:6 أقوم:8 بوضعها:9 ترجمة:11 Google:12 لإنشاء:13 حالات:14 اختبار:15 .:16 ":17
+(1 row)
+
+SELECT spacy_lemmatize('ar',' "هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                           spacy_lemmatize                            
+----------------------------------------------------------------------
+   " جملتي التجريبية أقوم بوضعها ترجمة Google لإنشاء حالات اختبار . "
+(1 row)
+
+SELECT spacy_lemmatize('ar',' "هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                       spacy_lemmatize                                                       
+-----------------------------------------------------------------------------------------------------------------------------
+   ":2 هذا:3 هو:4 جملتي:5 التجريبية:6 التي:7 أقوم:8 بوضعها:9 في:10 ترجمة:11 Google:12 لإنشاء:13 حالات:14 اختبار:15 .:16 ":17
+(1 row)
+
+SELECT spacy_lemmatize('ar',' "هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                   spacy_lemmatize                                   
+-------------------------------------------------------------------------------------
+   " هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار . "
+(1 row)
+
+SELECT spacy_tsvector('ar',' "هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار."');
+                                            spacy_tsvector                                             
+-------------------------------------------------------------------------------------------------------
+ 'google':11 'أقوم':7 'اختبار':14 'التجريبية':5 'بوضعها':8 'ترجمة':10 'جملتي':4 'حالات':13 'لإنشاء':12
+(1 row)
+

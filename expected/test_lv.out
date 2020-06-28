@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('lv',' "Šis ir mans testa teikuma piemērs' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+              spacy_lemmatize               
+--------------------------------------------
+   šis:2 mans:4 testa:5 teikuma:6 piemērs:7
+(1 row)
+
+SELECT spacy_lemmatize('lv',' "Šis ir mans testa teikuma piemērs' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+         spacy_lemmatize          
+----------------------------------
+   šis mans testa teikuma piemērs
+(1 row)
+
+SELECT spacy_lemmatize('lv',' "Šis ir mans testa teikuma piemērs' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                 spacy_lemmatize                 
+-------------------------------------------------
+   šis:2 ir:3 mans:4 testa:5 teikuma:6 piemērs:7
+(1 row)
+
+SELECT spacy_lemmatize('lv',' "Šis ir mans testa teikuma piemērs' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+           spacy_lemmatize           
+-------------------------------------
+   šis ir mans testa teikuma piemērs
+(1 row)
+
+SELECT spacy_lemmatize('lv',' "Šis ir mans testa teikuma piemērs' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                spacy_lemmatize                 
+------------------------------------------------
+   ":2 šis:3 mans:5 testa:6 teikuma:7 piemērs:8
+(1 row)
+
+SELECT spacy_lemmatize('lv',' "Šis ir mans testa teikuma piemērs' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+          spacy_lemmatize           
+------------------------------------
+   " šis mans testa teikuma piemērs
+(1 row)
+
+SELECT spacy_lemmatize('lv',' "Šis ir mans testa teikuma piemērs' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                   spacy_lemmatize                   
+-----------------------------------------------------
+   ":2 šis:3 ir:4 mans:5 testa:6 teikuma:7 piemērs:8
+(1 row)
+
+SELECT spacy_lemmatize('lv',' "Šis ir mans testa teikuma piemērs' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+            spacy_lemmatize            
+---------------------------------------
+   " šis ir mans testa teikuma piemērs
+(1 row)
+
+SELECT spacy_lemmatize('lv',' "Šis ir mans testa teikuma piemērs' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+              spacy_lemmatize               
+--------------------------------------------
+   Šis:2 mans:4 testa:5 teikuma:6 piemērs:7
+(1 row)
+
+SELECT spacy_lemmatize('lv',' "Šis ir mans testa teikuma piemērs' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+         spacy_lemmatize          
+----------------------------------
+   Šis mans testa teikuma piemērs
+(1 row)
+
+SELECT spacy_lemmatize('lv',' "Šis ir mans testa teikuma piemērs' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                 spacy_lemmatize                 
+-------------------------------------------------
+   Šis:2 ir:3 mans:4 testa:5 teikuma:6 piemērs:7
+(1 row)
+
+SELECT spacy_lemmatize('lv',' "Šis ir mans testa teikuma piemērs' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+           spacy_lemmatize           
+-------------------------------------
+   Šis ir mans testa teikuma piemērs
+(1 row)
+
+SELECT spacy_lemmatize('lv',' "Šis ir mans testa teikuma piemērs' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                spacy_lemmatize                 
+------------------------------------------------
+   ":2 Šis:3 mans:5 testa:6 teikuma:7 piemērs:8
+(1 row)
+
+SELECT spacy_lemmatize('lv',' "Šis ir mans testa teikuma piemērs' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+          spacy_lemmatize           
+------------------------------------
+   " Šis mans testa teikuma piemērs
+(1 row)
+
+SELECT spacy_lemmatize('lv',' "Šis ir mans testa teikuma piemērs' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                   spacy_lemmatize                   
+-----------------------------------------------------
+   ":2 Šis:3 ir:4 mans:5 testa:6 teikuma:7 piemērs:8
+(1 row)
+
+SELECT spacy_lemmatize('lv',' "Šis ir mans testa teikuma piemērs' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+            spacy_lemmatize            
+---------------------------------------
+   " Šis ir mans testa teikuma piemērs
+(1 row)
+
+SELECT spacy_tsvector('lv',' "Šis ir mans testa teikuma piemērs');
+                   spacy_tsvector                   
+----------------------------------------------------
+ 'mans':4 'piemērs':7 'teikuma':6 'testa':5 'šis':2
+(1 row)
+

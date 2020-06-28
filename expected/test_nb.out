@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('nb',' "Dette er mitt eksempel test setning som jeg legger i Google Translate for å generere testsaker."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                        spacy_lemmatize                                        
+-----------------------------------------------------------------------------------------------
+   min:4 eksempel:5 test:6 setning:7 legger:10 google:12 translate:13 generere:16 testsaker:17
+(1 row)
+
+SELECT spacy_lemmatize('nb',' "Dette er mitt eksempel test setning som jeg legger i Google Translate for å generere testsaker."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                            spacy_lemmatize                             
+------------------------------------------------------------------------
+   min eksempel test setning legger google translate generere testsaker
+(1 row)
+
+SELECT spacy_lemmatize('nb',' "Dette er mitt eksempel test setning som jeg legger i Google Translate for å generere testsaker."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                             spacy_lemmatize                                                             
+-----------------------------------------------------------------------------------------------------------------------------------------
+   dette:2 er:3 min:4 eksempel:5 test:6 setning:7 som:8 jeg:9 legger:10 i:11 google:12 translate:13 for:14 å:15 generere:16 testsaker:17
+(1 row)
+
+SELECT spacy_lemmatize('nb',' "Dette er mitt eksempel test setning som jeg legger i Google Translate for å generere testsaker."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                         spacy_lemmatize                                         
+-------------------------------------------------------------------------------------------------
+   dette er min eksempel test setning som jeg legger i google translate for å generere testsaker
+(1 row)
+
+SELECT spacy_lemmatize('nb',' "Dette er mitt eksempel test setning som jeg legger i Google Translate for å generere testsaker."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                               spacy_lemmatize                                               
+-------------------------------------------------------------------------------------------------------------
+   ":2 min:5 eksempel:6 test:7 setning:8 legger:11 google:13 translate:14 generere:17 testsaker:18 .:19 ":20
+(1 row)
+
+SELECT spacy_lemmatize('nb',' "Dette er mitt eksempel test setning som jeg legger i Google Translate for å generere testsaker."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                               spacy_lemmatize                                
+------------------------------------------------------------------------------
+   " min eksempel test setning legger google translate generere testsaker . "
+(1 row)
+
+SELECT spacy_lemmatize('nb',' "Dette er mitt eksempel test setning som jeg legger i Google Translate for å generere testsaker."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                    spacy_lemmatize                                                                     
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 dette:3 er:4 min:5 eksempel:6 test:7 setning:8 som:9 jeg:10 legger:11 i:12 google:13 translate:14 for:15 å:16 generere:17 testsaker:18 .:19 ":20
+(1 row)
+
+SELECT spacy_lemmatize('nb',' "Dette er mitt eksempel test setning som jeg legger i Google Translate for å generere testsaker."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                            spacy_lemmatize                                            
+-------------------------------------------------------------------------------------------------------
+   " dette er min eksempel test setning som jeg legger i google translate for å generere testsaker . "
+(1 row)
+
+SELECT spacy_lemmatize('nb',' "Dette er mitt eksempel test setning som jeg legger i Google Translate for å generere testsaker."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                        spacy_lemmatize                                        
+-----------------------------------------------------------------------------------------------
+   min:4 eksempel:5 test:6 setning:7 legger:10 Google:12 Translate:13 generere:16 testsaker:17
+(1 row)
+
+SELECT spacy_lemmatize('nb',' "Dette er mitt eksempel test setning som jeg legger i Google Translate for å generere testsaker."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                            spacy_lemmatize                             
+------------------------------------------------------------------------
+   min eksempel test setning legger Google Translate generere testsaker
+(1 row)
+
+SELECT spacy_lemmatize('nb',' "Dette er mitt eksempel test setning som jeg legger i Google Translate for å generere testsaker."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                             spacy_lemmatize                                                             
+-----------------------------------------------------------------------------------------------------------------------------------------
+   Dette:2 er:3 min:4 eksempel:5 test:6 setning:7 som:8 jeg:9 legger:10 i:11 Google:12 Translate:13 for:14 å:15 generere:16 testsaker:17
+(1 row)
+
+SELECT spacy_lemmatize('nb',' "Dette er mitt eksempel test setning som jeg legger i Google Translate for å generere testsaker."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                         spacy_lemmatize                                         
+-------------------------------------------------------------------------------------------------
+   Dette er min eksempel test setning som jeg legger i Google Translate for å generere testsaker
+(1 row)
+
+SELECT spacy_lemmatize('nb',' "Dette er mitt eksempel test setning som jeg legger i Google Translate for å generere testsaker."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                               spacy_lemmatize                                               
+-------------------------------------------------------------------------------------------------------------
+   ":2 min:5 eksempel:6 test:7 setning:8 legger:11 Google:13 Translate:14 generere:17 testsaker:18 .:19 ":20
+(1 row)
+
+SELECT spacy_lemmatize('nb',' "Dette er mitt eksempel test setning som jeg legger i Google Translate for å generere testsaker."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                               spacy_lemmatize                                
+------------------------------------------------------------------------------
+   " min eksempel test setning legger Google Translate generere testsaker . "
+(1 row)
+
+SELECT spacy_lemmatize('nb',' "Dette er mitt eksempel test setning som jeg legger i Google Translate for å generere testsaker."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                    spacy_lemmatize                                                                     
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 Dette:3 er:4 min:5 eksempel:6 test:7 setning:8 som:9 jeg:10 legger:11 i:12 Google:13 Translate:14 for:15 å:16 generere:17 testsaker:18 .:19 ":20
+(1 row)
+
+SELECT spacy_lemmatize('nb',' "Dette er mitt eksempel test setning som jeg legger i Google Translate for å generere testsaker."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                            spacy_lemmatize                                            
+-------------------------------------------------------------------------------------------------------
+   " Dette er min eksempel test setning som jeg legger i Google Translate for å generere testsaker . "
+(1 row)
+
+SELECT spacy_tsvector('nb',' "Dette er mitt eksempel test setning som jeg legger i Google Translate for å generere testsaker."');
+                                                spacy_tsvector                                                 
+---------------------------------------------------------------------------------------------------------------
+ 'eksempel':5 'generere':16 'google':12 'legger':10 'min':4 'setning':7 'test':6 'testsaker':17 'translate':13
+(1 row)
+

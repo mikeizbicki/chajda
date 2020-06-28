@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('sv',' "Detta är mitt exempel på testmeningen som jag lägger in i Google Translate för att generera testfall."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                      spacy_lemmatize                                      
+-------------------------------------------------------------------------------------------
+   vara:3 exempel:5 testmeningen:7 lägga:10 google:13 translate:14 generera:17 testfall:18
+(1 row)
+
+SELECT spacy_lemmatize('sv',' "Detta är mitt exempel på testmeningen som jag lägger in i Google Translate för att generera testfall."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                           spacy_lemmatize                            
+----------------------------------------------------------------------
+   vara exempel testmeningen lägga google translate generera testfall
+(1 row)
+
+SELECT spacy_lemmatize('sv',' "Detta är mitt exempel på testmeningen som jag lägger in i Google Translate för att generera testfall."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                                  spacy_lemmatize                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------------
+   denna:2 vara:3 jag:4 exempel:5 på:6 testmeningen:7 som:8 jag:9 lägga:10 i:11 i:12 google:13 translate:14 föra:15 att:16 generera:17 testfall:18
+(1 row)
+
+SELECT spacy_lemmatize('sv',' "Detta är mitt exempel på testmeningen som jag lägger in i Google Translate för att generera testfall."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                            spacy_lemmatize                                             
+--------------------------------------------------------------------------------------------------------
+   denna vara jag exempel på testmeningen som jag lägga i i google translate föra att generera testfall
+(1 row)
+
+SELECT spacy_lemmatize('sv',' "Detta är mitt exempel på testmeningen som jag lägger in i Google Translate för att generera testfall."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                             spacy_lemmatize                                             
+---------------------------------------------------------------------------------------------------------
+   ":2 vara:4 exempel:6 testmeningen:8 lägga:11 google:14 translate:15 generera:18 testfall:19 .:20 ":21
+(1 row)
+
+SELECT spacy_lemmatize('sv',' "Detta är mitt exempel på testmeningen som jag lägger in i Google Translate för att generera testfall."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                              spacy_lemmatize                               
+----------------------------------------------------------------------------
+   " vara exempel testmeningen lägga google translate generera testfall . "
+(1 row)
+
+SELECT spacy_lemmatize('sv',' "Detta är mitt exempel på testmeningen som jag lägger in i Google Translate för att generera testfall."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                         spacy_lemmatize                                                                          
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 denna:3 vara:4 jag:5 exempel:6 på:7 testmeningen:8 som:9 jag:10 lägga:11 i:12 i:13 google:14 translate:15 föra:16 att:17 generera:18 testfall:19 .:20 ":21
+(1 row)
+
+SELECT spacy_lemmatize('sv',' "Detta är mitt exempel på testmeningen som jag lägger in i Google Translate för att generera testfall."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                               spacy_lemmatize                                                
+--------------------------------------------------------------------------------------------------------------
+   " denna vara jag exempel på testmeningen som jag lägga i i google translate föra att generera testfall . "
+(1 row)
+
+SELECT spacy_lemmatize('sv',' "Detta är mitt exempel på testmeningen som jag lägger in i Google Translate för att generera testfall."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                      spacy_lemmatize                                      
+-------------------------------------------------------------------------------------------
+   vara:3 exempel:5 testmeningen:7 lägga:10 Google:13 Translate:14 generera:17 testfall:18
+(1 row)
+
+SELECT spacy_lemmatize('sv',' "Detta är mitt exempel på testmeningen som jag lägger in i Google Translate för att generera testfall."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                           spacy_lemmatize                            
+----------------------------------------------------------------------
+   vara exempel testmeningen lägga Google Translate generera testfall
+(1 row)
+
+SELECT spacy_lemmatize('sv',' "Detta är mitt exempel på testmeningen som jag lägger in i Google Translate för att generera testfall."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                                  spacy_lemmatize                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------------
+   Detta:2 vara:3 jag:4 exempel:5 på:6 testmeningen:7 som:8 jag:9 lägga:10 i:11 i:12 Google:13 Translate:14 föra:15 att:16 generera:17 testfall:18
+(1 row)
+
+SELECT spacy_lemmatize('sv',' "Detta är mitt exempel på testmeningen som jag lägger in i Google Translate för att generera testfall."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                            spacy_lemmatize                                             
+--------------------------------------------------------------------------------------------------------
+   Detta vara jag exempel på testmeningen som jag lägga i i Google Translate föra att generera testfall
+(1 row)
+
+SELECT spacy_lemmatize('sv',' "Detta är mitt exempel på testmeningen som jag lägger in i Google Translate för att generera testfall."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                             spacy_lemmatize                                             
+---------------------------------------------------------------------------------------------------------
+   ":2 vara:4 exempel:6 testmeningen:8 lägga:11 Google:14 Translate:15 generera:18 testfall:19 .:20 ":21
+(1 row)
+
+SELECT spacy_lemmatize('sv',' "Detta är mitt exempel på testmeningen som jag lägger in i Google Translate för att generera testfall."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                              spacy_lemmatize                               
+----------------------------------------------------------------------------
+   " vara exempel testmeningen lägga Google Translate generera testfall . "
+(1 row)
+
+SELECT spacy_lemmatize('sv',' "Detta är mitt exempel på testmeningen som jag lägger in i Google Translate för att generera testfall."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                         spacy_lemmatize                                                                          
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 Detta:3 vara:4 jag:5 exempel:6 på:7 testmeningen:8 som:9 jag:10 lägga:11 i:12 i:13 Google:14 Translate:15 föra:16 att:17 generera:18 testfall:19 .:20 ":21
+(1 row)
+
+SELECT spacy_lemmatize('sv',' "Detta är mitt exempel på testmeningen som jag lägger in i Google Translate för att generera testfall."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                               spacy_lemmatize                                                
+--------------------------------------------------------------------------------------------------------------
+   " Detta vara jag exempel på testmeningen som jag lägga i i Google Translate föra att generera testfall . "
+(1 row)
+
+SELECT spacy_tsvector('sv',' "Detta är mitt exempel på testmeningen som jag lägger in i Google Translate för att generera testfall."');
+                                             spacy_tsvector                                              
+---------------------------------------------------------------------------------------------------------
+ 'exempel':5 'generera':17 'google':13 'lägga':10 'testfall':18 'testmeningen':7 'translate':14 'vara':3
+(1 row)
+

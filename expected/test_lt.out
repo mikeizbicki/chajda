@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('lt',' "Tai yra mano bandomo sakinio pavyzdys' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+             spacy_lemmatize             
+-----------------------------------------
+   irti:3 bandomo:5 sakinys:6 pavyzdys:7
+(1 row)
+
+SELECT spacy_lemmatize('lt',' "Tai yra mano bandomo sakinio pavyzdys' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+         spacy_lemmatize         
+---------------------------------
+   irti bandomo sakinys pavyzdys
+(1 row)
+
+SELECT spacy_lemmatize('lt',' "Tai yra mano bandomo sakinio pavyzdys' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                    spacy_lemmatize                     
+--------------------------------------------------------
+   tai:2 irti:3 manyti:4 bandomo:5 sakinys:6 pavyzdys:7
+(1 row)
+
+SELECT spacy_lemmatize('lt',' "Tai yra mano bandomo sakinio pavyzdys' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+              spacy_lemmatize               
+--------------------------------------------
+   tai irti manyti bandomo sakinys pavyzdys
+(1 row)
+
+SELECT spacy_lemmatize('lt',' "Tai yra mano bandomo sakinio pavyzdys' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+               spacy_lemmatize               
+---------------------------------------------
+   ":2 irti:4 bandomo:6 sakinys:7 pavyzdys:8
+(1 row)
+
+SELECT spacy_lemmatize('lt',' "Tai yra mano bandomo sakinio pavyzdys' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+          spacy_lemmatize          
+-----------------------------------
+   " irti bandomo sakinys pavyzdys
+(1 row)
+
+SELECT spacy_lemmatize('lt',' "Tai yra mano bandomo sakinio pavyzdys' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                      spacy_lemmatize                       
+------------------------------------------------------------
+   ":2 tai:3 irti:4 manyti:5 bandomo:6 sakinys:7 pavyzdys:8
+(1 row)
+
+SELECT spacy_lemmatize('lt',' "Tai yra mano bandomo sakinio pavyzdys' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+               spacy_lemmatize                
+----------------------------------------------
+   " tai irti manyti bandomo sakinys pavyzdys
+(1 row)
+
+SELECT spacy_lemmatize('lt',' "Tai yra mano bandomo sakinio pavyzdys' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+             spacy_lemmatize             
+-----------------------------------------
+   irti:3 bandomo:5 sakinys:6 pavyzdys:7
+(1 row)
+
+SELECT spacy_lemmatize('lt',' "Tai yra mano bandomo sakinio pavyzdys' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+         spacy_lemmatize         
+---------------------------------
+   irti bandomo sakinys pavyzdys
+(1 row)
+
+SELECT spacy_lemmatize('lt',' "Tai yra mano bandomo sakinio pavyzdys' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                    spacy_lemmatize                     
+--------------------------------------------------------
+   Tai:2 irti:3 manyti:4 bandomo:5 sakinys:6 pavyzdys:7
+(1 row)
+
+SELECT spacy_lemmatize('lt',' "Tai yra mano bandomo sakinio pavyzdys' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+              spacy_lemmatize               
+--------------------------------------------
+   Tai irti manyti bandomo sakinys pavyzdys
+(1 row)
+
+SELECT spacy_lemmatize('lt',' "Tai yra mano bandomo sakinio pavyzdys' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+               spacy_lemmatize               
+---------------------------------------------
+   ":2 irti:4 bandomo:6 sakinys:7 pavyzdys:8
+(1 row)
+
+SELECT spacy_lemmatize('lt',' "Tai yra mano bandomo sakinio pavyzdys' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+          spacy_lemmatize          
+-----------------------------------
+   " irti bandomo sakinys pavyzdys
+(1 row)
+
+SELECT spacy_lemmatize('lt',' "Tai yra mano bandomo sakinio pavyzdys' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                      spacy_lemmatize                       
+------------------------------------------------------------
+   ":2 Tai:3 irti:4 manyti:5 bandomo:6 sakinys:7 pavyzdys:8
+(1 row)
+
+SELECT spacy_lemmatize('lt',' "Tai yra mano bandomo sakinio pavyzdys' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+               spacy_lemmatize                
+----------------------------------------------
+   " Tai irti manyti bandomo sakinys pavyzdys
+(1 row)
+
+SELECT spacy_tsvector('lt',' "Tai yra mano bandomo sakinio pavyzdys');
+                spacy_tsvector                 
+-----------------------------------------------
+ 'bandomo':5 'irti':3 'pavyzdys':7 'sakinys':6
+(1 row)
+

@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                               spacy_lemmatize                               
+-----------------------------------------------------------------------------
+   contoh:4 kalimat:5 uji:6 masukkan:9 google:11 terjemah:12 hasil:14 uji:16
+(1 row)
+
+SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                     spacy_lemmatize                     
+---------------------------------------------------------
+   contoh kalimat uji masukkan google terjemah hasil uji
+(1 row)
+
+SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                         spacy_lemmatize                                                          
+----------------------------------------------------------------------------------------------------------------------------------
+   ini:2 adalah:3 contoh:4 kalimat:5 uji:6 yang:7 saya:8 masukkan:9 ke:10 google:11 terjemah:12 untuk:13 hasil:14 kasus:15 uji:16
+(1 row)
+
+SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                       spacy_lemmatize                                       
+---------------------------------------------------------------------------------------------
+   ini adalah contoh kalimat uji yang saya masukkan ke google terjemah untuk hasil kasus uji
+(1 row)
+
+SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                      spacy_lemmatize                                       
+--------------------------------------------------------------------------------------------
+   ":2 contoh:5 kalimat:6 uji:7 masukkan:10 google:12 terjemah:13 hasil:15 uji:17 .:18 ":19
+(1 row)
+
+SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                        spacy_lemmatize                        
+---------------------------------------------------------------
+   " contoh kalimat uji masukkan google terjemah hasil uji . "
+(1 row)
+
+SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                 spacy_lemmatize                                                                 
+-------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 ini:3 adalah:4 contoh:5 kalimat:6 uji:7 yang:8 saya:9 masukkan:10 ke:11 google:12 terjemah:13 untuk:14 hasil:15 kasus:16 uji:17 .:18 ":19
+(1 row)
+
+SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                          spacy_lemmatize                                          
+---------------------------------------------------------------------------------------------------
+   " ini adalah contoh kalimat uji yang saya masukkan ke google terjemah untuk hasil kasus uji . "
+(1 row)
+
+SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                spacy_lemmatize                                
+-------------------------------------------------------------------------------
+   contoh:4 kalimat:5 uji:6 masukkan:9 Google:11 Terjemahan:12 hasil:14 uji:16
+(1 row)
+
+SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                      spacy_lemmatize                      
+-----------------------------------------------------------
+   contoh kalimat uji masukkan Google Terjemahan hasil uji
+(1 row)
+
+SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                          spacy_lemmatize                                                           
+------------------------------------------------------------------------------------------------------------------------------------
+   Ini:2 adalah:3 contoh:4 kalimat:5 uji:6 yang:7 saya:8 masukkan:9 ke:10 Google:11 Terjemahan:12 untuk:13 hasil:14 kasus:15 uji:16
+(1 row)
+
+SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                        spacy_lemmatize                                        
+-----------------------------------------------------------------------------------------------
+   Ini adalah contoh kalimat uji yang saya masukkan ke Google Terjemahan untuk hasil kasus uji
+(1 row)
+
+SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                       spacy_lemmatize                                        
+----------------------------------------------------------------------------------------------
+   ":2 contoh:5 kalimat:6 uji:7 masukkan:10 Google:12 Terjemahan:13 hasil:15 uji:17 .:18 ":19
+(1 row)
+
+SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                         spacy_lemmatize                         
+-----------------------------------------------------------------
+   " contoh kalimat uji masukkan Google Terjemahan hasil uji . "
+(1 row)
+
+SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                  spacy_lemmatize                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 Ini:3 adalah:4 contoh:5 kalimat:6 uji:7 yang:8 saya:9 masukkan:10 ke:11 Google:12 Terjemahan:13 untuk:14 hasil:15 kasus:16 uji:17 .:18 ":19
+(1 row)
+
+SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                           spacy_lemmatize                                           
+-----------------------------------------------------------------------------------------------------
+   " Ini adalah contoh kalimat uji yang saya masukkan ke Google Terjemahan untuk hasil kasus uji . "
+(1 row)
+
+SELECT spacy_tsvector('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."');
+                                   spacy_tsvector                                    
+-------------------------------------------------------------------------------------
+ 'contoh':4 'google':11 'hasil':14 'kalimat':5 'masukkan':9 'terjemah':12 'uji':6,16
+(1 row)
+

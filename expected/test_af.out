@@ -1,0 +1,103 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+SELECT spacy_lemmatize('af',' "Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                    spacy_lemmatize                                     
+----------------------------------------------------------------------------------------
+   voorbeeldse:5 toetssin:6 google:10 translate:11 plaas:12 toetsgevalle:14 genereer:16
+(1 row)
+
+SELECT spacy_lemmatize('af',' "Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                           spacy_lemmatize                           
+---------------------------------------------------------------------
+   voorbeeldse toetssin google translate plaas toetsgevalle genereer
+(1 row)
+
+SELECT spacy_lemmatize('af',' "Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                          spacy_lemmatize                                                           
+------------------------------------------------------------------------------------------------------------------------------------
+   dit:2 is:3 my:4 voorbeeldse:5 toetssin:6 wat:7 ek:8 in:9 google:10 translate:11 plaas:12 om:13 toetsgevalle:14 te:15 genereer:16
+(1 row)
+
+SELECT spacy_lemmatize('af',' "Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                        spacy_lemmatize                                        
+-----------------------------------------------------------------------------------------------
+   dit is my voorbeeldse toetssin wat ek in google translate plaas om toetsgevalle te genereer
+(1 row)
+
+SELECT spacy_lemmatize('af',' "Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                           spacy_lemmatize                                            
+------------------------------------------------------------------------------------------------------
+   ":2 voorbeeldse:6 toetssin:7 google:11 translate:12 plaas:13 toetsgevalle:15 genereer:17 .:18 ":19
+(1 row)
+
+SELECT spacy_lemmatize('af',' "Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                              spacy_lemmatize                              
+---------------------------------------------------------------------------
+   " voorbeeldse toetssin google translate plaas toetsgevalle genereer . "
+(1 row)
+
+SELECT spacy_lemmatize('af',' "Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                  spacy_lemmatize                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 dit:3 is:4 my:5 voorbeeldse:6 toetssin:7 wat:8 ek:9 in:10 google:11 translate:12 plaas:13 om:14 toetsgevalle:15 te:16 genereer:17 .:18 ":19
+(1 row)
+
+SELECT spacy_lemmatize('af',' "Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                           spacy_lemmatize                                           
+-----------------------------------------------------------------------------------------------------
+   " dit is my voorbeeldse toetssin wat ek in google translate plaas om toetsgevalle te genereer . "
+(1 row)
+
+SELECT spacy_lemmatize('af',' "Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                    spacy_lemmatize                                     
+----------------------------------------------------------------------------------------
+   voorbeeldse:5 toetssin:6 Google:10 Translate:11 plaas:12 toetsgevalle:14 genereer:16
+(1 row)
+
+SELECT spacy_lemmatize('af',' "Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                           spacy_lemmatize                           
+---------------------------------------------------------------------
+   voorbeeldse toetssin Google Translate plaas toetsgevalle genereer
+(1 row)
+
+SELECT spacy_lemmatize('af',' "Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                          spacy_lemmatize                                                           
+------------------------------------------------------------------------------------------------------------------------------------
+   Dit:2 is:3 my:4 voorbeeldse:5 toetssin:6 wat:7 ek:8 in:9 Google:10 Translate:11 plaas:12 om:13 toetsgevalle:14 te:15 genereer:16
+(1 row)
+
+SELECT spacy_lemmatize('af',' "Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                        spacy_lemmatize                                        
+-----------------------------------------------------------------------------------------------
+   Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer
+(1 row)
+
+SELECT spacy_lemmatize('af',' "Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                           spacy_lemmatize                                            
+------------------------------------------------------------------------------------------------------
+   ":2 voorbeeldse:6 toetssin:7 Google:11 Translate:12 plaas:13 toetsgevalle:15 genereer:17 .:18 ":19
+(1 row)
+
+SELECT spacy_lemmatize('af',' "Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                              spacy_lemmatize                              
+---------------------------------------------------------------------------
+   " voorbeeldse toetssin Google Translate plaas toetsgevalle genereer . "
+(1 row)
+
+SELECT spacy_lemmatize('af',' "Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                  spacy_lemmatize                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 Dit:3 is:4 my:5 voorbeeldse:6 toetssin:7 wat:8 ek:9 in:10 Google:11 Translate:12 plaas:13 om:14 toetsgevalle:15 te:16 genereer:17 .:18 ":19
+(1 row)
+
+SELECT spacy_lemmatize('af',' "Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                           spacy_lemmatize                                           
+-----------------------------------------------------------------------------------------------------
+   " Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer . "
+(1 row)
+
+SELECT spacy_tsvector('af',' "Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer."');
+                                           spacy_tsvector                                           
+----------------------------------------------------------------------------------------------------
+ 'genereer':16 'google':10 'plaas':12 'toetsgevalle':14 'toetssin':6 'translate':11 'voorbeeldse':5
+(1 row)
+

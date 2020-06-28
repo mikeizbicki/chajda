@@ -16,3 +16,7 @@ db
 tmp
 tmp2
 venv
+
+regression.diffs
+regression.out
+results

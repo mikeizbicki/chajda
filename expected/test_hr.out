@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('hr',' "Ovo je moja testna rečenica koju stavljam u Google Translate za generiranje testnih slučajeva."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                          spacy_lemmatize                                           
+----------------------------------------------------------------------------------------------------
+   ovaj:2 testni:5 rečenica:6 stavljati:8 google:10 translate:11 generiranje:13 testni:14 slučaj:15
+(1 row)
+
+SELECT spacy_lemmatize('hr',' "Ovo je moja testna rečenica koju stavljam u Google Translate za generiranje testnih slučajeva."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                               spacy_lemmatize                               
+-----------------------------------------------------------------------------
+   ovaj testni rečenica stavljati google translate generiranje testni slučaj
+(1 row)
+
+SELECT spacy_lemmatize('hr',' "Ovo je moja testna rečenica koju stavljam u Google Translate za generiranje testnih slučajeva."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                         spacy_lemmatize                                                          
+----------------------------------------------------------------------------------------------------------------------------------
+   ovaj:2 biti:3 moj:4 testni:5 rečenica:6 koji:7 stavljati:8 u:9 google:10 translate:11 za:12 generiranje:13 testni:14 slučaj:15
+(1 row)
+
+SELECT spacy_lemmatize('hr',' "Ovo je moja testna rečenica koju stavljam u Google Translate za generiranje testnih slučajeva."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                        spacy_lemmatize                                         
+------------------------------------------------------------------------------------------------
+   ovaj biti moj testni rečenica koji stavljati u google translate za generiranje testni slučaj
+(1 row)
+
+SELECT spacy_lemmatize('hr',' "Ovo je moja testna rečenica koju stavljam u Google Translate za generiranje testnih slučajeva."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                                 spacy_lemmatize                                                  
+------------------------------------------------------------------------------------------------------------------
+   ":2 ovaj:3 testni:6 rečenica:7 stavljati:9 google:11 translate:12 generiranje:14 testni:15 slučaj:16 .:17 ":18
+(1 row)
+
+SELECT spacy_lemmatize('hr',' "Ovo je moja testna rečenica koju stavljam u Google Translate za generiranje testnih slučajeva."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                                  spacy_lemmatize                                  
+-----------------------------------------------------------------------------------
+   " ovaj testni rečenica stavljati google translate generiranje testni slučaj . "
+(1 row)
+
+SELECT spacy_lemmatize('hr',' "Ovo je moja testna rečenica koju stavljam u Google Translate za generiranje testnih slučajeva."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                 spacy_lemmatize                                                                 
+-------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 ovaj:3 biti:4 moj:5 testni:6 rečenica:7 koji:8 stavljati:9 u:10 google:11 translate:12 za:13 generiranje:14 testni:15 slučaj:16 .:17 ":18
+(1 row)
+
+SELECT spacy_lemmatize('hr',' "Ovo je moja testna rečenica koju stavljam u Google Translate za generiranje testnih slučajeva."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                           spacy_lemmatize                                            
+------------------------------------------------------------------------------------------------------
+   " ovaj biti moj testni rečenica koji stavljati u google translate za generiranje testni slučaj . "
+(1 row)
+
+SELECT spacy_lemmatize('hr',' "Ovo je moja testna rečenica koju stavljam u Google Translate za generiranje testnih slučajeva."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                          spacy_lemmatize                                          
+---------------------------------------------------------------------------------------------------
+   Ovo:2 testni:5 rečenica:6 stavljati:8 Google:10 Translate:11 generiranje:13 testni:14 slučaj:15
+(1 row)
+
+SELECT spacy_lemmatize('hr',' "Ovo je moja testna rečenica koju stavljam u Google Translate za generiranje testnih slučajeva."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                              spacy_lemmatize                               
+----------------------------------------------------------------------------
+   Ovo testni rečenica stavljati Google Translate generiranje testni slučaj
+(1 row)
+
+SELECT spacy_lemmatize('hr',' "Ovo je moja testna rečenica koju stavljam u Google Translate za generiranje testnih slučajeva."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                         spacy_lemmatize                                                         
+---------------------------------------------------------------------------------------------------------------------------------
+   Ovo:2 biti:3 moj:4 testni:5 rečenica:6 koji:7 stavljati:8 u:9 Google:10 Translate:11 za:12 generiranje:13 testni:14 slučaj:15
+(1 row)
+
+SELECT spacy_lemmatize('hr',' "Ovo je moja testna rečenica koju stavljam u Google Translate za generiranje testnih slučajeva."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                        spacy_lemmatize                                        
+-----------------------------------------------------------------------------------------------
+   Ovo biti moj testni rečenica koji stavljati u Google Translate za generiranje testni slučaj
+(1 row)
+
+SELECT spacy_lemmatize('hr',' "Ovo je moja testna rečenica koju stavljam u Google Translate za generiranje testnih slučajeva."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                                 spacy_lemmatize                                                 
+-----------------------------------------------------------------------------------------------------------------
+   ":2 Ovo:3 testni:6 rečenica:7 stavljati:9 Google:11 Translate:12 generiranje:14 testni:15 slučaj:16 .:17 ":18
+(1 row)
+
+SELECT spacy_lemmatize('hr',' "Ovo je moja testna rečenica koju stavljam u Google Translate za generiranje testnih slučajeva."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                                 spacy_lemmatize                                  
+----------------------------------------------------------------------------------
+   " Ovo testni rečenica stavljati Google Translate generiranje testni slučaj . "
+(1 row)
+
+SELECT spacy_lemmatize('hr',' "Ovo je moja testna rečenica koju stavljam u Google Translate za generiranje testnih slučajeva."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                spacy_lemmatize                                                                 
+------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 Ovo:3 biti:4 moj:5 testni:6 rečenica:7 koji:8 stavljati:9 u:10 Google:11 Translate:12 za:13 generiranje:14 testni:15 slučaj:16 .:17 ":18
+(1 row)
+
+SELECT spacy_lemmatize('hr',' "Ovo je moja testna rečenica koju stavljam u Google Translate za generiranje testnih slučajeva."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                           spacy_lemmatize                                           
+-----------------------------------------------------------------------------------------------------
+   " Ovo biti moj testni rečenica koji stavljati u Google Translate za generiranje testni slučaj . "
+(1 row)
+
+SELECT spacy_tsvector('hr',' "Ovo je moja testna rečenica koju stavljam u Google Translate za generiranje testnih slučajeva."');
+                                              spacy_tsvector                                               
+-----------------------------------------------------------------------------------------------------------
+ 'generiranje':13 'google':10 'ovaj':2 'rečenica':6 'slučaj':15 'stavljati':8 'testni':5,14 'translate':11
+(1 row)
+

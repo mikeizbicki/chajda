@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('ro',' "Acesta este exemplul meu de propoziție pe care îl introduc în Google Translate pentru a genera cazuri de testare."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                     spacy_lemmatize                                      
+------------------------------------------------------------------------------------------
+   exemplu:4 propoziție:7 introduce:11 google:13 translate:14 genera:17 caz:18 testare:20
+(1 row)
+
+SELECT spacy_lemmatize('ro',' "Acesta este exemplul meu de propoziție pe care îl introduc în Google Translate pentru a genera cazuri de testare."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                          spacy_lemmatize                           
+--------------------------------------------------------------------
+   exemplu propoziție introduce google translate genera caz testare
+(1 row)
+
+SELECT spacy_lemmatize('ro',' "Acesta este exemplul meu de propoziție pe care îl introduc în Google Translate pentru a genera cazuri de testare."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                                          spacy_lemmatize                                                                          
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   acesta:2 fi:3 exemplu:4 meu:5 de:6 propoziție:7 pe:8 căra:9 el:10 introduce:11 în:12 google:13 translate:14 pentru:15 avea:16 genera:17 caz:18 de:19 testare:20
+(1 row)
+
+SELECT spacy_lemmatize('ro',' "Acesta este exemplul meu de propoziție pe care îl introduc în Google Translate pentru a genera cazuri de testare."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                                 spacy_lemmatize                                                  
+------------------------------------------------------------------------------------------------------------------
+   acesta fi exemplu meu de propoziție pe căra el introduce în google translate pentru avea genera caz de testare
+(1 row)
+
+SELECT spacy_lemmatize('ro',' "Acesta este exemplul meu de propoziție pe care îl introduc în Google Translate pentru a genera cazuri de testare."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                            spacy_lemmatize                                             
+--------------------------------------------------------------------------------------------------------
+   ":2 exemplu:5 propoziție:8 introduce:12 google:14 translate:15 genera:18 caz:19 testare:21 .:22 ":23
+(1 row)
+
+SELECT spacy_lemmatize('ro',' "Acesta este exemplul meu de propoziție pe care îl introduc în Google Translate pentru a genera cazuri de testare."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                             spacy_lemmatize                              
+--------------------------------------------------------------------------
+   " exemplu propoziție introduce google translate genera caz testare . "
+(1 row)
+
+SELECT spacy_lemmatize('ro',' "Acesta este exemplul meu de propoziție pe care îl introduc în Google Translate pentru a genera cazuri de testare."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                                 spacy_lemmatize                                                                                  
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 acesta:3 fi:4 exemplu:5 meu:6 de:7 propoziție:8 pe:9 căra:10 el:11 introduce:12 în:13 google:14 translate:15 pentru:16 avea:17 genera:18 caz:19 de:20 testare:21 .:22 ":23
+(1 row)
+
+SELECT spacy_lemmatize('ro',' "Acesta este exemplul meu de propoziție pe care îl introduc în Google Translate pentru a genera cazuri de testare."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                                    spacy_lemmatize                                                     
+------------------------------------------------------------------------------------------------------------------------
+   " acesta fi exemplu meu de propoziție pe căra el introduce în google translate pentru avea genera caz de testare . "
+(1 row)
+
+SELECT spacy_lemmatize('ro',' "Acesta este exemplul meu de propoziție pe care îl introduc în Google Translate pentru a genera cazuri de testare."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                     spacy_lemmatize                                      
+------------------------------------------------------------------------------------------
+   exemplu:4 propoziție:7 introduce:11 Google:13 Translate:14 genera:17 caz:18 testare:20
+(1 row)
+
+SELECT spacy_lemmatize('ro',' "Acesta este exemplul meu de propoziție pe care îl introduc în Google Translate pentru a genera cazuri de testare."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                          spacy_lemmatize                           
+--------------------------------------------------------------------
+   exemplu propoziție introduce Google Translate genera caz testare
+(1 row)
+
+SELECT spacy_lemmatize('ro',' "Acesta este exemplul meu de propoziție pe care îl introduc în Google Translate pentru a genera cazuri de testare."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                                          spacy_lemmatize                                                                          
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   Acesta:2 fi:3 exemplu:4 meu:5 de:6 propoziție:7 pe:8 căra:9 el:10 introduce:11 în:12 Google:13 Translate:14 pentru:15 avea:16 genera:17 caz:18 de:19 testare:20
+(1 row)
+
+SELECT spacy_lemmatize('ro',' "Acesta este exemplul meu de propoziție pe care îl introduc în Google Translate pentru a genera cazuri de testare."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                                 spacy_lemmatize                                                  
+------------------------------------------------------------------------------------------------------------------
+   Acesta fi exemplu meu de propoziție pe căra el introduce în Google Translate pentru avea genera caz de testare
+(1 row)
+
+SELECT spacy_lemmatize('ro',' "Acesta este exemplul meu de propoziție pe care îl introduc în Google Translate pentru a genera cazuri de testare."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                            spacy_lemmatize                                             
+--------------------------------------------------------------------------------------------------------
+   ":2 exemplu:5 propoziție:8 introduce:12 Google:14 Translate:15 genera:18 caz:19 testare:21 .:22 ":23
+(1 row)
+
+SELECT spacy_lemmatize('ro',' "Acesta este exemplul meu de propoziție pe care îl introduc în Google Translate pentru a genera cazuri de testare."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                             spacy_lemmatize                              
+--------------------------------------------------------------------------
+   " exemplu propoziție introduce Google Translate genera caz testare . "
+(1 row)
+
+SELECT spacy_lemmatize('ro',' "Acesta este exemplul meu de propoziție pe care îl introduc în Google Translate pentru a genera cazuri de testare."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                                 spacy_lemmatize                                                                                  
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 Acesta:3 fi:4 exemplu:5 meu:6 de:7 propoziție:8 pe:9 căra:10 el:11 introduce:12 în:13 Google:14 Translate:15 pentru:16 avea:17 genera:18 caz:19 de:20 testare:21 .:22 ":23
+(1 row)
+
+SELECT spacy_lemmatize('ro',' "Acesta este exemplul meu de propoziție pe care îl introduc în Google Translate pentru a genera cazuri de testare."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                                    spacy_lemmatize                                                     
+------------------------------------------------------------------------------------------------------------------------
+   " Acesta fi exemplu meu de propoziție pe căra el introduce în Google Translate pentru avea genera caz de testare . "
+(1 row)
+
+SELECT spacy_tsvector('ro',' "Acesta este exemplul meu de propoziție pe care îl introduc în Google Translate pentru a genera cazuri de testare."');
+                                             spacy_tsvector                                             
+--------------------------------------------------------------------------------------------------------
+ 'caz':18 'exemplu':4 'genera':17 'google':13 'introduce':11 'propoziție':7 'testare':20 'translate':14
+(1 row)
+

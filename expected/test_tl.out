@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('tl',' "Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                                    spacy_lemmatize                                                    
+-----------------------------------------------------------------------------------------------------------------------
+   halimbawang:5 pangungusap:6 pagsubok:8 inilalagay:10 google:13 translate:14 upang:15 makabuo:16 kaso:19 pagsubok:21
+(1 row)
+
+SELECT spacy_lemmatize('tl',' "Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                                      spacy_lemmatize                                       
+--------------------------------------------------------------------------------------------
+   halimbawang pangungusap pagsubok inilalagay google translate upang makabuo kaso pagsubok
+(1 row)
+
+SELECT spacy_lemmatize('tl',' "Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                                                  spacy_lemmatize                                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ito:2 ang:3 aking:4 halimbawang:5 pangungusap:6 na:7 pagsubok:8 na:9 inilalagay:10 ko:11 sa:12 google:13 translate:14 upang:15 makabuo:16 ng:17 mga:18 kaso:19 ng:20 pagsubok:21
+(1 row)
+
+SELECT spacy_lemmatize('tl',' "Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                                        spacy_lemmatize                                                         
+--------------------------------------------------------------------------------------------------------------------------------
+   ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa google translate upang makabuo ng mga kaso ng pagsubok
+(1 row)
+
+SELECT spacy_lemmatize('tl',' "Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                                           spacy_lemmatize                                                           
+-------------------------------------------------------------------------------------------------------------------------------------
+   ":2 halimbawang:6 pangungusap:7 pagsubok:9 inilalagay:11 google:14 translate:15 upang:16 makabuo:17 kaso:20 pagsubok:22 .:23 ":24
+(1 row)
+
+SELECT spacy_lemmatize('tl',' "Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                                         spacy_lemmatize                                          
+--------------------------------------------------------------------------------------------------
+   " halimbawang pangungusap pagsubok inilalagay google translate upang makabuo kaso pagsubok . "
+(1 row)
+
+SELECT spacy_lemmatize('tl',' "Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                                          spacy_lemmatize                                                                                          
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 ito:3 ang:4 aking:5 halimbawang:6 pangungusap:7 na:8 pagsubok:9 na:10 inilalagay:11 ko:12 sa:13 google:14 translate:15 upang:16 makabuo:17 ng:18 mga:19 kaso:20 ng:21 pagsubok:22 .:23 ":24
+(1 row)
+
+SELECT spacy_lemmatize('tl',' "Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                                           spacy_lemmatize                                                            
+--------------------------------------------------------------------------------------------------------------------------------------
+   " ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa google translate upang makabuo ng mga kaso ng pagsubok . "
+(1 row)
+
+SELECT spacy_lemmatize('tl',' "Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                                    spacy_lemmatize                                                    
+-----------------------------------------------------------------------------------------------------------------------
+   halimbawang:5 pangungusap:6 pagsubok:8 inilalagay:10 Google:13 Translate:14 upang:15 makabuo:16 kaso:19 pagsubok:21
+(1 row)
+
+SELECT spacy_lemmatize('tl',' "Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                                      spacy_lemmatize                                       
+--------------------------------------------------------------------------------------------
+   halimbawang pangungusap pagsubok inilalagay Google Translate upang makabuo kaso pagsubok
+(1 row)
+
+SELECT spacy_lemmatize('tl',' "Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                                                  spacy_lemmatize                                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   Ito:2 ang:3 aking:4 halimbawang:5 pangungusap:6 na:7 pagsubok:8 na:9 inilalagay:10 ko:11 sa:12 Google:13 Translate:14 upang:15 makabuo:16 ng:17 mga:18 kaso:19 ng:20 pagsubok:21
+(1 row)
+
+SELECT spacy_lemmatize('tl',' "Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                                        spacy_lemmatize                                                         
+--------------------------------------------------------------------------------------------------------------------------------
+   Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok
+(1 row)
+
+SELECT spacy_lemmatize('tl',' "Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                                           spacy_lemmatize                                                           
+-------------------------------------------------------------------------------------------------------------------------------------
+   ":2 halimbawang:6 pangungusap:7 pagsubok:9 inilalagay:11 Google:14 Translate:15 upang:16 makabuo:17 kaso:20 pagsubok:22 .:23 ":24
+(1 row)
+
+SELECT spacy_lemmatize('tl',' "Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                                         spacy_lemmatize                                          
+--------------------------------------------------------------------------------------------------
+   " halimbawang pangungusap pagsubok inilalagay Google Translate upang makabuo kaso pagsubok . "
+(1 row)
+
+SELECT spacy_lemmatize('tl',' "Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                                          spacy_lemmatize                                                                                          
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 Ito:3 ang:4 aking:5 halimbawang:6 pangungusap:7 na:8 pagsubok:9 na:10 inilalagay:11 ko:12 sa:13 Google:14 Translate:15 upang:16 makabuo:17 ng:18 mga:19 kaso:20 ng:21 pagsubok:22 .:23 ":24
+(1 row)
+
+SELECT spacy_lemmatize('tl',' "Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                                           spacy_lemmatize                                                            
+--------------------------------------------------------------------------------------------------------------------------------------
+   " Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok . "
+(1 row)
+
+SELECT spacy_tsvector('tl',' "Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok."');
+                                                        spacy_tsvector                                                        
+------------------------------------------------------------------------------------------------------------------------------
+ 'google':13 'halimbawang':5 'inilalagay':10 'kaso':19 'makabuo':16 'pagsubok':8,21 'pangungusap':6 'translate':14 'upang':15
+(1 row)
+

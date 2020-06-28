@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('sq',' "Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                                     spacy_lemmatize                                                     
+-------------------------------------------------------------------------------------------------------------------------
+   është:3 fjalia:4 ime:5 provës:7 që:8 vë:11 në:12 google:13 translate:14 për:15 të:16 gjeneruar:17 raste:18 testimi:19
+(1 row)
+
+SELECT spacy_lemmatize('sq',' "Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                                  spacy_lemmatize                                   
+------------------------------------------------------------------------------------
+   është fjalia ime provës që vë në google translate për të gjeneruar raste testimi
+(1 row)
+
+SELECT spacy_lemmatize('sq',' "Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                               spacy_lemmatize                                                               
+---------------------------------------------------------------------------------------------------------------------------------------------
+   kjo:2 është:3 fjalia:4 ime:5 e:6 provës:7 që:8 po:9 e:10 vë:11 në:12 google:13 translate:14 për:15 të:16 gjeneruar:17 raste:18 testimi:19
+(1 row)
+
+SELECT spacy_lemmatize('sq',' "Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                        spacy_lemmatize                                        
+-----------------------------------------------------------------------------------------------
+   kjo është fjalia ime e provës që po e vë në google translate për të gjeneruar raste testimi
+(1 row)
+
+SELECT spacy_lemmatize('sq',' "Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                                            spacy_lemmatize                                                            
+---------------------------------------------------------------------------------------------------------------------------------------
+   ":2 është:4 fjalia:5 ime:6 provës:8 që:9 vë:12 në:13 google:14 translate:15 për:16 të:17 gjeneruar:18 raste:19 testimi:20 .:21 ":22
+(1 row)
+
+SELECT spacy_lemmatize('sq',' "Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                                     spacy_lemmatize                                      
+------------------------------------------------------------------------------------------
+   " është fjalia ime provës që vë në google translate për të gjeneruar raste testimi . "
+(1 row)
+
+SELECT spacy_lemmatize('sq',' "Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                      spacy_lemmatize                                                                       
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 kjo:3 është:4 fjalia:5 ime:6 e:7 provës:8 që:9 po:10 e:11 vë:12 në:13 google:14 translate:15 për:16 të:17 gjeneruar:18 raste:19 testimi:20 .:21 ":22
+(1 row)
+
+SELECT spacy_lemmatize('sq',' "Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                           spacy_lemmatize                                           
+-----------------------------------------------------------------------------------------------------
+   " kjo është fjalia ime e provës që po e vë në google translate për të gjeneruar raste testimi . "
+(1 row)
+
+SELECT spacy_lemmatize('sq',' "Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                                     spacy_lemmatize                                                     
+-------------------------------------------------------------------------------------------------------------------------
+   është:3 fjalia:4 ime:5 provës:7 që:8 vë:11 në:12 Google:13 Translate:14 për:15 të:16 gjeneruar:17 raste:18 testimi:19
+(1 row)
+
+SELECT spacy_lemmatize('sq',' "Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                                  spacy_lemmatize                                   
+------------------------------------------------------------------------------------
+   është fjalia ime provës që vë në Google Translate për të gjeneruar raste testimi
+(1 row)
+
+SELECT spacy_lemmatize('sq',' "Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                               spacy_lemmatize                                                               
+---------------------------------------------------------------------------------------------------------------------------------------------
+   Kjo:2 është:3 fjalia:4 ime:5 e:6 provës:7 që:8 po:9 e:10 vë:11 në:12 Google:13 Translate:14 për:15 të:16 gjeneruar:17 raste:18 testimi:19
+(1 row)
+
+SELECT spacy_lemmatize('sq',' "Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                        spacy_lemmatize                                        
+-----------------------------------------------------------------------------------------------
+   Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi
+(1 row)
+
+SELECT spacy_lemmatize('sq',' "Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                                            spacy_lemmatize                                                            
+---------------------------------------------------------------------------------------------------------------------------------------
+   ":2 është:4 fjalia:5 ime:6 provës:8 që:9 vë:12 në:13 Google:14 Translate:15 për:16 të:17 gjeneruar:18 raste:19 testimi:20 .:21 ":22
+(1 row)
+
+SELECT spacy_lemmatize('sq',' "Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                                     spacy_lemmatize                                      
+------------------------------------------------------------------------------------------
+   " është fjalia ime provës që vë në Google Translate për të gjeneruar raste testimi . "
+(1 row)
+
+SELECT spacy_lemmatize('sq',' "Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                      spacy_lemmatize                                                                       
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 Kjo:3 është:4 fjalia:5 ime:6 e:7 provës:8 që:9 po:10 e:11 vë:12 në:13 Google:14 Translate:15 për:16 të:17 gjeneruar:18 raste:19 testimi:20 .:21 ":22
+(1 row)
+
+SELECT spacy_lemmatize('sq',' "Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                           spacy_lemmatize                                           
+-----------------------------------------------------------------------------------------------------
+   " Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi . "
+(1 row)
+
+SELECT spacy_tsvector('sq',' "Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi."');
+                                                                  spacy_tsvector                                                                   
+---------------------------------------------------------------------------------------------------------------------------------------------------
+ 'fjalia':4 'gjeneruar':17 'google':13 'ime':5 'në':12 'provës':7 'për':15 'që':8 'raste':18 'testimi':19 'translate':14 'të':16 'vë':11 'është':3
+(1 row)
+

@@ -1,0 +1,18 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+SELECT spacy_lemmatize('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+SELECT spacy_tsvector('ko',' "이거은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다."');

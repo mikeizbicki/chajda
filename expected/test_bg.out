@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('bg',' "Това е моето примерно изпитателно изречение' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                spacy_lemmatize                 
+------------------------------------------------
+   моето:4 примерно:5 изпитателно:6 изречение:7
+(1 row)
+
+SELECT spacy_lemmatize('bg',' "Това е моето примерно изпитателно изречение' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+            spacy_lemmatize             
+----------------------------------------
+   моето примерно изпитателно изречение
+(1 row)
+
+SELECT spacy_lemmatize('bg',' "Това е моето примерно изпитателно изречение' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                      spacy_lemmatize                      
+-----------------------------------------------------------
+   това:2 е:3 моето:4 примерно:5 изпитателно:6 изречение:7
+(1 row)
+
+SELECT spacy_lemmatize('bg',' "Това е моето примерно изпитателно изречение' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                spacy_lemmatize                
+-----------------------------------------------
+   това е моето примерно изпитателно изречение
+(1 row)
+
+SELECT spacy_lemmatize('bg',' "Това е моето примерно изпитателно изречение' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                  spacy_lemmatize                   
+----------------------------------------------------
+   ":2 моето:5 примерно:6 изпитателно:7 изречение:8
+(1 row)
+
+SELECT spacy_lemmatize('bg',' "Това е моето примерно изпитателно изречение' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+             spacy_lemmatize              
+------------------------------------------
+   " моето примерно изпитателно изречение
+(1 row)
+
+SELECT spacy_lemmatize('bg',' "Това е моето примерно изпитателно изречение' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                        spacy_lemmatize                        
+---------------------------------------------------------------
+   ":2 това:3 е:4 моето:5 примерно:6 изпитателно:7 изречение:8
+(1 row)
+
+SELECT spacy_lemmatize('bg',' "Това е моето примерно изпитателно изречение' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                 spacy_lemmatize                 
+-------------------------------------------------
+   " това е моето примерно изпитателно изречение
+(1 row)
+
+SELECT spacy_lemmatize('bg',' "Това е моето примерно изпитателно изречение' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                spacy_lemmatize                 
+------------------------------------------------
+   моето:4 примерно:5 изпитателно:6 изречение:7
+(1 row)
+
+SELECT spacy_lemmatize('bg',' "Това е моето примерно изпитателно изречение' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+            spacy_lemmatize             
+----------------------------------------
+   моето примерно изпитателно изречение
+(1 row)
+
+SELECT spacy_lemmatize('bg',' "Това е моето примерно изпитателно изречение' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                      spacy_lemmatize                      
+-----------------------------------------------------------
+   Това:2 е:3 моето:4 примерно:5 изпитателно:6 изречение:7
+(1 row)
+
+SELECT spacy_lemmatize('bg',' "Това е моето примерно изпитателно изречение' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                spacy_lemmatize                
+-----------------------------------------------
+   Това е моето примерно изпитателно изречение
+(1 row)
+
+SELECT spacy_lemmatize('bg',' "Това е моето примерно изпитателно изречение' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                  spacy_lemmatize                   
+----------------------------------------------------
+   ":2 моето:5 примерно:6 изпитателно:7 изречение:8
+(1 row)
+
+SELECT spacy_lemmatize('bg',' "Това е моето примерно изпитателно изречение' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+             spacy_lemmatize              
+------------------------------------------
+   " моето примерно изпитателно изречение
+(1 row)
+
+SELECT spacy_lemmatize('bg',' "Това е моето примерно изпитателно изречение' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                        spacy_lemmatize                        
+---------------------------------------------------------------
+   ":2 Това:3 е:4 моето:5 примерно:6 изпитателно:7 изречение:8
+(1 row)
+
+SELECT spacy_lemmatize('bg',' "Това е моето примерно изпитателно изречение' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                 spacy_lemmatize                 
+-------------------------------------------------
+   " Това е моето примерно изпитателно изречение
+(1 row)
+
+SELECT spacy_tsvector('bg',' "Това е моето примерно изпитателно изречение');
+                    spacy_tsvector                    
+------------------------------------------------------
+ 'изпитателно':6 'изречение':7 'моето':4 'примерно':5
+(1 row)
+

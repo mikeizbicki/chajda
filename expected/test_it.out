@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('it',' "Questa è la mia frase di prova di esempio che sto inserendo in Google Translate per generare casi di test."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                       spacy_lemmatize                                       
+---------------------------------------------------------------------------------------------
+   essere:3 frase:6 provare:8 inserire:13 google:15 translate:16 generare:18 caso:19 test:21
+(1 row)
+
+SELECT spacy_lemmatize('it',' "Questa è la mia frase di prova di esempio che sto inserendo in Google Translate per generare casi di test."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                           spacy_lemmatize                           
+---------------------------------------------------------------------
+   essere frase provare inserire google translate generare caso test
+(1 row)
+
+SELECT spacy_lemmatize('it',' "Questa è la mia frase di prova di esempio che sto inserendo in Google Translate per generare casi di test."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                                             spacy_lemmatize                                                                             
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   questo:2 essere:3 la:4 mio:5 frase:6 di:7 provare:8 di:9 esempio:10 che:11 stare:12 inserire:13 in:14 google:15 translate:16 per:17 generare:18 caso:19 di:20 test:21
+(1 row)
+
+SELECT spacy_lemmatize('it',' "Questa è la mia frase di prova di esempio che sto inserendo in Google Translate per generare casi di test."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                                   spacy_lemmatize                                                   
+---------------------------------------------------------------------------------------------------------------------
+   questo essere la mio frase di provare di esempio che stare inserire in google translate per generare caso di test
+(1 row)
+
+SELECT spacy_lemmatize('it',' "Questa è la mia frase di prova di esempio che sto inserendo in Google Translate per generare casi di test."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                              spacy_lemmatize                                              
+-----------------------------------------------------------------------------------------------------------
+   ":2 essere:4 frase:7 provare:9 inserire:14 google:16 translate:17 generare:19 caso:20 test:22 .:23 ":24
+(1 row)
+
+SELECT spacy_lemmatize('it',' "Questa è la mia frase di prova di esempio che sto inserendo in Google Translate per generare casi di test."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                              spacy_lemmatize                              
+---------------------------------------------------------------------------
+   " essere frase provare inserire google translate generare caso test . "
+(1 row)
+
+SELECT spacy_lemmatize('it',' "Questa è la mia frase di prova di esempio che sto inserendo in Google Translate per generare casi di test."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                                    spacy_lemmatize                                                                                     
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 questo:3 essere:4 la:5 mio:6 frase:7 di:8 provare:9 di:10 esempio:11 che:12 stare:13 inserire:14 in:15 google:16 translate:17 per:18 generare:19 caso:20 di:21 test:22 .:23 ":24
+(1 row)
+
+SELECT spacy_lemmatize('it',' "Questa è la mia frase di prova di esempio che sto inserendo in Google Translate per generare casi di test."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                                      spacy_lemmatize                                                      
+---------------------------------------------------------------------------------------------------------------------------
+   " questo essere la mio frase di provare di esempio che stare inserire in google translate per generare caso di test . "
+(1 row)
+
+SELECT spacy_lemmatize('it',' "Questa è la mia frase di prova di esempio che sto inserendo in Google Translate per generare casi di test."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                       spacy_lemmatize                                       
+---------------------------------------------------------------------------------------------
+   essere:3 frase:6 provare:8 inserire:13 Google:15 Translate:16 generare:18 caso:19 test:21
+(1 row)
+
+SELECT spacy_lemmatize('it',' "Questa è la mia frase di prova di esempio che sto inserendo in Google Translate per generare casi di test."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                           spacy_lemmatize                           
+---------------------------------------------------------------------
+   essere frase provare inserire Google Translate generare caso test
+(1 row)
+
+SELECT spacy_lemmatize('it',' "Questa è la mia frase di prova di esempio che sto inserendo in Google Translate per generare casi di test."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                                             spacy_lemmatize                                                                             
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   Questa:2 essere:3 la:4 mio:5 frase:6 di:7 provare:8 di:9 esempio:10 che:11 stare:12 inserire:13 in:14 Google:15 Translate:16 per:17 generare:18 caso:19 di:20 test:21
+(1 row)
+
+SELECT spacy_lemmatize('it',' "Questa è la mia frase di prova di esempio che sto inserendo in Google Translate per generare casi di test."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                                   spacy_lemmatize                                                   
+---------------------------------------------------------------------------------------------------------------------
+   Questa essere la mio frase di provare di esempio che stare inserire in Google Translate per generare caso di test
+(1 row)
+
+SELECT spacy_lemmatize('it',' "Questa è la mia frase di prova di esempio che sto inserendo in Google Translate per generare casi di test."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                              spacy_lemmatize                                              
+-----------------------------------------------------------------------------------------------------------
+   ":2 essere:4 frase:7 provare:9 inserire:14 Google:16 Translate:17 generare:19 caso:20 test:22 .:23 ":24
+(1 row)
+
+SELECT spacy_lemmatize('it',' "Questa è la mia frase di prova di esempio che sto inserendo in Google Translate per generare casi di test."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                              spacy_lemmatize                              
+---------------------------------------------------------------------------
+   " essere frase provare inserire Google Translate generare caso test . "
+(1 row)
+
+SELECT spacy_lemmatize('it',' "Questa è la mia frase di prova di esempio che sto inserendo in Google Translate per generare casi di test."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                                    spacy_lemmatize                                                                                     
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 Questa:3 essere:4 la:5 mio:6 frase:7 di:8 provare:9 di:10 esempio:11 che:12 stare:13 inserire:14 in:15 Google:16 Translate:17 per:18 generare:19 caso:20 di:21 test:22 .:23 ":24
+(1 row)
+
+SELECT spacy_lemmatize('it',' "Questa è la mia frase di prova di esempio che sto inserendo in Google Translate per generare casi di test."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                                      spacy_lemmatize                                                      
+---------------------------------------------------------------------------------------------------------------------------
+   " Questa essere la mio frase di provare di esempio che stare inserire in Google Translate per generare caso di test . "
+(1 row)
+
+SELECT spacy_tsvector('it',' "Questa è la mia frase di prova di esempio che sto inserendo in Google Translate per generare casi di test."');
+                                               spacy_tsvector                                                
+-------------------------------------------------------------------------------------------------------------
+ 'caso':19 'essere':3 'frase':6 'generare':18 'google':15 'inserire':13 'provare':8 'test':21 'translate':16
+(1 row)
+

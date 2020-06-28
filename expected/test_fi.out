@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('fi',' "Tämä on esimerkki testilauseestani' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+         spacy_lemmatize          
+----------------------------------
+   esimerkki:4 testilauseestani:5
+(1 row)
+
+SELECT spacy_lemmatize('fi',' "Tämä on esimerkki testilauseestani' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+       spacy_lemmatize        
+------------------------------
+   esimerkki testilauseestani
+(1 row)
+
+SELECT spacy_lemmatize('fi',' "Tämä on esimerkki testilauseestani' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+               spacy_lemmatize                
+----------------------------------------------
+   tämä:2 on:3 esimerkki:4 testilauseestani:5
+(1 row)
+
+SELECT spacy_lemmatize('fi',' "Tämä on esimerkki testilauseestani' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+           spacy_lemmatize            
+--------------------------------------
+   tämä on esimerkki testilauseestani
+(1 row)
+
+SELECT spacy_lemmatize('fi',' "Tämä on esimerkki testilauseestani' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+           spacy_lemmatize            
+--------------------------------------
+   ":2 esimerkki:5 testilauseestani:6
+(1 row)
+
+SELECT spacy_lemmatize('fi',' "Tämä on esimerkki testilauseestani' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+        spacy_lemmatize         
+--------------------------------
+   " esimerkki testilauseestani
+(1 row)
+
+SELECT spacy_lemmatize('fi',' "Tämä on esimerkki testilauseestani' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                 spacy_lemmatize                  
+--------------------------------------------------
+   ":2 tämä:3 on:4 esimerkki:5 testilauseestani:6
+(1 row)
+
+SELECT spacy_lemmatize('fi',' "Tämä on esimerkki testilauseestani' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+            spacy_lemmatize             
+----------------------------------------
+   " tämä on esimerkki testilauseestani
+(1 row)
+
+SELECT spacy_lemmatize('fi',' "Tämä on esimerkki testilauseestani' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+         spacy_lemmatize          
+----------------------------------
+   esimerkki:4 testilauseestani:5
+(1 row)
+
+SELECT spacy_lemmatize('fi',' "Tämä on esimerkki testilauseestani' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+       spacy_lemmatize        
+------------------------------
+   esimerkki testilauseestani
+(1 row)
+
+SELECT spacy_lemmatize('fi',' "Tämä on esimerkki testilauseestani' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+               spacy_lemmatize                
+----------------------------------------------
+   Tämä:2 on:3 esimerkki:4 testilauseestani:5
+(1 row)
+
+SELECT spacy_lemmatize('fi',' "Tämä on esimerkki testilauseestani' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+           spacy_lemmatize            
+--------------------------------------
+   Tämä on esimerkki testilauseestani
+(1 row)
+
+SELECT spacy_lemmatize('fi',' "Tämä on esimerkki testilauseestani' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+           spacy_lemmatize            
+--------------------------------------
+   ":2 esimerkki:5 testilauseestani:6
+(1 row)
+
+SELECT spacy_lemmatize('fi',' "Tämä on esimerkki testilauseestani' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+        spacy_lemmatize         
+--------------------------------
+   " esimerkki testilauseestani
+(1 row)
+
+SELECT spacy_lemmatize('fi',' "Tämä on esimerkki testilauseestani' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                 spacy_lemmatize                  
+--------------------------------------------------
+   ":2 Tämä:3 on:4 esimerkki:5 testilauseestani:6
+(1 row)
+
+SELECT spacy_lemmatize('fi',' "Tämä on esimerkki testilauseestani' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+            spacy_lemmatize             
+----------------------------------------
+   " Tämä on esimerkki testilauseestani
+(1 row)
+
+SELECT spacy_tsvector('fi',' "Tämä on esimerkki testilauseestani');
+           spacy_tsvector           
+------------------------------------
+ 'esimerkki':4 'testilauseestani':5
+(1 row)
+

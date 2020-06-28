@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('ga',' "Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                                         spacy_lemmatize                                                         
+---------------------------------------------------------------------------------------------------------------------------------
+   seo:4 phianbhreith:6 tástála:7 samplach:8 atá:9 á:10 cur:11 agam:12 google:14 translate:15 cásanna:17 tástála:18 ghiniúint:20
+(1 row)
+
+SELECT spacy_lemmatize('ga',' "Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                                        spacy_lemmatize                                        
+-----------------------------------------------------------------------------------------------
+   seo phianbhreith tástála samplach atá á cur agam google translate cásanna tástála ghiniúint
+(1 row)
+
+SELECT spacy_lemmatize('ga',' "Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                                         spacy_lemmatize                                                                          
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   is:2 í:3 seo:4 mo:5 phianbhreith:6 tástála:7 samplach:8 atá:9 á:10 cur:11 agam:12 ar:13 google:14 translate:15 chun:16 cásanna:17 tástála:18 a:19 ghiniúint:20
+(1 row)
+
+SELECT spacy_lemmatize('ga',' "Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                                 spacy_lemmatize                                                 
+-----------------------------------------------------------------------------------------------------------------
+   is í seo mo phianbhreith tástála samplach atá á cur agam ar google translate chun cásanna tástála a ghiniúint
+(1 row)
+
+SELECT spacy_lemmatize('ga',' "Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                                                spacy_lemmatize                                                                 
+------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 seo:5 phianbhreith:7 tástála:8 samplach:9 atá:10 á:11 cur:12 agam:13 google:15 translate:16 cásanna:18 tástála:19 ghiniúint:21 .:22 ":23
+(1 row)
+
+SELECT spacy_lemmatize('ga',' "Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                                           spacy_lemmatize                                           
+-----------------------------------------------------------------------------------------------------
+   " seo phianbhreith tástála samplach atá á cur agam google translate cásanna tástála ghiniúint . "
+(1 row)
+
+SELECT spacy_lemmatize('ga',' "Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                                 spacy_lemmatize                                                                                 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 is:3 í:4 seo:5 mo:6 phianbhreith:7 tástála:8 samplach:9 atá:10 á:11 cur:12 agam:13 ar:14 google:15 translate:16 chun:17 cásanna:18 tástála:19 a:20 ghiniúint:21 .:22 ":23
+(1 row)
+
+SELECT spacy_lemmatize('ga',' "Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                                    spacy_lemmatize                                                    
+-----------------------------------------------------------------------------------------------------------------------
+   " is í seo mo phianbhreith tástála samplach atá á cur agam ar google translate chun cásanna tástála a ghiniúint . "
+(1 row)
+
+SELECT spacy_lemmatize('ga',' "Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                                         spacy_lemmatize                                                         
+---------------------------------------------------------------------------------------------------------------------------------
+   seo:4 phianbhreith:6 tástála:7 samplach:8 atá:9 á:10 cur:11 agam:12 Google:14 Translate:15 cásanna:17 tástála:18 ghiniúint:20
+(1 row)
+
+SELECT spacy_lemmatize('ga',' "Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                                        spacy_lemmatize                                        
+-----------------------------------------------------------------------------------------------
+   seo phianbhreith tástála samplach atá á cur agam Google Translate cásanna tástála ghiniúint
+(1 row)
+
+SELECT spacy_lemmatize('ga',' "Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                                         spacy_lemmatize                                                                          
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   Is:2 í:3 seo:4 mo:5 phianbhreith:6 tástála:7 samplach:8 atá:9 á:10 cur:11 agam:12 ar:13 Google:14 Translate:15 chun:16 cásanna:17 tástála:18 a:19 ghiniúint:20
+(1 row)
+
+SELECT spacy_lemmatize('ga',' "Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                                 spacy_lemmatize                                                 
+-----------------------------------------------------------------------------------------------------------------
+   Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint
+(1 row)
+
+SELECT spacy_lemmatize('ga',' "Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                                                spacy_lemmatize                                                                 
+------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 seo:5 phianbhreith:7 tástála:8 samplach:9 atá:10 á:11 cur:12 agam:13 Google:15 Translate:16 cásanna:18 tástála:19 ghiniúint:21 .:22 ":23
+(1 row)
+
+SELECT spacy_lemmatize('ga',' "Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                                           spacy_lemmatize                                           
+-----------------------------------------------------------------------------------------------------
+   " seo phianbhreith tástála samplach atá á cur agam Google Translate cásanna tástála ghiniúint . "
+(1 row)
+
+SELECT spacy_lemmatize('ga',' "Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                                 spacy_lemmatize                                                                                 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 Is:3 í:4 seo:5 mo:6 phianbhreith:7 tástála:8 samplach:9 atá:10 á:11 cur:12 agam:13 ar:14 Google:15 Translate:16 chun:17 cásanna:18 tástála:19 a:20 ghiniúint:21 .:22 ":23
+(1 row)
+
+SELECT spacy_lemmatize('ga',' "Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                                    spacy_lemmatize                                                    
+-----------------------------------------------------------------------------------------------------------------------
+   " Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint . "
+(1 row)
+
+SELECT spacy_tsvector('ga',' "Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint."');
+                                                                spacy_tsvector                                                                 
+-----------------------------------------------------------------------------------------------------------------------------------------------
+ 'agam':12 'atá':9 'cur':11 'cásanna':17 'ghiniúint':20 'google':14 'phianbhreith':6 'samplach':8 'seo':4 'translate':15 'tástála':7,18 'á':10
+(1 row)
+

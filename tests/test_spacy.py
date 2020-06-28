@@ -1,3 +1,4 @@
+import ast
 import pytest
 import csv
 import re
@@ -5,7 +6,7 @@ import re
 # the sys import is needed so that we can import from the current project
 import sys
 sys.path.append('.')
-from postgresql_spacy import lemmatize
+import pspacy 
 
 
 ################################################################################
@@ -21,30 +22,13 @@ def get_golden_tests():
     with open(golden_test_file, 'rt', encoding='utf-8', newline='\n') as f:
         tests = list(csv.DictReader(f, dialect='excel', strict=True))
 
-    # FIXME:
-    # There is a minor bug in the Korean test case;
-    # On my computer, "이것은" gets tokenized into "이거 은",
-    # but on the travis test machine, it gets tokenized into "이것 은",
-    # causing the test case to fail.
-    # Likely this is somehow due to the installations of mecab-ko
-    # being slightly different on both machines in some way I can't figure out.
-    # This is a minor error, however, because 이거 is a contracted form of 이것,
-    # and is an extremely common word that should never be searched for
-    # (both words translate into "this"),
-    # so I consider this error to be minor enough that we shouldn't fail the tests.
-    # The code below fixes this error so that travis will not fail due to this issue.
-    for test in tests:
-        if test['lang']=='ko':
-            test['result'] = re.sub(r'이거',r'이것',test['result'])
-
     return tests
 
 
 @pytest.mark.parametrize('test', get_golden_tests())
 def test__lemmatize(test):
-    import ast
     kwargs = ast.literal_eval(test['kwargs'])
-    assert lemmatize(test['lang'],test['text'],**kwargs) == test['result']
+    assert pspacy.lemmatize(test['lang'],test['text'],**kwargs) == test['result']
 
 
 ################################################################################
@@ -63,11 +47,30 @@ def make_golden_tests(input_file='tests/input.csv', golden_file='tests/golden.cs
     with open(input_file, 'rt', encoding='utf-8', newline='\n') as f:
         inputs = list(csv.DictReader(f, dialect='excel', strict=True))
 
+    #inputs = [ input for input in inputs if input['lang']=='es' ]
+
+    # FIXME:
+    # There is a minor bug in the Korean test case;
+    # On my computer, "이것은" gets tokenized into "이거 은",
+    # but on the travis test machine, it gets tokenized into "이것 은",
+    # causing the test case to fail.
+    # Likely this is somehow due to the installations of mecab-ko
+    # being slightly different on both machines in some way I can't figure out.
+    # This is a minor error, however, because 이거 is a contracted form of 이것,
+    # and is an extremely common word that should never be searched for
+    # (both words translate into "this"),
+    # so I consider this error to be minor enough that we shouldn't fail the tests.
+    # The code below fixes this error so that travis will not fail due to this issue.
+    for input in inputs:
+        if input['lang']=='ko':
+            #input['text'] = re.sub(r'이거',r'이것',input['text'])
+            input['text'] = re.sub(r'이것',r'이거',input['text'])
+
     # the kwargss list will contain for each keyword all combinations of True/False
     keywords = [
         'lower_case',
         'remove_special_chars',
-        'remove_stopwords',
+        'remove_stop_words',
         'add_positions',
         ]
     kwargss = [{}]
@@ -82,7 +85,7 @@ def make_golden_tests(input_file='tests/input.csv', golden_file='tests/golden.cs
     tests = []
     for input in inputs:
         for kwargs in kwargss:
-            result = lemmatize(input['lang'],input['text'],**kwargs)
+            result = pspacy.lemmatize(input['lang'],input['text'],**kwargs)
             tests.append({
                 'lang':input['lang'],
                 'text':input['text'],
@@ -96,6 +99,32 @@ def make_golden_tests(input_file='tests/input.csv', golden_file='tests/golden.cs
         writer.writeheader()
         for test in tests:
             writer.writerow(test)
+
+    # write postgres-level tests
+    for lang in pspacy.valid_langs:
+        with open('expected/test_'+lang+'.out','wt'):
+            pass
+        with open('sql/test_'+lang+'.sql', 'wt', encoding='utf-8', newline='\n') as f:
+            f.write('CREATE EXTENSION IF NOT EXISTS pspacy;\n')
+
+            # a utility function for escaping sql strings safely
+            def escape_str(x):
+                return x.replace("'","''")
+
+            # generate tests for spacy_lemmatize
+            tests_lang = [ test for test in tests if test['lang']==lang ]
+            for test in tests_lang:
+                kwargs = ast.literal_eval(test['kwargs'])
+                sql = "SELECT spacy_lemmatize('"+lang+"','"+escape_str(test['text'])+"'"
+                for k,v in kwargs.items():
+                    sql += ' , '+k+'=>'+str(v)
+                sql += ');'
+                f.write(sql+'\n')
+
+            # generate tests for other functions
+            inputs_lang = [ input for input in inputs if input['lang']==lang ]
+            for input in inputs_lang:
+                f.write("SELECT spacy_tsvector('"+lang+"','"+escape_str(test['text'])+"');\n")
 
 
 # running this file directly will generate new golden tests

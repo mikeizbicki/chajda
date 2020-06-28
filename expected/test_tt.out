@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('tt',' "Бу минем сынау үрнәкләрен ясау өчен Google Translate''ка куйган сынау җөмләсе."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                  spacy_lemmatize                                   
+------------------------------------------------------------------------------------
+   сынау:4 үрнәкләрен:5 ясау:6 google:8 translateка:9 куйган:10 сынау:11 җөмләсе:12
+(1 row)
+
+SELECT spacy_lemmatize('tt',' "Бу минем сынау үрнәкләрен ясау өчен Google Translate''ка куйган сынау җөмләсе."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                         spacy_lemmatize                         
+-----------------------------------------------------------------
+   сынау үрнәкләрен ясау google translateка куйган сынау җөмләсе
+(1 row)
+
+SELECT spacy_lemmatize('tt',' "Бу минем сынау үрнәкләрен ясау өчен Google Translate''ка куйган сынау җөмләсе."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                            spacy_lemmatize                                             
+--------------------------------------------------------------------------------------------------------
+   бу:2 минем:3 сынау:4 үрнәкләрен:5 ясау:6 өчен:7 google:8 translateка:9 куйган:10 сынау:11 җөмләсе:12
+(1 row)
+
+SELECT spacy_lemmatize('tt',' "Бу минем сынау үрнәкләрен ясау өчен Google Translate''ка куйган сынау җөмләсе."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                spacy_lemmatize                                
+-------------------------------------------------------------------------------
+   бу минем сынау үрнәкләрен ясау өчен google translateка куйган сынау җөмләсе
+(1 row)
+
+SELECT spacy_lemmatize('tt',' "Бу минем сынау үрнәкләрен ясау өчен Google Translate''ка куйган сынау җөмләсе."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                              spacy_lemmatize                                               
+------------------------------------------------------------------------------------------------------------
+   ":2 сынау:5 үрнәкләрен:6 ясау:7 google:9 translate:10 ':11 ка:12 куйган:13 сынау:14 җөмләсе:15 .:16 ":17
+(1 row)
+
+SELECT spacy_lemmatize('tt',' "Бу минем сынау үрнәкләрен ясау өчен Google Translate''ка куйган сынау җөмләсе."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                             spacy_lemmatize                              
+--------------------------------------------------------------------------
+   " сынау үрнәкләрен ясау google translate ' ка куйган сынау җөмләсе . "
+(1 row)
+
+SELECT spacy_lemmatize('tt',' "Бу минем сынау үрнәкләрен ясау өчен Google Translate''ка куйган сынау җөмләсе."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                        spacy_lemmatize                                                         
+--------------------------------------------------------------------------------------------------------------------------------
+   ":2 бу:3 минем:4 сынау:5 үрнәкләрен:6 ясау:7 өчен:8 google:9 translate:10 ':11 ка:12 куйган:13 сынау:14 җөмләсе:15 .:16 ":17
+(1 row)
+
+SELECT spacy_lemmatize('tt',' "Бу минем сынау үрнәкләрен ясау өчен Google Translate''ка куйган сынау җөмләсе."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                    spacy_lemmatize                                     
+----------------------------------------------------------------------------------------
+   " бу минем сынау үрнәкләрен ясау өчен google translate ' ка куйган сынау җөмләсе . "
+(1 row)
+
+SELECT spacy_lemmatize('tt',' "Бу минем сынау үрнәкләрен ясау өчен Google Translate''ка куйган сынау җөмләсе."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                  spacy_lemmatize                                   
+------------------------------------------------------------------------------------
+   сынау:4 үрнәкләрен:5 ясау:6 Google:8 Translateка:9 куйган:10 сынау:11 җөмләсе:12
+(1 row)
+
+SELECT spacy_lemmatize('tt',' "Бу минем сынау үрнәкләрен ясау өчен Google Translate''ка куйган сынау җөмләсе."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                         spacy_lemmatize                         
+-----------------------------------------------------------------
+   сынау үрнәкләрен ясау Google Translateка куйган сынау җөмләсе
+(1 row)
+
+SELECT spacy_lemmatize('tt',' "Бу минем сынау үрнәкләрен ясау өчен Google Translate''ка куйган сынау җөмләсе."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                            spacy_lemmatize                                             
+--------------------------------------------------------------------------------------------------------
+   Бу:2 минем:3 сынау:4 үрнәкләрен:5 ясау:6 өчен:7 Google:8 Translateка:9 куйган:10 сынау:11 җөмләсе:12
+(1 row)
+
+SELECT spacy_lemmatize('tt',' "Бу минем сынау үрнәкләрен ясау өчен Google Translate''ка куйган сынау җөмләсе."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                spacy_lemmatize                                
+-------------------------------------------------------------------------------
+   Бу минем сынау үрнәкләрен ясау өчен Google Translateка куйган сынау җөмләсе
+(1 row)
+
+SELECT spacy_lemmatize('tt',' "Бу минем сынау үрнәкләрен ясау өчен Google Translate''ка куйган сынау җөмләсе."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                              spacy_lemmatize                                               
+------------------------------------------------------------------------------------------------------------
+   ":2 сынау:5 үрнәкләрен:6 ясау:7 Google:9 Translate:10 ':11 ка:12 куйган:13 сынау:14 җөмләсе:15 .:16 ":17
+(1 row)
+
+SELECT spacy_lemmatize('tt',' "Бу минем сынау үрнәкләрен ясау өчен Google Translate''ка куйган сынау җөмләсе."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                             spacy_lemmatize                              
+--------------------------------------------------------------------------
+   " сынау үрнәкләрен ясау Google Translate ' ка куйган сынау җөмләсе . "
+(1 row)
+
+SELECT spacy_lemmatize('tt',' "Бу минем сынау үрнәкләрен ясау өчен Google Translate''ка куйган сынау җөмләсе."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                        spacy_lemmatize                                                         
+--------------------------------------------------------------------------------------------------------------------------------
+   ":2 Бу:3 минем:4 сынау:5 үрнәкләрен:6 ясау:7 өчен:8 Google:9 Translate:10 ':11 ка:12 куйган:13 сынау:14 җөмләсе:15 .:16 ":17
+(1 row)
+
+SELECT spacy_lemmatize('tt',' "Бу минем сынау үрнәкләрен ясау өчен Google Translate''ка куйган сынау җөмләсе."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                    spacy_lemmatize                                     
+----------------------------------------------------------------------------------------
+   " Бу минем сынау үрнәкләрен ясау өчен Google Translate ' ка куйган сынау җөмләсе . "
+(1 row)
+
+SELECT spacy_tsvector('tt',' "Бу минем сынау үрнәкләрен ясау өчен Google Translate''ка куйган сынау җөмләсе."');
+                                      spacy_tsvector                                      
+------------------------------------------------------------------------------------------
+ 'google':8 'translateка':9 'куйган':10 'сынау':4,11 'ясау':6 'җөмләсе':12 'үрнәкләрен':5
+(1 row)
+

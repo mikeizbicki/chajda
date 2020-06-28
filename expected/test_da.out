@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('da',' "Dette er mit eksempel test sætning' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+        spacy_lemmatize        
+-------------------------------
+   eksempel:5 test:6 sætning:7
+(1 row)
+
+SELECT spacy_lemmatize('da',' "Dette er mit eksempel test sætning' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+     spacy_lemmatize     
+-------------------------
+   eksempel test sætning
+(1 row)
+
+SELECT spacy_lemmatize('da',' "Dette er mit eksempel test sætning' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                  spacy_lemmatize                   
+----------------------------------------------------
+   denne:2 være:3 min:4 eksempel:5 test:6 sætning:7
+(1 row)
+
+SELECT spacy_lemmatize('da',' "Dette er mit eksempel test sætning' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+            spacy_lemmatize             
+----------------------------------------
+   denne være min eksempel test sætning
+(1 row)
+
+SELECT spacy_lemmatize('da',' "Dette er mit eksempel test sætning' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+          spacy_lemmatize          
+-----------------------------------
+   ":2 eksempel:6 test:7 sætning:8
+(1 row)
+
+SELECT spacy_lemmatize('da',' "Dette er mit eksempel test sætning' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+      spacy_lemmatize      
+---------------------------
+   " eksempel test sætning
+(1 row)
+
+SELECT spacy_lemmatize('da',' "Dette er mit eksempel test sætning' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                    spacy_lemmatize                     
+--------------------------------------------------------
+   ":2 denne:3 være:4 min:5 eksempel:6 test:7 sætning:8
+(1 row)
+
+SELECT spacy_lemmatize('da',' "Dette er mit eksempel test sætning' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+             spacy_lemmatize              
+------------------------------------------
+   " denne være min eksempel test sætning
+(1 row)
+
+SELECT spacy_lemmatize('da',' "Dette er mit eksempel test sætning' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+        spacy_lemmatize        
+-------------------------------
+   eksempel:5 test:6 sætning:7
+(1 row)
+
+SELECT spacy_lemmatize('da',' "Dette er mit eksempel test sætning' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+     spacy_lemmatize     
+-------------------------
+   eksempel test sætning
+(1 row)
+
+SELECT spacy_lemmatize('da',' "Dette er mit eksempel test sætning' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                  spacy_lemmatize                   
+----------------------------------------------------
+   Dette:2 være:3 min:4 eksempel:5 test:6 sætning:7
+(1 row)
+
+SELECT spacy_lemmatize('da',' "Dette er mit eksempel test sætning' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+            spacy_lemmatize             
+----------------------------------------
+   Dette være min eksempel test sætning
+(1 row)
+
+SELECT spacy_lemmatize('da',' "Dette er mit eksempel test sætning' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+          spacy_lemmatize          
+-----------------------------------
+   ":2 eksempel:6 test:7 sætning:8
+(1 row)
+
+SELECT spacy_lemmatize('da',' "Dette er mit eksempel test sætning' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+      spacy_lemmatize      
+---------------------------
+   " eksempel test sætning
+(1 row)
+
+SELECT spacy_lemmatize('da',' "Dette er mit eksempel test sætning' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                    spacy_lemmatize                     
+--------------------------------------------------------
+   ":2 Dette:3 være:4 min:5 eksempel:6 test:7 sætning:8
+(1 row)
+
+SELECT spacy_lemmatize('da',' "Dette er mit eksempel test sætning' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+             spacy_lemmatize              
+------------------------------------------
+   " Dette være min eksempel test sætning
+(1 row)
+
+SELECT spacy_tsvector('da',' "Dette er mit eksempel test sætning');
+          spacy_tsvector           
+-----------------------------------
+ 'eksempel':5 'sætning':7 'test':6
+(1 row)
+

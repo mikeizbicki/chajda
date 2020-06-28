@@ -1,0 +1,18 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+SELECT spacy_lemmatize('nl',' "Dit is mijn voorbeeldtestzin die ik in Google Translate zet om testcases te genereren."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+SELECT spacy_lemmatize('nl',' "Dit is mijn voorbeeldtestzin die ik in Google Translate zet om testcases te genereren."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+SELECT spacy_lemmatize('nl',' "Dit is mijn voorbeeldtestzin die ik in Google Translate zet om testcases te genereren."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+SELECT spacy_lemmatize('nl',' "Dit is mijn voorbeeldtestzin die ik in Google Translate zet om testcases te genereren."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+SELECT spacy_lemmatize('nl',' "Dit is mijn voorbeeldtestzin die ik in Google Translate zet om testcases te genereren."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+SELECT spacy_lemmatize('nl',' "Dit is mijn voorbeeldtestzin die ik in Google Translate zet om testcases te genereren."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+SELECT spacy_lemmatize('nl',' "Dit is mijn voorbeeldtestzin die ik in Google Translate zet om testcases te genereren."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+SELECT spacy_lemmatize('nl',' "Dit is mijn voorbeeldtestzin die ik in Google Translate zet om testcases te genereren."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+SELECT spacy_lemmatize('nl',' "Dit is mijn voorbeeldtestzin die ik in Google Translate zet om testcases te genereren."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+SELECT spacy_lemmatize('nl',' "Dit is mijn voorbeeldtestzin die ik in Google Translate zet om testcases te genereren."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+SELECT spacy_lemmatize('nl',' "Dit is mijn voorbeeldtestzin die ik in Google Translate zet om testcases te genereren."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+SELECT spacy_lemmatize('nl',' "Dit is mijn voorbeeldtestzin die ik in Google Translate zet om testcases te genereren."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+SELECT spacy_lemmatize('nl',' "Dit is mijn voorbeeldtestzin die ik in Google Translate zet om testcases te genereren."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+SELECT spacy_lemmatize('nl',' "Dit is mijn voorbeeldtestzin die ik in Google Translate zet om testcases te genereren."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+SELECT spacy_lemmatize('nl',' "Dit is mijn voorbeeldtestzin die ik in Google Translate zet om testcases te genereren."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+SELECT spacy_lemmatize('nl',' "Dit is mijn voorbeeldtestzin die ik in Google Translate zet om testcases te genereren."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+SELECT spacy_tsvector('nl',' "Dit is mijn voorbeeldtestzin die ik in Google Translate zet om testcases te genereren."');

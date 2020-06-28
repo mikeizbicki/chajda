@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('is',' "Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                         spacy_lemmatize                                         
+-------------------------------------------------------------------------------------------------
+   er:3 dæmi:4 setningarpróf:5 ég:7 set:8 í:9 google:10 translate:11 að:13 búa:14 prófatilvik:16
+(1 row)
+
+SELECT spacy_lemmatize('is',' "Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                           spacy_lemmatize                            
+----------------------------------------------------------------------
+   er dæmi setningarpróf ég set í google translate að búa prófatilvik
+(1 row)
+
+SELECT spacy_lemmatize('is',' "Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                       spacy_lemmatize                                                       
+-----------------------------------------------------------------------------------------------------------------------------
+   þetta:2 er:3 dæmi:4 setningarpróf:5 sem:6 ég:7 set:8 í:9 google:10 translate:11 til:12 að:13 búa:14 til:15 prófatilvik:16
+(1 row)
+
+SELECT spacy_lemmatize('is',' "Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                    spacy_lemmatize                                     
+----------------------------------------------------------------------------------------
+   þetta er dæmi setningarpróf sem ég set í google translate til að búa til prófatilvik
+(1 row)
+
+SELECT spacy_lemmatize('is',' "Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                                spacy_lemmatize                                                 
+----------------------------------------------------------------------------------------------------------------
+   ":2 er:4 dæmi:5 setningarpróf:6 ég:8 set:9 í:10 google:11 translate:12 að:14 búa:15 prófatilvik:17 .:18 ":19
+(1 row)
+
+SELECT spacy_lemmatize('is',' "Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                              spacy_lemmatize                               
+----------------------------------------------------------------------------
+   " er dæmi setningarpróf ég set í google translate að búa prófatilvik . "
+(1 row)
+
+SELECT spacy_lemmatize('is',' "Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                              spacy_lemmatize                                                               
+--------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 þetta:3 er:4 dæmi:5 setningarpróf:6 sem:7 ég:8 set:9 í:10 google:11 translate:12 til:13 að:14 búa:15 til:16 prófatilvik:17 .:18 ":19
+(1 row)
+
+SELECT spacy_lemmatize('is',' "Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                       spacy_lemmatize                                        
+----------------------------------------------------------------------------------------------
+   " þetta er dæmi setningarpróf sem ég set í google translate til að búa til prófatilvik . "
+(1 row)
+
+SELECT spacy_lemmatize('is',' "Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                         spacy_lemmatize                                         
+-------------------------------------------------------------------------------------------------
+   er:3 dæmi:4 setningarpróf:5 ég:7 set:8 í:9 Google:10 Translate:11 að:13 búa:14 prófatilvik:16
+(1 row)
+
+SELECT spacy_lemmatize('is',' "Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                           spacy_lemmatize                            
+----------------------------------------------------------------------
+   er dæmi setningarpróf ég set í Google Translate að búa prófatilvik
+(1 row)
+
+SELECT spacy_lemmatize('is',' "Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                       spacy_lemmatize                                                       
+-----------------------------------------------------------------------------------------------------------------------------
+   Þetta:2 er:3 dæmi:4 setningarpróf:5 sem:6 ég:7 set:8 í:9 Google:10 Translate:11 til:12 að:13 búa:14 til:15 prófatilvik:16
+(1 row)
+
+SELECT spacy_lemmatize('is',' "Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                    spacy_lemmatize                                     
+----------------------------------------------------------------------------------------
+   Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik
+(1 row)
+
+SELECT spacy_lemmatize('is',' "Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                                spacy_lemmatize                                                 
+----------------------------------------------------------------------------------------------------------------
+   ":2 er:4 dæmi:5 setningarpróf:6 ég:8 set:9 í:10 Google:11 Translate:12 að:14 búa:15 prófatilvik:17 .:18 ":19
+(1 row)
+
+SELECT spacy_lemmatize('is',' "Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                              spacy_lemmatize                               
+----------------------------------------------------------------------------
+   " er dæmi setningarpróf ég set í Google Translate að búa prófatilvik . "
+(1 row)
+
+SELECT spacy_lemmatize('is',' "Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                              spacy_lemmatize                                                               
+--------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 Þetta:3 er:4 dæmi:5 setningarpróf:6 sem:7 ég:8 set:9 í:10 Google:11 Translate:12 til:13 að:14 búa:15 til:16 prófatilvik:17 .:18 ":19
+(1 row)
+
+SELECT spacy_lemmatize('is',' "Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                       spacy_lemmatize                                        
+----------------------------------------------------------------------------------------------
+   " Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik . "
+(1 row)
+
+SELECT spacy_tsvector('is',' "Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik."');
+                                                   spacy_tsvector                                                    
+---------------------------------------------------------------------------------------------------------------------
+ 'að':13 'búa':14 'dæmi':4 'er':3 'google':10 'prófatilvik':16 'set':8 'setningarpróf':5 'translate':11 'ég':7 'í':9
+(1 row)
+

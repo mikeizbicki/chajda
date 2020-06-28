@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('th',' "นี่คือประโยคทดสอบตัวอย่างของฉันที่ฉันใส่ลงใน Google Translate เพื่อสร้างกรณีทดสอบ"' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                    spacy_lemmatize                                     
+----------------------------------------------------------------------------------------
+   ประโยค:4 ทดสอบ:5 ตัวอย่าง:6 ใส่:11   google:15   translate:17   สร้าง:20 กรณี:21 ทดสอบ:22
+(1 row)
+
+SELECT spacy_lemmatize('th',' "นี่คือประโยคทดสอบตัวอย่างของฉันที่ฉันใส่ลงใน Google Translate เพื่อสร้างกรณีทดสอบ"' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                        spacy_lemmatize                         
+----------------------------------------------------------------
+   ประโยค ทดสอบ ตัวอย่าง ใส่   google   translate   สร้าง กรณี ทดสอบ
+(1 row)
+
+SELECT spacy_lemmatize('th',' "นี่คือประโยคทดสอบตัวอย่างของฉันที่ฉันใส่ลงใน Google Translate เพื่อสร้างกรณีทดสอบ"' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                             spacy_lemmatize                                                             
+-----------------------------------------------------------------------------------------------------------------------------------------
+   นี่:2 คือ:3 ประโยค:4 ทดสอบ:5 ตัวอย่าง:6 ของ:7 ฉัน:8 ที่:9 ฉัน:10 ใส่:11 ลง:12 ใน:13   google:15   translate:17   เพื่อ:19 สร้าง:20 กรณี:21 ทดสอบ:22
+(1 row)
+
+SELECT spacy_lemmatize('th',' "นี่คือประโยคทดสอบตัวอย่างของฉันที่ฉันใส่ลงใน Google Translate เพื่อสร้างกรณีทดสอบ"' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                      spacy_lemmatize                                      
+-------------------------------------------------------------------------------------------
+   นี่ คือ ประโยค ทดสอบ ตัวอย่าง ของ ฉัน ที่ ฉัน ใส่ ลง ใน   google   translate   เพื่อ สร้าง กรณี ทดสอบ
+(1 row)
+
+SELECT spacy_lemmatize('th',' "นี่คือประโยคทดสอบตัวอย่างของฉันที่ฉันใส่ลงใน Google Translate เพื่อสร้างกรณีทดสอบ"' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                         spacy_lemmatize                                         
+-------------------------------------------------------------------------------------------------
+   ":2 ประโยค:5 ทดสอบ:6 ตัวอย่าง:7 ใส่:12   google:16   translate:18   สร้าง:21 กรณี:22 ทดสอบ:23 ":24
+(1 row)
+
+SELECT spacy_lemmatize('th',' "นี่คือประโยคทดสอบตัวอย่างของฉันที่ฉันใส่ลงใน Google Translate เพื่อสร้างกรณีทดสอบ"' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                          spacy_lemmatize                           
+--------------------------------------------------------------------
+   " ประโยค ทดสอบ ตัวอย่าง ใส่   google   translate   สร้าง กรณี ทดสอบ "
+(1 row)
+
+SELECT spacy_lemmatize('th',' "นี่คือประโยคทดสอบตัวอย่างของฉันที่ฉันใส่ลงใน Google Translate เพื่อสร้างกรณีทดสอบ"' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                  spacy_lemmatize                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 นี่:3 คือ:4 ประโยค:5 ทดสอบ:6 ตัวอย่าง:7 ของ:8 ฉัน:9 ที่:10 ฉัน:11 ใส่:12 ลง:13 ใน:14   google:16   translate:18   เพื่อ:20 สร้าง:21 กรณี:22 ทดสอบ:23 ":24
+(1 row)
+
+SELECT spacy_lemmatize('th',' "นี่คือประโยคทดสอบตัวอย่างของฉันที่ฉันใส่ลงใน Google Translate เพื่อสร้างกรณีทดสอบ"' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                        spacy_lemmatize                                        
+-----------------------------------------------------------------------------------------------
+   " นี่ คือ ประโยค ทดสอบ ตัวอย่าง ของ ฉัน ที่ ฉัน ใส่ ลง ใน   google   translate   เพื่อ สร้าง กรณี ทดสอบ "
+(1 row)
+
+SELECT spacy_lemmatize('th',' "นี่คือประโยคทดสอบตัวอย่างของฉันที่ฉันใส่ลงใน Google Translate เพื่อสร้างกรณีทดสอบ"' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                    spacy_lemmatize                                     
+----------------------------------------------------------------------------------------
+   ประโยค:4 ทดสอบ:5 ตัวอย่าง:6 ใส่:11   Google:15   Translate:17   สร้าง:20 กรณี:21 ทดสอบ:22
+(1 row)
+
+SELECT spacy_lemmatize('th',' "นี่คือประโยคทดสอบตัวอย่างของฉันที่ฉันใส่ลงใน Google Translate เพื่อสร้างกรณีทดสอบ"' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                        spacy_lemmatize                         
+----------------------------------------------------------------
+   ประโยค ทดสอบ ตัวอย่าง ใส่   Google   Translate   สร้าง กรณี ทดสอบ
+(1 row)
+
+SELECT spacy_lemmatize('th',' "นี่คือประโยคทดสอบตัวอย่างของฉันที่ฉันใส่ลงใน Google Translate เพื่อสร้างกรณีทดสอบ"' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                             spacy_lemmatize                                                             
+-----------------------------------------------------------------------------------------------------------------------------------------
+   นี่:2 คือ:3 ประโยค:4 ทดสอบ:5 ตัวอย่าง:6 ของ:7 ฉัน:8 ที่:9 ฉัน:10 ใส่:11 ลง:12 ใน:13   Google:15   Translate:17   เพื่อ:19 สร้าง:20 กรณี:21 ทดสอบ:22
+(1 row)
+
+SELECT spacy_lemmatize('th',' "นี่คือประโยคทดสอบตัวอย่างของฉันที่ฉันใส่ลงใน Google Translate เพื่อสร้างกรณีทดสอบ"' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                      spacy_lemmatize                                      
+-------------------------------------------------------------------------------------------
+   นี่ คือ ประโยค ทดสอบ ตัวอย่าง ของ ฉัน ที่ ฉัน ใส่ ลง ใน   Google   Translate   เพื่อ สร้าง กรณี ทดสอบ
+(1 row)
+
+SELECT spacy_lemmatize('th',' "นี่คือประโยคทดสอบตัวอย่างของฉันที่ฉันใส่ลงใน Google Translate เพื่อสร้างกรณีทดสอบ"' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                         spacy_lemmatize                                         
+-------------------------------------------------------------------------------------------------
+   ":2 ประโยค:5 ทดสอบ:6 ตัวอย่าง:7 ใส่:12   Google:16   Translate:18   สร้าง:21 กรณี:22 ทดสอบ:23 ":24
+(1 row)
+
+SELECT spacy_lemmatize('th',' "นี่คือประโยคทดสอบตัวอย่างของฉันที่ฉันใส่ลงใน Google Translate เพื่อสร้างกรณีทดสอบ"' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                          spacy_lemmatize                           
+--------------------------------------------------------------------
+   " ประโยค ทดสอบ ตัวอย่าง ใส่   Google   Translate   สร้าง กรณี ทดสอบ "
+(1 row)
+
+SELECT spacy_lemmatize('th',' "นี่คือประโยคทดสอบตัวอย่างของฉันที่ฉันใส่ลงใน Google Translate เพื่อสร้างกรณีทดสอบ"' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                  spacy_lemmatize                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 นี่:3 คือ:4 ประโยค:5 ทดสอบ:6 ตัวอย่าง:7 ของ:8 ฉัน:9 ที่:10 ฉัน:11 ใส่:12 ลง:13 ใน:14   Google:16   Translate:18   เพื่อ:20 สร้าง:21 กรณี:22 ทดสอบ:23 ":24
+(1 row)
+
+SELECT spacy_lemmatize('th',' "นี่คือประโยคทดสอบตัวอย่างของฉันที่ฉันใส่ลงใน Google Translate เพื่อสร้างกรณีทดสอบ"' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                        spacy_lemmatize                                        
+-----------------------------------------------------------------------------------------------
+   " นี่ คือ ประโยค ทดสอบ ตัวอย่าง ของ ฉัน ที่ ฉัน ใส่ ลง ใน   Google   Translate   เพื่อ สร้าง กรณี ทดสอบ "
+(1 row)
+
+SELECT spacy_tsvector('th',' "นี่คือประโยคทดสอบตัวอย่างของฉันที่ฉันใส่ลงใน Google Translate เพื่อสร้างกรณีทดสอบ"');
+                                      spacy_tsvector                                      
+------------------------------------------------------------------------------------------
+ 'google':15 'translate':17 'กรณี':21 'ตัวอย่าง':6 'ทดสอบ':5,22 'ประโยค':4 'สร้าง':20 'ใส่':11
+(1 row)
+

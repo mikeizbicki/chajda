@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('he',' "זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                              spacy_lemmatize                                              
+-----------------------------------------------------------------------------------------------------------
+   זהו:2 משפט:3 המבחן:4 הדוגמא:5 שאני:7 מכניס:8 ל:9 google:10 translate:11 כדי:12 ליצור:13 מקרי:14 מבחן:15
+(1 row)
+
+SELECT spacy_lemmatize('he',' "זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                              spacy_lemmatize                              
+---------------------------------------------------------------------------
+   זהו משפט המבחן הדוגמא שאני מכניס ל google translate כדי ליצור מקרי מבחן
+(1 row)
+
+SELECT spacy_lemmatize('he',' "זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                 spacy_lemmatize                                                 
+-----------------------------------------------------------------------------------------------------------------
+   זהו:2 משפט:3 המבחן:4 הדוגמא:5 שלי:6 שאני:7 מכניס:8 ל:9 google:10 translate:11 כדי:12 ליצור:13 מקרי:14 מבחן:15
+(1 row)
+
+SELECT spacy_lemmatize('he',' "זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                spacy_lemmatize                                
+-------------------------------------------------------------------------------
+   זהו משפט המבחן הדוגמא שלי שאני מכניס ל google translate כדי ליצור מקרי מבחן
+(1 row)
+
+SELECT spacy_lemmatize('he',' "זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                                      spacy_lemmatize                                                      
+---------------------------------------------------------------------------------------------------------------------------
+   ":2 זהו:3 משפט:4 המבחן:5 הדוגמא:6 שאני:8 מכניס:9 ל-:10 google:11 translate:12 כדי:13 ליצור:14 מקרי:15 מבחן:16 .:17 ":18
+(1 row)
+
+SELECT spacy_lemmatize('he',' "זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                                 spacy_lemmatize                                  
+----------------------------------------------------------------------------------
+   " זהו משפט המבחן הדוגמא שאני מכניס ל- google translate כדי ליצור מקרי מבחן . "
+(1 row)
+
+SELECT spacy_lemmatize('he',' "זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                         spacy_lemmatize                                                         
+---------------------------------------------------------------------------------------------------------------------------------
+   ":2 זהו:3 משפט:4 המבחן:5 הדוגמא:6 שלי:7 שאני:8 מכניס:9 ל-:10 google:11 translate:12 כדי:13 ליצור:14 מקרי:15 מבחן:16 .:17 ":18
+(1 row)
+
+SELECT spacy_lemmatize('he',' "זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                   spacy_lemmatize                                    
+--------------------------------------------------------------------------------------
+   " זהו משפט המבחן הדוגמא שלי שאני מכניס ל- google translate כדי ליצור מקרי מבחן . "
+(1 row)
+
+SELECT spacy_lemmatize('he',' "זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                              spacy_lemmatize                                              
+-----------------------------------------------------------------------------------------------------------
+   זהו:2 משפט:3 המבחן:4 הדוגמא:5 שאני:7 מכניס:8 ל:9 Google:10 Translate:11 כדי:12 ליצור:13 מקרי:14 מבחן:15
+(1 row)
+
+SELECT spacy_lemmatize('he',' "זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                              spacy_lemmatize                              
+---------------------------------------------------------------------------
+   זהו משפט המבחן הדוגמא שאני מכניס ל Google Translate כדי ליצור מקרי מבחן
+(1 row)
+
+SELECT spacy_lemmatize('he',' "זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                 spacy_lemmatize                                                 
+-----------------------------------------------------------------------------------------------------------------
+   זהו:2 משפט:3 המבחן:4 הדוגמא:5 שלי:6 שאני:7 מכניס:8 ל:9 Google:10 Translate:11 כדי:12 ליצור:13 מקרי:14 מבחן:15
+(1 row)
+
+SELECT spacy_lemmatize('he',' "זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                spacy_lemmatize                                
+-------------------------------------------------------------------------------
+   זהו משפט המבחן הדוגמא שלי שאני מכניס ל Google Translate כדי ליצור מקרי מבחן
+(1 row)
+
+SELECT spacy_lemmatize('he',' "זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                                      spacy_lemmatize                                                      
+---------------------------------------------------------------------------------------------------------------------------
+   ":2 זהו:3 משפט:4 המבחן:5 הדוגמא:6 שאני:8 מכניס:9 ל-:10 Google:11 Translate:12 כדי:13 ליצור:14 מקרי:15 מבחן:16 .:17 ":18
+(1 row)
+
+SELECT spacy_lemmatize('he',' "זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                                 spacy_lemmatize                                  
+----------------------------------------------------------------------------------
+   " זהו משפט המבחן הדוגמא שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן . "
+(1 row)
+
+SELECT spacy_lemmatize('he',' "זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                         spacy_lemmatize                                                         
+---------------------------------------------------------------------------------------------------------------------------------
+   ":2 זהו:3 משפט:4 המבחן:5 הדוגמא:6 שלי:7 שאני:8 מכניס:9 ל-:10 Google:11 Translate:12 כדי:13 ליצור:14 מקרי:15 מבחן:16 .:17 ":18
+(1 row)
+
+SELECT spacy_lemmatize('he',' "זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                   spacy_lemmatize                                    
+--------------------------------------------------------------------------------------
+   " זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן . "
+(1 row)
+
+SELECT spacy_tsvector('he',' "זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן."');
+                                                          spacy_tsvector                                                           
+-----------------------------------------------------------------------------------------------------------------------------------
+ 'google':10 'translate':11 'הדוגמא':5 'המבחן':4 'זהו':2 'כדי':12 'ל':9 'ליצור':13 'מבחן':15 'מכניס':8 'מקרי':14 'משפט':3 'שאני':7
+(1 row)
+

@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('de',' "Dies ist mein Beispiel-Testsatz' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+   spacy_lemmatize    
+----------------------
+   beispieltestsatz:5
+(1 row)
+
+SELECT spacy_lemmatize('de',' "Dies ist mein Beispiel-Testsatz' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+  spacy_lemmatize   
+--------------------
+   beispieltestsatz
+(1 row)
+
+SELECT spacy_lemmatize('de',' "Dies ist mein Beispiel-Testsatz' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+               spacy_lemmatize               
+---------------------------------------------
+   dies:2 sein:3 meinen:4 beispieltestsatz:5
+(1 row)
+
+SELECT spacy_lemmatize('de',' "Dies ist mein Beispiel-Testsatz' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+           spacy_lemmatize           
+-------------------------------------
+   dies sein meinen beispieltestsatz
+(1 row)
+
+SELECT spacy_lemmatize('de',' "Dies ist mein Beispiel-Testsatz' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+      spacy_lemmatize      
+---------------------------
+   ":2 beispiel-testsatz:6
+(1 row)
+
+SELECT spacy_lemmatize('de',' "Dies ist mein Beispiel-Testsatz' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+    spacy_lemmatize    
+-----------------------
+   " beispiel-testsatz
+(1 row)
+
+SELECT spacy_lemmatize('de',' "Dies ist mein Beispiel-Testsatz' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                 spacy_lemmatize                  
+--------------------------------------------------
+   ":2 dies:3 sein:4 meinen:5 beispiel-testsatz:6
+(1 row)
+
+SELECT spacy_lemmatize('de',' "Dies ist mein Beispiel-Testsatz' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+            spacy_lemmatize             
+----------------------------------------
+   " dies sein meinen beispiel-testsatz
+(1 row)
+
+SELECT spacy_lemmatize('de',' "Dies ist mein Beispiel-Testsatz' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+   spacy_lemmatize    
+----------------------
+   BeispielTestsatz:5
+(1 row)
+
+SELECT spacy_lemmatize('de',' "Dies ist mein Beispiel-Testsatz' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+  spacy_lemmatize   
+--------------------
+   BeispielTestsatz
+(1 row)
+
+SELECT spacy_lemmatize('de',' "Dies ist mein Beispiel-Testsatz' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+               spacy_lemmatize               
+---------------------------------------------
+   Dies:2 sein:3 meinen:4 BeispielTestsatz:5
+(1 row)
+
+SELECT spacy_lemmatize('de',' "Dies ist mein Beispiel-Testsatz' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+           spacy_lemmatize           
+-------------------------------------
+   Dies sein meinen BeispielTestsatz
+(1 row)
+
+SELECT spacy_lemmatize('de',' "Dies ist mein Beispiel-Testsatz' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+      spacy_lemmatize      
+---------------------------
+   ":2 Beispiel-Testsatz:6
+(1 row)
+
+SELECT spacy_lemmatize('de',' "Dies ist mein Beispiel-Testsatz' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+    spacy_lemmatize    
+-----------------------
+   " Beispiel-Testsatz
+(1 row)
+
+SELECT spacy_lemmatize('de',' "Dies ist mein Beispiel-Testsatz' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                 spacy_lemmatize                  
+--------------------------------------------------
+   ":2 Dies:3 sein:4 meinen:5 Beispiel-Testsatz:6
+(1 row)
+
+SELECT spacy_lemmatize('de',' "Dies ist mein Beispiel-Testsatz' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+            spacy_lemmatize             
+----------------------------------------
+   " Dies sein meinen Beispiel-Testsatz
+(1 row)
+
+SELECT spacy_tsvector('de',' "Dies ist mein Beispiel-Testsatz');
+    spacy_tsvector    
+----------------------
+ 'beispieltestsatz':5
+(1 row)
+

@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('eu',' "Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia. Test kasuak sortzeko."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                                 spacy_lemmatize                                                 
+-----------------------------------------------------------------------------------------------------------------
+   google:4 translate:5 bertsioan:6 jartzen:7 ari:8 naizen:9 testeko:10 esaldia:11 test:12 kasuak:13 sortzeko:14
+(1 row)
+
+SELECT spacy_lemmatize('eu',' "Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia. Test kasuak sortzeko."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                                   spacy_lemmatize                                    
+--------------------------------------------------------------------------------------
+   google translate bertsioan jartzen ari naizen testeko esaldia test kasuak sortzeko
+(1 row)
+
+SELECT spacy_lemmatize('eu',' "Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia. Test kasuak sortzeko."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                      spacy_lemmatize                                                       
+----------------------------------------------------------------------------------------------------------------------------
+   hau:2 da:3 google:4 translate:5 bertsioan:6 jartzen:7 ari:8 naizen:9 testeko:10 esaldia:11 test:12 kasuak:13 sortzeko:14
+(1 row)
+
+SELECT spacy_lemmatize('eu',' "Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia. Test kasuak sortzeko."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                       spacy_lemmatize                                       
+---------------------------------------------------------------------------------------------
+   hau da google translate bertsioan jartzen ari naizen testeko esaldia test kasuak sortzeko
+(1 row)
+
+SELECT spacy_lemmatize('eu',' "Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia. Test kasuak sortzeko."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                                           spacy_lemmatize                                                           
+-------------------------------------------------------------------------------------------------------------------------------------
+   ":2 google:5 translate:6 bertsioan:7 jartzen:8 ari:9 naizen:10 testeko:11 esaldia:12 .:13 test:14 kasuak:15 sortzeko:16 .:17 ":18
+(1 row)
+
+SELECT spacy_lemmatize('eu',' "Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia. Test kasuak sortzeko."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                                       spacy_lemmatize                                        
+----------------------------------------------------------------------------------------------
+   " google translate bertsioan jartzen ari naizen testeko esaldia . test kasuak sortzeko . "
+(1 row)
+
+SELECT spacy_lemmatize('eu',' "Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia. Test kasuak sortzeko."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                spacy_lemmatize                                                                 
+------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 hau:3 da:4 google:5 translate:6 bertsioan:7 jartzen:8 ari:9 naizen:10 testeko:11 esaldia:12 .:13 test:14 kasuak:15 sortzeko:16 .:17 ":18
+(1 row)
+
+SELECT spacy_lemmatize('eu',' "Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia. Test kasuak sortzeko."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                           spacy_lemmatize                                           
+-----------------------------------------------------------------------------------------------------
+   " hau da google translate bertsioan jartzen ari naizen testeko esaldia . test kasuak sortzeko . "
+(1 row)
+
+SELECT spacy_lemmatize('eu',' "Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia. Test kasuak sortzeko."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                                 spacy_lemmatize                                                 
+-----------------------------------------------------------------------------------------------------------------
+   Google:4 Translate:5 bertsioan:6 jartzen:7 ari:8 naizen:9 testeko:10 esaldia:11 Test:12 kasuak:13 sortzeko:14
+(1 row)
+
+SELECT spacy_lemmatize('eu',' "Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia. Test kasuak sortzeko."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                                   spacy_lemmatize                                    
+--------------------------------------------------------------------------------------
+   Google Translate bertsioan jartzen ari naizen testeko esaldia Test kasuak sortzeko
+(1 row)
+
+SELECT spacy_lemmatize('eu',' "Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia. Test kasuak sortzeko."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                      spacy_lemmatize                                                       
+----------------------------------------------------------------------------------------------------------------------------
+   Hau:2 da:3 Google:4 Translate:5 bertsioan:6 jartzen:7 ari:8 naizen:9 testeko:10 esaldia:11 Test:12 kasuak:13 sortzeko:14
+(1 row)
+
+SELECT spacy_lemmatize('eu',' "Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia. Test kasuak sortzeko."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                       spacy_lemmatize                                       
+---------------------------------------------------------------------------------------------
+   Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia Test kasuak sortzeko
+(1 row)
+
+SELECT spacy_lemmatize('eu',' "Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia. Test kasuak sortzeko."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                                           spacy_lemmatize                                                           
+-------------------------------------------------------------------------------------------------------------------------------------
+   ":2 Google:5 Translate:6 bertsioan:7 jartzen:8 ari:9 naizen:10 testeko:11 esaldia:12 .:13 Test:14 kasuak:15 sortzeko:16 .:17 ":18
+(1 row)
+
+SELECT spacy_lemmatize('eu',' "Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia. Test kasuak sortzeko."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                                       spacy_lemmatize                                        
+----------------------------------------------------------------------------------------------
+   " Google Translate bertsioan jartzen ari naizen testeko esaldia . Test kasuak sortzeko . "
+(1 row)
+
+SELECT spacy_lemmatize('eu',' "Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia. Test kasuak sortzeko."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                spacy_lemmatize                                                                 
+------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 Hau:3 da:4 Google:5 Translate:6 bertsioan:7 jartzen:8 ari:9 naizen:10 testeko:11 esaldia:12 .:13 Test:14 kasuak:15 sortzeko:16 .:17 ":18
+(1 row)
+
+SELECT spacy_lemmatize('eu',' "Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia. Test kasuak sortzeko."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                           spacy_lemmatize                                           
+-----------------------------------------------------------------------------------------------------
+   " Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia . Test kasuak sortzeko . "
+(1 row)
+
+SELECT spacy_tsvector('eu',' "Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia. Test kasuak sortzeko."');
+                                                           spacy_tsvector                                                            
+-------------------------------------------------------------------------------------------------------------------------------------
+ 'ari':8 'bertsioan':6 'esaldia':11 'google':4 'jartzen':7 'kasuak':13 'naizen':9 'sortzeko':14 'test':12 'testeko':10 'translate':5
+(1 row)
+

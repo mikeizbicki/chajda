@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('sl',' "To je moj primer testnega stavka' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+    spacy_lemmatize    
+-----------------------
+   testnega:6 stavka:7
+(1 row)
+
+SELECT spacy_lemmatize('sl',' "To je moj primer testnega stavka' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+  spacy_lemmatize  
+-------------------
+   testnega stavka
+(1 row)
+
+SELECT spacy_lemmatize('sl',' "To je moj primer testnega stavka' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                spacy_lemmatize                 
+------------------------------------------------
+   to:2 je:3 moj:4 primer:5 testnega:6 stavka:7
+(1 row)
+
+SELECT spacy_lemmatize('sl',' "To je moj primer testnega stavka' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+          spacy_lemmatize           
+------------------------------------
+   to je moj primer testnega stavka
+(1 row)
+
+SELECT spacy_lemmatize('sl',' "To je moj primer testnega stavka' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+      spacy_lemmatize      
+---------------------------
+   ":2 testnega:7 stavka:8
+(1 row)
+
+SELECT spacy_lemmatize('sl',' "To je moj primer testnega stavka' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+   spacy_lemmatize   
+---------------------
+   " testnega stavka
+(1 row)
+
+SELECT spacy_lemmatize('sl',' "To je moj primer testnega stavka' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                  spacy_lemmatize                   
+----------------------------------------------------
+   ":2 to:3 je:4 moj:5 primer:6 testnega:7 stavka:8
+(1 row)
+
+SELECT spacy_lemmatize('sl',' "To je moj primer testnega stavka' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+           spacy_lemmatize            
+--------------------------------------
+   " to je moj primer testnega stavka
+(1 row)
+
+SELECT spacy_lemmatize('sl',' "To je moj primer testnega stavka' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+    spacy_lemmatize    
+-----------------------
+   testnega:6 stavka:7
+(1 row)
+
+SELECT spacy_lemmatize('sl',' "To je moj primer testnega stavka' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+  spacy_lemmatize  
+-------------------
+   testnega stavka
+(1 row)
+
+SELECT spacy_lemmatize('sl',' "To je moj primer testnega stavka' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                spacy_lemmatize                 
+------------------------------------------------
+   To:2 je:3 moj:4 primer:5 testnega:6 stavka:7
+(1 row)
+
+SELECT spacy_lemmatize('sl',' "To je moj primer testnega stavka' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+          spacy_lemmatize           
+------------------------------------
+   To je moj primer testnega stavka
+(1 row)
+
+SELECT spacy_lemmatize('sl',' "To je moj primer testnega stavka' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+      spacy_lemmatize      
+---------------------------
+   ":2 testnega:7 stavka:8
+(1 row)
+
+SELECT spacy_lemmatize('sl',' "To je moj primer testnega stavka' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+   spacy_lemmatize   
+---------------------
+   " testnega stavka
+(1 row)
+
+SELECT spacy_lemmatize('sl',' "To je moj primer testnega stavka' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                  spacy_lemmatize                   
+----------------------------------------------------
+   ":2 To:3 je:4 moj:5 primer:6 testnega:7 stavka:8
+(1 row)
+
+SELECT spacy_lemmatize('sl',' "To je moj primer testnega stavka' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+           spacy_lemmatize            
+--------------------------------------
+   " To je moj primer testnega stavka
+(1 row)
+
+SELECT spacy_tsvector('sl',' "To je moj primer testnega stavka');
+     spacy_tsvector      
+-------------------------
+ 'stavka':7 'testnega':6
+(1 row)
+

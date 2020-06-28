@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('lb',' "Dëst ass mäi Beispill Testsaz deen ech a Google Translate setzen fir Testfäll ze generéieren."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                         spacy_lemmatize                                          
+--------------------------------------------------------------------------------------------------
+   dëst:2 mäin:4 beispill:5 testsaz:6 google:10 translate:11 setzen:12 testfäll:14 generéieren:16
+(1 row)
+
+SELECT spacy_lemmatize('lb',' "Dëst ass mäi Beispill Testsaz deen ech a Google Translate setzen fir Testfäll ze generéieren."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                              spacy_lemmatize                              
+---------------------------------------------------------------------------
+   dëst mäin beispill testsaz google translate setzen testfäll generéieren
+(1 row)
+
+SELECT spacy_lemmatize('lb',' "Dëst ass mäi Beispill Testsaz deen ech a Google Translate setzen fir Testfäll ze generéieren."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                            spacy_lemmatize                                                            
+---------------------------------------------------------------------------------------------------------------------------------------
+   dëst:2 ass:3 mäin:4 beispill:5 testsaz:6 deen:7 ech:8 an:9 google:10 translate:11 setzen:12 fir:13 testfäll:14 ze:15 generéieren:16
+(1 row)
+
+SELECT spacy_lemmatize('lb',' "Dëst ass mäi Beispill Testsaz deen ech a Google Translate setzen fir Testfäll ze generéieren."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                         spacy_lemmatize                                          
+--------------------------------------------------------------------------------------------------
+   dëst ass mäin beispill testsaz deen ech an google translate setzen fir testfäll ze generéieren
+(1 row)
+
+SELECT spacy_lemmatize('lb',' "Dëst ass mäi Beispill Testsaz deen ech a Google Translate setzen fir Testfäll ze generéieren."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                                spacy_lemmatize                                                 
+----------------------------------------------------------------------------------------------------------------
+   ":2 dëst:3 mäin:5 beispill:6 testsaz:7 google:11 translate:12 setzen:13 testfäll:15 generéieren:17 .:18 ":19
+(1 row)
+
+SELECT spacy_lemmatize('lb',' "Dëst ass mäi Beispill Testsaz deen ech a Google Translate setzen fir Testfäll ze generéieren."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                                 spacy_lemmatize                                 
+---------------------------------------------------------------------------------
+   " dëst mäin beispill testsaz google translate setzen testfäll generéieren . "
+(1 row)
+
+SELECT spacy_lemmatize('lb',' "Dëst ass mäi Beispill Testsaz deen ech a Google Translate setzen fir Testfäll ze generéieren."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                   spacy_lemmatize                                                                    
+------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 dëst:3 ass:4 mäin:5 beispill:6 testsaz:7 deen:8 ech:9 an:10 google:11 translate:12 setzen:13 fir:14 testfäll:15 ze:16 generéieren:17 .:18 ":19
+(1 row)
+
+SELECT spacy_lemmatize('lb',' "Dëst ass mäi Beispill Testsaz deen ech a Google Translate setzen fir Testfäll ze generéieren."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                            spacy_lemmatize                                             
+--------------------------------------------------------------------------------------------------------
+   " dëst ass mäin beispill testsaz deen ech an google translate setzen fir testfäll ze generéieren . "
+(1 row)
+
+SELECT spacy_lemmatize('lb',' "Dëst ass mäi Beispill Testsaz deen ech a Google Translate setzen fir Testfäll ze generéieren."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                         spacy_lemmatize                                          
+--------------------------------------------------------------------------------------------------
+   Dëst:2 mäin:4 Beispill:5 Testsaz:6 Google:10 Translate:11 setzen:12 Testfäll:14 generéieren:16
+(1 row)
+
+SELECT spacy_lemmatize('lb',' "Dëst ass mäi Beispill Testsaz deen ech a Google Translate setzen fir Testfäll ze generéieren."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                              spacy_lemmatize                              
+---------------------------------------------------------------------------
+   Dëst mäin Beispill Testsaz Google Translate setzen Testfäll generéieren
+(1 row)
+
+SELECT spacy_lemmatize('lb',' "Dëst ass mäi Beispill Testsaz deen ech a Google Translate setzen fir Testfäll ze generéieren."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                            spacy_lemmatize                                                            
+---------------------------------------------------------------------------------------------------------------------------------------
+   Dëst:2 ass:3 mäin:4 Beispill:5 Testsaz:6 deen:7 ech:8 an:9 Google:10 Translate:11 setzen:12 fir:13 Testfäll:14 ze:15 generéieren:16
+(1 row)
+
+SELECT spacy_lemmatize('lb',' "Dëst ass mäi Beispill Testsaz deen ech a Google Translate setzen fir Testfäll ze generéieren."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                         spacy_lemmatize                                          
+--------------------------------------------------------------------------------------------------
+   Dëst ass mäin Beispill Testsaz deen ech an Google Translate setzen fir Testfäll ze generéieren
+(1 row)
+
+SELECT spacy_lemmatize('lb',' "Dëst ass mäi Beispill Testsaz deen ech a Google Translate setzen fir Testfäll ze generéieren."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                                spacy_lemmatize                                                 
+----------------------------------------------------------------------------------------------------------------
+   ":2 Dëst:3 mäin:5 Beispill:6 Testsaz:7 Google:11 Translate:12 setzen:13 Testfäll:15 generéieren:17 .:18 ":19
+(1 row)
+
+SELECT spacy_lemmatize('lb',' "Dëst ass mäi Beispill Testsaz deen ech a Google Translate setzen fir Testfäll ze generéieren."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                                 spacy_lemmatize                                 
+---------------------------------------------------------------------------------
+   " Dëst mäin Beispill Testsaz Google Translate setzen Testfäll generéieren . "
+(1 row)
+
+SELECT spacy_lemmatize('lb',' "Dëst ass mäi Beispill Testsaz deen ech a Google Translate setzen fir Testfäll ze generéieren."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                   spacy_lemmatize                                                                    
+------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 Dëst:3 ass:4 mäin:5 Beispill:6 Testsaz:7 deen:8 ech:9 an:10 Google:11 Translate:12 setzen:13 fir:14 Testfäll:15 ze:16 generéieren:17 .:18 ":19
+(1 row)
+
+SELECT spacy_lemmatize('lb',' "Dëst ass mäi Beispill Testsaz deen ech a Google Translate setzen fir Testfäll ze generéieren."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                            spacy_lemmatize                                             
+--------------------------------------------------------------------------------------------------------
+   " Dëst ass mäin Beispill Testsaz deen ech an Google Translate setzen fir Testfäll ze generéieren . "
+(1 row)
+
+SELECT spacy_tsvector('lb',' "Dëst ass mäi Beispill Testsaz deen ech a Google Translate setzen fir Testfäll ze generéieren."');
+                                                  spacy_tsvector                                                  
+------------------------------------------------------------------------------------------------------------------
+ 'beispill':5 'dëst':2 'generéieren':16 'google':10 'mäin':4 'setzen':12 'testfäll':14 'testsaz':6 'translate':11
+(1 row)
+

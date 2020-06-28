@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('uk',' "Це мій приклад тестового речення' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+          spacy_lemmatize          
+-----------------------------------
+   приклад:4 тестового:5 речення:6
+(1 row)
+
+SELECT spacy_lemmatize('uk',' "Це мій приклад тестового речення' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+       spacy_lemmatize       
+-----------------------------
+   приклад тестового речення
+(1 row)
+
+SELECT spacy_lemmatize('uk',' "Це мій приклад тестового речення' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+               spacy_lemmatize                
+----------------------------------------------
+   це:2 мій:3 приклад:4 тестового:5 речення:6
+(1 row)
+
+SELECT spacy_lemmatize('uk',' "Це мій приклад тестового речення' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+          spacy_lemmatize           
+------------------------------------
+   це мій приклад тестового речення
+(1 row)
+
+SELECT spacy_lemmatize('uk',' "Це мій приклад тестового речення' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+            spacy_lemmatize            
+---------------------------------------
+   ":2 приклад:5 тестового:6 речення:7
+(1 row)
+
+SELECT spacy_lemmatize('uk',' "Це мій приклад тестового речення' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+        spacy_lemmatize        
+-------------------------------
+   " приклад тестового речення
+(1 row)
+
+SELECT spacy_lemmatize('uk',' "Це мій приклад тестового речення' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                 spacy_lemmatize                  
+--------------------------------------------------
+   ":2 це:3 мій:4 приклад:5 тестового:6 речення:7
+(1 row)
+
+SELECT spacy_lemmatize('uk',' "Це мій приклад тестового речення' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+           spacy_lemmatize            
+--------------------------------------
+   " це мій приклад тестового речення
+(1 row)
+
+SELECT spacy_lemmatize('uk',' "Це мій приклад тестового речення' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+          spacy_lemmatize          
+-----------------------------------
+   приклад:4 тестового:5 речення:6
+(1 row)
+
+SELECT spacy_lemmatize('uk',' "Це мій приклад тестового речення' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+       spacy_lemmatize       
+-----------------------------
+   приклад тестового речення
+(1 row)
+
+SELECT spacy_lemmatize('uk',' "Це мій приклад тестового речення' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+               spacy_lemmatize                
+----------------------------------------------
+   Це:2 мій:3 приклад:4 тестового:5 речення:6
+(1 row)
+
+SELECT spacy_lemmatize('uk',' "Це мій приклад тестового речення' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+          spacy_lemmatize           
+------------------------------------
+   Це мій приклад тестового речення
+(1 row)
+
+SELECT spacy_lemmatize('uk',' "Це мій приклад тестового речення' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+            spacy_lemmatize            
+---------------------------------------
+   ":2 приклад:5 тестового:6 речення:7
+(1 row)
+
+SELECT spacy_lemmatize('uk',' "Це мій приклад тестового речення' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+        spacy_lemmatize        
+-------------------------------
+   " приклад тестового речення
+(1 row)
+
+SELECT spacy_lemmatize('uk',' "Це мій приклад тестового речення' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                 spacy_lemmatize                  
+--------------------------------------------------
+   ":2 Це:3 мій:4 приклад:5 тестового:6 речення:7
+(1 row)
+
+SELECT spacy_lemmatize('uk',' "Це мій приклад тестового речення' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+           spacy_lemmatize            
+--------------------------------------
+   " Це мій приклад тестового речення
+(1 row)
+
+SELECT spacy_tsvector('uk',' "Це мій приклад тестового речення');
+            spacy_tsvector             
+---------------------------------------
+ 'приклад':4 'речення':6 'тестового':5
+(1 row)
+

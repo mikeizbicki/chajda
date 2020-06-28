@@ -97,8 +97,8 @@ def lemmatize(
         text,
         lower_case=True,
         remove_special_chars=True,
-        remove_stopwords=True,
-        add_positions=False
+        remove_stop_words=True,
+        add_positions=False,
         ):
 
     # if any input is None (NULL in postgres),
@@ -148,7 +148,7 @@ def lemmatize(
             return token.lemma_
 
     def include_token(token):
-        if remove_stopwords:
+        if remove_stop_words:
             return not token.is_stop
         else:
             return True

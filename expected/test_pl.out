@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('pl',' "To jest moje przykładowe zdanie testowe' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+          spacy_lemmatize           
+------------------------------------
+   przykładowe:5 zdanie:6 testowe:7
+(1 row)
+
+SELECT spacy_lemmatize('pl',' "To jest moje przykładowe zdanie testowe' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+       spacy_lemmatize        
+------------------------------
+   przykładowe zdanie testowe
+(1 row)
+
+SELECT spacy_lemmatize('pl',' "To jest moje przykładowe zdanie testowe' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                    spacy_lemmatize                    
+-------------------------------------------------------
+   to:2 jest:3 moje:4 przykładowe:5 zdanie:6 testowe:7
+(1 row)
+
+SELECT spacy_lemmatize('pl',' "To jest moje przykładowe zdanie testowe' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+              spacy_lemmatize              
+-------------------------------------------
+   to jest moje przykładowe zdanie testowe
+(1 row)
+
+SELECT spacy_lemmatize('pl',' "To jest moje przykładowe zdanie testowe' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+            spacy_lemmatize             
+----------------------------------------
+   ":2 przykładowe:6 zdanie:7 testowe:8
+(1 row)
+
+SELECT spacy_lemmatize('pl',' "To jest moje przykładowe zdanie testowe' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+        spacy_lemmatize         
+--------------------------------
+   " przykładowe zdanie testowe
+(1 row)
+
+SELECT spacy_lemmatize('pl',' "To jest moje przykładowe zdanie testowe' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                      spacy_lemmatize                      
+-----------------------------------------------------------
+   ":2 to:3 jest:4 moje:5 przykładowe:6 zdanie:7 testowe:8
+(1 row)
+
+SELECT spacy_lemmatize('pl',' "To jest moje przykładowe zdanie testowe' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+               spacy_lemmatize               
+---------------------------------------------
+   " to jest moje przykładowe zdanie testowe
+(1 row)
+
+SELECT spacy_lemmatize('pl',' "To jest moje przykładowe zdanie testowe' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+          spacy_lemmatize           
+------------------------------------
+   przykładowe:5 zdanie:6 testowe:7
+(1 row)
+
+SELECT spacy_lemmatize('pl',' "To jest moje przykładowe zdanie testowe' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+       spacy_lemmatize        
+------------------------------
+   przykładowe zdanie testowe
+(1 row)
+
+SELECT spacy_lemmatize('pl',' "To jest moje przykładowe zdanie testowe' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                    spacy_lemmatize                    
+-------------------------------------------------------
+   to:2 jest:3 moje:4 przykładowe:5 zdanie:6 testowe:7
+(1 row)
+
+SELECT spacy_lemmatize('pl',' "To jest moje przykładowe zdanie testowe' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+              spacy_lemmatize              
+-------------------------------------------
+   to jest moje przykładowe zdanie testowe
+(1 row)
+
+SELECT spacy_lemmatize('pl',' "To jest moje przykładowe zdanie testowe' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+            spacy_lemmatize             
+----------------------------------------
+   ":2 przykładowe:6 zdanie:7 testowe:8
+(1 row)
+
+SELECT spacy_lemmatize('pl',' "To jest moje przykładowe zdanie testowe' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+        spacy_lemmatize         
+--------------------------------
+   " przykładowe zdanie testowe
+(1 row)
+
+SELECT spacy_lemmatize('pl',' "To jest moje przykładowe zdanie testowe' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                      spacy_lemmatize                      
+-----------------------------------------------------------
+   ":2 to:3 jest:4 moje:5 przykładowe:6 zdanie:7 testowe:8
+(1 row)
+
+SELECT spacy_lemmatize('pl',' "To jest moje przykładowe zdanie testowe' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+               spacy_lemmatize               
+---------------------------------------------
+   " to jest moje przykładowe zdanie testowe
+(1 row)
+
+SELECT spacy_tsvector('pl',' "To jest moje przykładowe zdanie testowe');
+             spacy_tsvector             
+----------------------------------------
+ 'przykładowe':5 'testowe':7 'zdanie':6
+(1 row)
+

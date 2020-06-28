@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('hu',' "Ez a példakénti tesztmondat' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+       spacy_lemmatize        
+------------------------------
+   példakénti:4 tesztmondat:5
+(1 row)
+
+SELECT spacy_lemmatize('hu',' "Ez a példakénti tesztmondat' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+     spacy_lemmatize      
+--------------------------
+   példakénti tesztmondat
+(1 row)
+
+SELECT spacy_lemmatize('hu',' "Ez a példakénti tesztmondat' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+            spacy_lemmatize            
+---------------------------------------
+   ez:2 a:3 példakénti:4 tesztmondat:5
+(1 row)
+
+SELECT spacy_lemmatize('hu',' "Ez a példakénti tesztmondat' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+        spacy_lemmatize        
+-------------------------------
+   ez a példakénti tesztmondat
+(1 row)
+
+SELECT spacy_lemmatize('hu',' "Ez a példakénti tesztmondat' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+         spacy_lemmatize          
+----------------------------------
+   ":2 példakénti:5 tesztmondat:6
+(1 row)
+
+SELECT spacy_lemmatize('hu',' "Ez a példakénti tesztmondat' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+      spacy_lemmatize       
+----------------------------
+   " példakénti tesztmondat
+(1 row)
+
+SELECT spacy_lemmatize('hu',' "Ez a példakénti tesztmondat' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+              spacy_lemmatize              
+-------------------------------------------
+   ":2 ez:3 a:4 példakénti:5 tesztmondat:6
+(1 row)
+
+SELECT spacy_lemmatize('hu',' "Ez a példakénti tesztmondat' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+         spacy_lemmatize         
+---------------------------------
+   " ez a példakénti tesztmondat
+(1 row)
+
+SELECT spacy_lemmatize('hu',' "Ez a példakénti tesztmondat' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+       spacy_lemmatize        
+------------------------------
+   példakénti:4 tesztmondat:5
+(1 row)
+
+SELECT spacy_lemmatize('hu',' "Ez a példakénti tesztmondat' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+     spacy_lemmatize      
+--------------------------
+   példakénti tesztmondat
+(1 row)
+
+SELECT spacy_lemmatize('hu',' "Ez a példakénti tesztmondat' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+            spacy_lemmatize            
+---------------------------------------
+   Ez:2 a:3 példakénti:4 tesztmondat:5
+(1 row)
+
+SELECT spacy_lemmatize('hu',' "Ez a példakénti tesztmondat' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+        spacy_lemmatize        
+-------------------------------
+   Ez a példakénti tesztmondat
+(1 row)
+
+SELECT spacy_lemmatize('hu',' "Ez a példakénti tesztmondat' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+         spacy_lemmatize          
+----------------------------------
+   ":2 példakénti:5 tesztmondat:6
+(1 row)
+
+SELECT spacy_lemmatize('hu',' "Ez a példakénti tesztmondat' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+      spacy_lemmatize       
+----------------------------
+   " példakénti tesztmondat
+(1 row)
+
+SELECT spacy_lemmatize('hu',' "Ez a példakénti tesztmondat' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+              spacy_lemmatize              
+-------------------------------------------
+   ":2 Ez:3 a:4 példakénti:5 tesztmondat:6
+(1 row)
+
+SELECT spacy_lemmatize('hu',' "Ez a példakénti tesztmondat' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+         spacy_lemmatize         
+---------------------------------
+   " Ez a példakénti tesztmondat
+(1 row)
+
+SELECT spacy_tsvector('hu',' "Ez a példakénti tesztmondat');
+         spacy_tsvector         
+--------------------------------
+ 'példakénti':4 'tesztmondat':5
+(1 row)
+

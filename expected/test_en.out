@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('en',' "This is my example test sentence that I''m putting into Google Translate to generate test cases."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                        spacy_lemmatize                                         
+------------------------------------------------------------------------------------------------
+   example:5 test:6 sentence:7 be:10 putt:11 google:13 translate:14 generate:16 test:17 case:18
+(1 row)
+
+SELECT spacy_lemmatize('en',' "This is my example test sentence that I''m putting into Google Translate to generate test cases."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                           spacy_lemmatize                           
+---------------------------------------------------------------------
+   example test sentence be putt google translate generate test case
+(1 row)
+
+SELECT spacy_lemmatize('en',' "This is my example test sentence that I''m putting into Google Translate to generate test cases."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                                spacy_lemmatize                                                                
+-----------------------------------------------------------------------------------------------------------------------------------------------
+   this:2 be:3 my:4 example:5 test:6 sentence:7 that:8 -PRON-:9 be:10 putt:11 into:12 google:13 translate:14 to:15 generate:16 test:17 case:18
+(1 row)
+
+SELECT spacy_lemmatize('en',' "This is my example test sentence that I''m putting into Google Translate to generate test cases."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                          spacy_lemmatize                                           
+----------------------------------------------------------------------------------------------------
+   this be my example test sentence that -PRON- be putt into google translate to generate test case
+(1 row)
+
+SELECT spacy_lemmatize('en',' "This is my example test sentence that I''m putting into Google Translate to generate test cases."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                            spacy_lemmatize                                             
+--------------------------------------------------------------------------------------------------------
+   ":2 example:6 test:7 sentence:8 putt:12 google:14 translate:15 generate:17 test:18 case:19 .:20 ":21
+(1 row)
+
+SELECT spacy_lemmatize('en',' "This is my example test sentence that I''m putting into Google Translate to generate test cases."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                            spacy_lemmatize                             
+------------------------------------------------------------------------
+   " example test sentence putt google translate generate test case . "
+(1 row)
+
+SELECT spacy_lemmatize('en',' "This is my example test sentence that I''m putting into Google Translate to generate test cases."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                       spacy_lemmatize                                                                        
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 this:3 be:4 my:5 example:6 test:7 sentence:8 that:9 -PRON-:10 be:11 putt:12 into:13 google:14 translate:15 to:16 generate:17 test:18 case:19 .:20 ":21
+(1 row)
+
+SELECT spacy_lemmatize('en',' "This is my example test sentence that I''m putting into Google Translate to generate test cases."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                             spacy_lemmatize                                              
+----------------------------------------------------------------------------------------------------------
+   " this be my example test sentence that -PRON- be putt into google translate to generate test case . "
+(1 row)
+
+SELECT spacy_lemmatize('en',' "This is my example test sentence that I''m putting into Google Translate to generate test cases."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                        spacy_lemmatize                                         
+------------------------------------------------------------------------------------------------
+   example:5 test:6 sentence:7 be:10 putt:11 Google:13 Translate:14 generate:16 test:17 case:18
+(1 row)
+
+SELECT spacy_lemmatize('en',' "This is my example test sentence that I''m putting into Google Translate to generate test cases."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                           spacy_lemmatize                           
+---------------------------------------------------------------------
+   example test sentence be putt Google Translate generate test case
+(1 row)
+
+SELECT spacy_lemmatize('en',' "This is my example test sentence that I''m putting into Google Translate to generate test cases."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                                spacy_lemmatize                                                                
+-----------------------------------------------------------------------------------------------------------------------------------------------
+   This:2 be:3 my:4 example:5 test:6 sentence:7 that:8 -PRON-:9 be:10 putt:11 into:12 Google:13 Translate:14 to:15 generate:16 test:17 case:18
+(1 row)
+
+SELECT spacy_lemmatize('en',' "This is my example test sentence that I''m putting into Google Translate to generate test cases."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                          spacy_lemmatize                                           
+----------------------------------------------------------------------------------------------------
+   This be my example test sentence that -PRON- be putt into Google Translate to generate test case
+(1 row)
+
+SELECT spacy_lemmatize('en',' "This is my example test sentence that I''m putting into Google Translate to generate test cases."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                            spacy_lemmatize                                             
+--------------------------------------------------------------------------------------------------------
+   ":2 example:6 test:7 sentence:8 putt:12 Google:14 Translate:15 generate:17 test:18 case:19 .:20 ":21
+(1 row)
+
+SELECT spacy_lemmatize('en',' "This is my example test sentence that I''m putting into Google Translate to generate test cases."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                            spacy_lemmatize                             
+------------------------------------------------------------------------
+   " example test sentence putt Google Translate generate test case . "
+(1 row)
+
+SELECT spacy_lemmatize('en',' "This is my example test sentence that I''m putting into Google Translate to generate test cases."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                       spacy_lemmatize                                                                        
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 This:3 be:4 my:5 example:6 test:7 sentence:8 that:9 -PRON-:10 be:11 putt:12 into:13 Google:14 Translate:15 to:16 generate:17 test:18 case:19 .:20 ":21
+(1 row)
+
+SELECT spacy_lemmatize('en',' "This is my example test sentence that I''m putting into Google Translate to generate test cases."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                             spacy_lemmatize                                              
+----------------------------------------------------------------------------------------------------------
+   " This be my example test sentence that -PRON- be putt into Google Translate to generate test case . "
+(1 row)
+
+SELECT spacy_tsvector('en',' "This is my example test sentence that I''m putting into Google Translate to generate test cases."');
+                                              spacy_tsvector                                               
+-----------------------------------------------------------------------------------------------------------
+ 'be':10 'case':18 'example':5 'generate':16 'google':13 'putt':11 'sentence':7 'test':6,17 'translate':14
+(1 row)
+

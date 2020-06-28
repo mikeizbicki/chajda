@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('ca',' "Aquest és el meu exemple de frase de prova que vaig publicant a Google Translate per generar casos de prova."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                       spacy_lemmatize                                        
+----------------------------------------------------------------------------------------------
+   exemple:6 frase:8 provar:10 publicar:13 google:15 translate:16 generar:18 cas:19 provar:21
+(1 row)
+
+SELECT spacy_lemmatize('ca',' "Aquest és el meu exemple de frase de prova que vaig publicant a Google Translate per generar casos de prova."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                           spacy_lemmatize                           
+---------------------------------------------------------------------
+   exemple frase provar publicar google translate generar cas provar
+(1 row)
+
+SELECT spacy_lemmatize('ca',' "Aquest és el meu exemple de frase de prova que vaig publicant a Google Translate per generar casos de prova."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                                          spacy_lemmatize                                                                           
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   aquest:2 ser:3 ell:4 meu:5 exemple:6 de:7 frase:8 de:9 provar:10 que:11 anar:12 publicar:13 a:14 google:15 translate:16 per:17 generar:18 cas:19 de:20 provar:21
+(1 row)
+
+SELECT spacy_lemmatize('ca',' "Aquest és el meu exemple de frase de prova que vaig publicant a Google Translate per generar casos de prova."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                                spacy_lemmatize                                                 
+----------------------------------------------------------------------------------------------------------------
+   aquest ser ell meu exemple de frase de provar que anar publicar a google translate per generar cas de provar
+(1 row)
+
+SELECT spacy_lemmatize('ca',' "Aquest és el meu exemple de frase de prova que vaig publicant a Google Translate per generar casos de prova."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                              spacy_lemmatize                                               
+------------------------------------------------------------------------------------------------------------
+   ":2 exemple:7 frase:9 provar:11 publicar:14 google:16 translate:17 generar:19 cas:20 provar:22 .:23 ":24
+(1 row)
+
+SELECT spacy_lemmatize('ca',' "Aquest és el meu exemple de frase de prova que vaig publicant a Google Translate per generar casos de prova."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                              spacy_lemmatize                              
+---------------------------------------------------------------------------
+   " exemple frase provar publicar google translate generar cas provar . "
+(1 row)
+
+SELECT spacy_lemmatize('ca',' "Aquest és el meu exemple de frase de prova que vaig publicant a Google Translate per generar casos de prova."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                                  spacy_lemmatize                                                                                  
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 aquest:3 ser:4 ell:5 meu:6 exemple:7 de:8 frase:9 de:10 provar:11 que:12 anar:13 publicar:14 a:15 google:16 translate:17 per:18 generar:19 cas:20 de:21 provar:22 .:23 ":24
+(1 row)
+
+SELECT spacy_lemmatize('ca',' "Aquest és el meu exemple de frase de prova que vaig publicant a Google Translate per generar casos de prova."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                                   spacy_lemmatize                                                    
+----------------------------------------------------------------------------------------------------------------------
+   " aquest ser ell meu exemple de frase de provar que anar publicar a google translate per generar cas de provar . "
+(1 row)
+
+SELECT spacy_lemmatize('ca',' "Aquest és el meu exemple de frase de prova que vaig publicant a Google Translate per generar casos de prova."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                                       spacy_lemmatize                                        
+----------------------------------------------------------------------------------------------
+   exemple:6 frase:8 provar:10 publicar:13 Google:15 Translate:16 generar:18 cas:19 provar:21
+(1 row)
+
+SELECT spacy_lemmatize('ca',' "Aquest és el meu exemple de frase de prova que vaig publicant a Google Translate per generar casos de prova."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                           spacy_lemmatize                           
+---------------------------------------------------------------------
+   exemple frase provar publicar Google Translate generar cas provar
+(1 row)
+
+SELECT spacy_lemmatize('ca',' "Aquest és el meu exemple de frase de prova que vaig publicant a Google Translate per generar casos de prova."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                                          spacy_lemmatize                                                                           
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   Aquest:2 ser:3 ell:4 meu:5 exemple:6 de:7 frase:8 de:9 provar:10 que:11 anar:12 publicar:13 a:14 Google:15 Translate:16 per:17 generar:18 cas:19 de:20 provar:21
+(1 row)
+
+SELECT spacy_lemmatize('ca',' "Aquest és el meu exemple de frase de prova que vaig publicant a Google Translate per generar casos de prova."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                                spacy_lemmatize                                                 
+----------------------------------------------------------------------------------------------------------------
+   Aquest ser ell meu exemple de frase de provar que anar publicar a Google Translate per generar cas de provar
+(1 row)
+
+SELECT spacy_lemmatize('ca',' "Aquest és el meu exemple de frase de prova que vaig publicant a Google Translate per generar casos de prova."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                              spacy_lemmatize                                               
+------------------------------------------------------------------------------------------------------------
+   ":2 exemple:7 frase:9 provar:11 publicar:14 Google:16 Translate:17 generar:19 cas:20 provar:22 .:23 ":24
+(1 row)
+
+SELECT spacy_lemmatize('ca',' "Aquest és el meu exemple de frase de prova que vaig publicant a Google Translate per generar casos de prova."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                              spacy_lemmatize                              
+---------------------------------------------------------------------------
+   " exemple frase provar publicar Google Translate generar cas provar . "
+(1 row)
+
+SELECT spacy_lemmatize('ca',' "Aquest és el meu exemple de frase de prova que vaig publicant a Google Translate per generar casos de prova."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                                  spacy_lemmatize                                                                                  
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   ":2 Aquest:3 ser:4 ell:5 meu:6 exemple:7 de:8 frase:9 de:10 provar:11 que:12 anar:13 publicar:14 a:15 Google:16 Translate:17 per:18 generar:19 cas:20 de:21 provar:22 .:23 ":24
+(1 row)
+
+SELECT spacy_lemmatize('ca',' "Aquest és el meu exemple de frase de prova que vaig publicant a Google Translate per generar casos de prova."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                                   spacy_lemmatize                                                    
+----------------------------------------------------------------------------------------------------------------------
+   " Aquest ser ell meu exemple de frase de provar que anar publicar a Google Translate per generar cas de provar . "
+(1 row)
+
+SELECT spacy_tsvector('ca',' "Aquest és el meu exemple de frase de prova que vaig publicant a Google Translate per generar casos de prova."');
+                                           spacy_tsvector                                            
+-----------------------------------------------------------------------------------------------------
+ 'cas':19 'exemple':6 'frase':8 'generar':18 'google':15 'provar':10,21 'publicar':13 'translate':16
+(1 row)
+

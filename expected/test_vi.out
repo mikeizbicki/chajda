@@ -1,0 +1,104 @@
+CREATE EXTENSION IF NOT EXISTS pspacy;
+NOTICE:  extension "pspacy" already exists, skipping
+SELECT spacy_lemmatize('vi',' "Đây là câu kiểm tra mẫu của tôi mà tôi đang đưa vào Google Dịch để tạo các trường hợp kiểm tra."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                          spacy_lemmatize                           
+--------------------------------------------------------------------
+ câu:3 kiểm_tra:4 mẫu:5 google:13 dịch:14 trường_hợp:18 kiểm_tra:19
+(1 row)
+
+SELECT spacy_lemmatize('vi',' "Đây là câu kiểm tra mẫu của tôi mà tôi đang đưa vào Google Dịch để tạo các trường hợp kiểm tra."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                 spacy_lemmatize                  
+--------------------------------------------------
+ câu kiểm_tra mẫu google dịch trường_hợp kiểm_tra
+(1 row)
+
+SELECT spacy_lemmatize('vi',' "Đây là câu kiểm tra mẫu của tôi mà tôi đang đưa vào Google Dịch để tạo các trường hợp kiểm tra."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                                spacy_lemmatize                                                                 
+------------------------------------------------------------------------------------------------------------------------------------------------
+ đây:1 là:2 câu:3 kiểm_tra:4 mẫu:5 của:6 tôi:7 mà:8 tôi:9 đang:10 đưa:11 vào:12 google:13 dịch:14 để:15 tạo:16 các:17 trường_hợp:18 kiểm_tra:19
+(1 row)
+
+SELECT spacy_lemmatize('vi',' "Đây là câu kiểm tra mẫu của tôi mà tôi đang đưa vào Google Dịch để tạo các trường hợp kiểm tra."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                        spacy_lemmatize                                         
+------------------------------------------------------------------------------------------------
+ đây là câu kiểm_tra mẫu của tôi mà tôi đang đưa vào google dịch để tạo các trường_hợp kiểm_tra
+(1 row)
+
+SELECT spacy_lemmatize('vi',' "Đây là câu kiểm tra mẫu của tôi mà tôi đang đưa vào Google Dịch để tạo các trường hợp kiểm tra."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                 spacy_lemmatize                                  
+----------------------------------------------------------------------------------
+ ":1 câu:4 kiểm_tra:5 mẫu:6 google:14 dịch:15 trường_hợp:19 kiểm_tra:20 .:21 ":22
+(1 row)
+
+SELECT spacy_lemmatize('vi',' "Đây là câu kiểm tra mẫu của tôi mà tôi đang đưa vào Google Dịch để tạo các trường hợp kiểm tra."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                    spacy_lemmatize                     
+--------------------------------------------------------
+ " câu kiểm_tra mẫu google dịch trường_hợp kiểm_tra . "
+(1 row)
+
+SELECT spacy_lemmatize('vi',' "Đây là câu kiểm tra mẫu của tôi mà tôi đang đưa vào Google Dịch để tạo các trường hợp kiểm tra."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                        spacy_lemmatize                                                                        
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+ ":1 đây:2 là:3 câu:4 kiểm_tra:5 mẫu:6 của:7 tôi:8 mà:9 tôi:10 đang:11 đưa:12 vào:13 google:14 dịch:15 để:16 tạo:17 các:18 trường_hợp:19 kiểm_tra:20 .:21 ":22
+(1 row)
+
+SELECT spacy_lemmatize('vi',' "Đây là câu kiểm tra mẫu của tôi mà tôi đang đưa vào Google Dịch để tạo các trường hợp kiểm tra."' , lower_case=>True , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                           spacy_lemmatize                                            
+------------------------------------------------------------------------------------------------------
+ " đây là câu kiểm_tra mẫu của tôi mà tôi đang đưa vào google dịch để tạo các trường_hợp kiểm_tra . "
+(1 row)
+
+SELECT spacy_lemmatize('vi',' "Đây là câu kiểm tra mẫu của tôi mà tôi đang đưa vào Google Dịch để tạo các trường hợp kiểm tra."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
+                         spacy_lemmatize                         
+-----------------------------------------------------------------
+ câu:3 kiểm_tra:4 mẫu:5 Google_Dịch:13 trường_hợp:17 kiểm_tra:18
+(1 row)
+
+SELECT spacy_lemmatize('vi',' "Đây là câu kiểm tra mẫu của tôi mà tôi đang đưa vào Google Dịch để tạo các trường hợp kiểm tra."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
+                 spacy_lemmatize                  
+--------------------------------------------------
+ câu kiểm_tra mẫu Google_Dịch trường_hợp kiểm_tra
+(1 row)
+
+SELECT spacy_lemmatize('vi',' "Đây là câu kiểm tra mẫu của tôi mà tôi đang đưa vào Google Dịch để tạo các trường hợp kiểm tra."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>True);
+                                                               spacy_lemmatize                                                               
+---------------------------------------------------------------------------------------------------------------------------------------------
+ Đây:1 là:2 câu:3 kiểm_tra:4 mẫu:5 của:6 tôi:7 mà:8 tôi:9 đang:10 đưa:11 vào:12 Google_Dịch:13 để:14 tạo:15 các:16 trường_hợp:17 kiểm_tra:18
+(1 row)
+
+SELECT spacy_lemmatize('vi',' "Đây là câu kiểm tra mẫu của tôi mà tôi đang đưa vào Google Dịch để tạo các trường hợp kiểm tra."' , lower_case=>False , remove_special_chars=>True , remove_stop_words=>False , add_positions=>False);
+                                        spacy_lemmatize                                         
+------------------------------------------------------------------------------------------------
+ Đây là câu kiểm_tra mẫu của tôi mà tôi đang đưa vào Google_Dịch để tạo các trường_hợp kiểm_tra
+(1 row)
+
+SELECT spacy_lemmatize('vi',' "Đây là câu kiểm tra mẫu của tôi mà tôi đang đưa vào Google Dịch để tạo các trường hợp kiểm tra."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>True);
+                                spacy_lemmatize                                
+-------------------------------------------------------------------------------
+ ":1 câu:4 kiểm_tra:5 mẫu:6 Google_Dịch:14 trường_hợp:18 kiểm_tra:19 .:20 ":21
+(1 row)
+
+SELECT spacy_lemmatize('vi',' "Đây là câu kiểm tra mẫu của tôi mà tôi đang đưa vào Google Dịch để tạo các trường hợp kiểm tra."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>True , add_positions=>False);
+                    spacy_lemmatize                     
+--------------------------------------------------------
+ " câu kiểm_tra mẫu Google_Dịch trường_hợp kiểm_tra . "
+(1 row)
+
+SELECT spacy_lemmatize('vi',' "Đây là câu kiểm tra mẫu của tôi mà tôi đang đưa vào Google Dịch để tạo các trường hợp kiểm tra."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
+                                                                      spacy_lemmatize                                                                       
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+ ":1 Đây:2 là:3 câu:4 kiểm_tra:5 mẫu:6 của:7 tôi:8 mà:9 tôi:10 đang:11 đưa:12 vào:13 Google_Dịch:14 để:15 tạo:16 các:17 trường_hợp:18 kiểm_tra:19 .:20 ":21
+(1 row)
+
+SELECT spacy_lemmatize('vi',' "Đây là câu kiểm tra mẫu của tôi mà tôi đang đưa vào Google Dịch để tạo các trường hợp kiểm tra."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
+                                           spacy_lemmatize                                            
+------------------------------------------------------------------------------------------------------
+ " Đây là câu kiểm_tra mẫu của tôi mà tôi đang đưa vào Google_Dịch để tạo các trường_hợp kiểm_tra . "
+(1 row)
+
+SELECT spacy_tsvector('vi',' "Đây là câu kiểm tra mẫu của tôi mà tôi đang đưa vào Google Dịch để tạo các trường hợp kiểm tra."');
+                            spacy_tsvector                             
+-----------------------------------------------------------------------
+ 'câu':3 'dịch':14 'google':13 'kiểm_tra':4,19 'mẫu':5 'trường_hợp':18
+(1 row)
+
