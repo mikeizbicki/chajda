@@ -30,6 +30,7 @@ pymorphy2-dicts-ru==2.4.404381.4453942
 pymorphy2-dicts-uk==2.4.1.1.1460299261
 pyparsing==2.4.7
 pytest==5.4.3
+pytest-benchmark
 pythainlp==2.2.0
 python-crfsuite==0.9.7
 pyvi==0.1
