@@ -1,9 +1,9 @@
 \echo Use "CREATE EXTENSION nvlfunc" to load this file. \quit
 
-CREATE LANGUAGE plpython3u;
+CREATE OR REPLACE LANGUAGE plpython3u;
 
 
-CREATE OR REPLACE FUNCTION spacy_lemmatize(
+CREATE FUNCTION spacy_lemmatize(
     lang TEXT,
     text TEXT,
     lower_case BOOLEAN DEFAULT TRUE,
@@ -58,7 +58,7 @@ IMMUTABLE
 RETURNS NULL ON NULL INPUT;
 
 
-CREATE OR REPLACE FUNCTION spacy_tsvector(lang TEXT, text TEXT)
+CREATE FUNCTION spacy_tsvector(lang TEXT, text TEXT)
 RETURNS tsvector AS $$
     SELECT spacy_lemmatize(lang,text) :: tsvector
 $$
@@ -67,17 +67,7 @@ IMMUTABLE
 RETURNS NULL ON NULL INPUT;
 
 
-CREATE OR REPLACE FUNCTION spacy_tsvector2(lang TEXT, text TEXT)
-RETURNS tsvector AS $$
-    SELECT spacy_lemmatize(lang,'') :: tsvector
-    --SELECT to_tsvector('simple', spacy_lemmatize(lang,text))
-$$
-LANGUAGE SQL 
-IMMUTABLE
-RETURNS NULL ON NULL INPUT;
-
-
-CREATE OR REPLACE FUNCTION spacy_tsquery(lang TEXT, text TEXT)
+CREATE FUNCTION spacy_tsquery(lang TEXT, text TEXT)
 RETURNS tsquery AS $$
     SELECT to_tsquery('simple', spacy_lemmatize(lang,text, tsquery => TRUE))
 $$

@@ -69,13 +69,16 @@ def load_lang(lang_iso):
     return nlp_constructor(disable=['ner','parser'])
 
 
-def load_all_languages():
+def load_all_langs(langs = None):
     '''
     In typical usage, we want spacy's languages loaded lazily.
     When debugging and testing, however, it can be useful to force the immediate loading of all languages.
     '''
-    for lang in valid_langs:
-        load_lang(lang)
+    if langs is None:
+        langs = valid_langs
+
+    for lang in langs:
+        nlp[lang] = load_lang(lang)
 
 
 # the nlp dictionary will hold the loaded spacy models,
