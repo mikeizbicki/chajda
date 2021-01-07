@@ -94,6 +94,42 @@ import unicodedata
 import sys
 unicode_CPS = dict.fromkeys(i for i in range(0, sys.maxunicode + 1) if unicodedata.category(chr(i)).startswith(('P', 'S', 'C')))
 
+
+def lemmatize_query(
+        lang,
+        text,
+        lower_case=True,
+        remove_special_chars=True,
+        remove_stop_words=True,
+        ):
+    '''
+    >>> lemmatize_query('xx', 'Abraham Lincoln was president of the United States')
+    'abraham & lincoln & was & president & of & the & unite & states'
+    >>> lemmatize_query('en', 'Abraham Lincoln was president of the United States')
+    'abraham & lincoln & president & unite & state'
+    >>> lemmatize_query('en', '      Abraham Lincoln was president of   the     United     States   ')
+    'abraham & lincoln & president & unite & state'
+
+
+    FIXME:
+    we should add quotations like in the following examples
+
+    #>>> lemmatize_query('en', '"Abraham Lincoln" was president of the United States')
+    #'abraham <1> lincoln & president & united & state'
+    #>>> lemmatize_query('en', '"Abraham Lincoln" was "president of the United States"')
+    #'abraham <1> lincoln & president <2> united <1> state'
+    '''
+    lemmas = lemmatize(
+        lang,
+        text,
+        lower_case=lower_case,
+        remove_special_chars=remove_special_chars,
+        remove_stop_words=remove_stop_words,
+        add_positions=False
+        )
+    return ' & '.join(lemmas.split())
+
+
 # this is the main function that gets called from postgresql
 def lemmatize(
         lang,
@@ -101,7 +137,7 @@ def lemmatize(
         lower_case=True,
         remove_special_chars=True,
         remove_stop_words=True,
-        add_positions=False,
+        add_positions=True,
         ):
 
     # if any input is None (NULL in postgres),

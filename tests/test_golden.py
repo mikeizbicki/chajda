@@ -47,8 +47,6 @@ def make_golden_tests(input_file='tests/input.csv', golden_file='tests/golden.cs
     with open(input_file, 'rt', encoding='utf-8', newline='\n') as f:
         inputs = list(csv.DictReader(f, dialect='excel', strict=True))
 
-    #inputs = [ input for input in inputs if input['lang']=='es' ]
-
     # FIXME:
     # There is a minor bug in the Korean test case;
     # On my computer, "이것은" gets tokenized into "이거 은",
@@ -105,13 +103,14 @@ def make_golden_tests(input_file='tests/input.csv', golden_file='tests/golden.cs
         with open('expected/test_'+lang+'.out','wt'):
             pass
         with open('sql/test_'+lang+'.sql', 'wt', encoding='utf-8', newline='\n') as f:
+            f.write('\set ON_ERROR_STOP on\n')
             f.write('CREATE EXTENSION IF NOT EXISTS pspacy;\n')
 
             # a utility function for escaping sql strings safely
             def escape_str(x):
                 return x.replace("'","''")
 
-            # generate tests for spacy_lemmatize
+            # generate unit tests for spacy_lemmatize
             tests_lang = [ test for test in tests if test['lang']==lang ]
             for test in tests_lang:
                 kwargs = ast.literal_eval(test['kwargs'])
@@ -121,11 +120,47 @@ def make_golden_tests(input_file='tests/input.csv', golden_file='tests/golden.cs
                 sql += ');'
                 f.write(sql+'\n')
 
-            # generate tests for other functions
+            # generate unit tests for spacy_tsvector
             inputs_lang = [ input for input in inputs if input['lang']==lang ]
             for input in inputs_lang:
                 f.write("SELECT spacy_tsvector('"+lang+"','"+escape_str(test['text'])+"');\n")
 
+            # generate integration tests;
+            # these tests ensure that the entire pipeline of loading data and querying work
+            # first we create a table and insert some dummy data
+            create_table = ''' 
+CREATE TEMPORARY TABLE test_data (
+    id SERIAL PRIMARY KEY,
+    lang TEXT,
+    text TEXT
+);
+INSERT INTO test_data (lang,text) VALUES'''
+
+            for test in tests:
+                create_table += f'''
+    ('{escape_str(test['lang'])}','{escape_str(test['text'])}'),'''
+            create_table += f''' 
+    ('bad_language','this is a test'),
+    ('','four score and seven years ago'),
+    ('en',''),
+    (NULL,''),
+    ('',NULL),
+    (NULL,NULL);
+'''
+
+            # next, we create indexes and run some queries
+            create_table += f'''
+CREATE EXTENSION IF NOT EXISTS btree_gin;
+CREATE INDEX test_data_idx1 ON test_data USING gin(spacy_tsvector('{lang}',text));
+
+SELECT id FROM test_data WHERE
+    spacy_tsquery('xx','this is a test with Abraham Lincoln') @@ spacy_tsvector('{lang}', text);
+SELECT id FROM test_data WHERE
+    spacy_tsquery('{lang}','this is a test with Abraham Lincoln') @@ spacy_tsvector('xx', text);
+SELECT id FROM test_data WHERE
+    spacy_tsquery('{lang}','this is a test with Abraham Lincoln') @@ spacy_tsvector('{lang}', text);
+            '''
+            f.write(create_table)
 
 # running this file directly will generate new golden tests
 if __name__=='__main__':

@@ -4,11 +4,15 @@ set -e
 working_dir=$(pwd)
 
 pip3 install -r requirements.txt
+sudachipy link -t full
 
 # The Ukranian language needs a modified version of pymorphy2 installed
 # These installation instructions are taken directly from spacy's error messages
 pip3 uninstall pymorphy2 -y
 pip3 install git+https://github.com/kmike/pymorphy2.git pymorphy2-dicts-uk==2.4.1.1.1460299261
+
+# the sudachi library must be install
+chmod +w /usr/local/lib/python3.7/dist-packages/sudachidict/resources/system.dic
 
 # The Korean language needs the mecab-ko and mecab-ko-dic libraries,
 # which unfortunately don't have convenient packaging,

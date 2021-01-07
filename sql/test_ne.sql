@@ -942,12 +942,12 @@ INSERT INTO test_data (lang,text) VALUES
     (NULL,NULL);
 
 CREATE EXTENSION IF NOT EXISTS btree_gin;
-CREATE INDEX test_data_idx1 ON test_data USING gin(spacy_tsvector('xx',text));
+CREATE INDEX test_data_idx1 ON test_data USING gin(spacy_tsvector('ne',text));
 
 SELECT id FROM test_data WHERE
-    spacy_tsquery('xx','this is a test with Abraham Lincoln') @@ spacy_tsvector('xx', text);
+    spacy_tsquery('xx','this is a test with Abraham Lincoln') @@ spacy_tsvector('ne', text);
 SELECT id FROM test_data WHERE
-    spacy_tsquery('xx','this is a test with Abraham Lincoln') @@ spacy_tsvector('xx', text);
+    spacy_tsquery('ne','this is a test with Abraham Lincoln') @@ spacy_tsvector('xx', text);
 SELECT id FROM test_data WHERE
-    spacy_tsquery('xx','this is a test with Abraham Lincoln') @@ spacy_tsvector('xx', text);
+    spacy_tsquery('ne','this is a test with Abraham Lincoln') @@ spacy_tsvector('ne', text);
             

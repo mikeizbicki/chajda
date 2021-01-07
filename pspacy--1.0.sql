@@ -3,20 +3,12 @@
 CREATE OR REPLACE LANGUAGE plpython3u;
 
 
-CREATE FUNCTION spacy_lemmatize(
-    lang TEXT,
-    text TEXT,
-    lower_case BOOLEAN DEFAULT TRUE,
-    remove_special_chars BOOLEAN DEFAULT TRUE,
-    remove_stop_words BOOLEAN DEFAULT TRUE,
-    add_positions BOOLEAN DEFAULT TRUE,
-    tsquery BOOLEAN DEFAULT FALSE
-    )
-RETURNS text AS $$
-# We load the pspacy library into the SD dictionary if it is not already loaded.
+CREATE FUNCTION spacy_load()
+RETURNS VOID AS $$
+# We load the pspacy library into the GD dictionary if it is not already loaded.
 # This dictionary is shared by all invocations of this function within a session,
 # and so all invocations of the function will have access to the library without reloading it.
-if 'pspacy' not in SD:
+if 'pspacy' not in GD:
     # The sys.argv variable normally holds the command line arguments used to invoke python,
     # but when python is lauchned through plpython3u, 
     # there are no command line arguments,
@@ -40,17 +32,54 @@ if 'pspacy' not in SD:
     path = os.path.join(sharedir,'extension')
     sys.path.append(path)
 
-    # load the library into the SD dictionary
+    # load the library into the GD dictionary
     import pspacy
-    SD['pspacy']=pspacy
+    GD['pspacy']=pspacy
+$$ 
+LANGUAGE plpython3u
+IMMUTABLE
+RETURNS NULL ON NULL INPUT;
 
-return SD['pspacy'].lemmatize(
+
+CREATE FUNCTION spacy_lemmatize(
+    lang TEXT,
+    text TEXT,
+    lower_case BOOLEAN DEFAULT TRUE,
+    remove_special_chars BOOLEAN DEFAULT TRUE,
+    remove_stop_words BOOLEAN DEFAULT TRUE,
+    add_positions BOOLEAN DEFAULT TRUE
+    )
+RETURNS text AS $$
+plpy.execute('SELECT spacy_load();');
+return GD['pspacy'].lemmatize(
     lang,
     text,
     lower_case,
     remove_special_chars,
     remove_stop_words,
     add_positions
+    )
+$$ 
+LANGUAGE plpython3u
+IMMUTABLE
+RETURNS NULL ON NULL INPUT;
+
+
+CREATE FUNCTION spacy_lemmatize_query(
+    lang TEXT,
+    text TEXT,
+    lower_case BOOLEAN DEFAULT TRUE,
+    remove_special_chars BOOLEAN DEFAULT TRUE,
+    remove_stop_words BOOLEAN DEFAULT TRUE
+    )
+RETURNS text AS $$
+plpy.execute('SELECT spacy_load();');
+return GD['pspacy'].lemmatize_query(
+    lang,
+    text,
+    lower_case,
+    remove_special_chars,
+    remove_stop_words
     )
 $$ 
 LANGUAGE plpython3u
@@ -69,7 +98,7 @@ RETURNS NULL ON NULL INPUT;
 
 CREATE FUNCTION spacy_tsquery(lang TEXT, text TEXT)
 RETURNS tsquery AS $$
-    SELECT to_tsquery('simple', spacy_lemmatize(lang,text, tsquery => TRUE))
+    SELECT to_tsquery('simple', spacy_lemmatize_query(lang,text))
 $$
 LANGUAGE SQL 
 IMMUTABLE
