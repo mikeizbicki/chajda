@@ -34,7 +34,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip 
         pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        sh install_dependencies.sh
     - name: Lint with flake8
       run: |
         flake8 --ignore=E501,E123,E402 .
@@ -53,5 +53,5 @@ jobs:
     - name: docker
       run: |
         docker-compose up -d --build
-        docker exec -it pspacy_pspacy_db_1 make installcheck
+        docker exec pspacy_pspacy_db_1 make installcheck
         docker down
