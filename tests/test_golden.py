@@ -6,7 +6,7 @@ import re
 # the sys import is needed so that we can import from the current project
 import sys
 sys.path.append('.')
-import pspacy 
+import pspacy
 
 
 ################################################################################
@@ -28,7 +28,7 @@ def get_golden_tests():
 @pytest.mark.parametrize('test', get_golden_tests())
 def test__lemmatize(test):
     kwargs = ast.literal_eval(test['kwargs'])
-    assert pspacy.lemmatize(test['lang'],test['text'],**kwargs) == test['result']
+    assert pspacy.lemmatize(test['lang'], test['text'], **kwargs) == test['result']
 
 
 ################################################################################
@@ -38,7 +38,7 @@ def test__lemmatize(test):
 def make_golden_tests(input_file='tests/input.csv', golden_file='tests/golden.csv'):
     '''
     For each lang/text pair in input_file, generate a series of test cases.
-    This series of test cases will test every possible combination 
+    This series of test cases will test every possible combination
     of keyword arguments to the lemmatize function.
     '''
 
@@ -60,9 +60,8 @@ def make_golden_tests(input_file='tests/input.csv', golden_file='tests/golden.cs
     # so I consider this error to be minor enough that we shouldn't fail the tests.
     # The code below fixes this error so that travis will not fail due to this issue.
     for input in inputs:
-        if input['lang']=='ko':
-            #input['text'] = re.sub(r'이거',r'이것',input['text'])
-            input['text'] = re.sub(r'이것',r'이거',input['text'])
+        if input['lang'] == 'ko':
+            input['text'] = re.sub(r'이것', r'이거', input['text'])
 
     # the kwargss list will contain for each keyword all combinations of True/False
     keywords = [
@@ -75,60 +74,60 @@ def make_golden_tests(input_file='tests/input.csv', golden_file='tests/golden.cs
     for keyword in keywords:
         kwargss_new = []
         for kwargs in kwargss:
-            kwargss_new.append( {**kwargs, keyword:True})
-            kwargss_new.append( {**kwargs, keyword:False})
+            kwargss_new.append({**kwargs, keyword: True})
+            kwargss_new.append({**kwargs, keyword: False})
         kwargss = kwargss_new
 
     # generate a test for each combination of the lang/text input pairs and entry in kwargss
     tests = []
     for input in inputs:
         for kwargs in kwargss:
-            result = pspacy.lemmatize(input['lang'],input['text'],**kwargs)
+            result = pspacy.lemmatize(input['lang'], input['text'], **kwargs)
             tests.append({
-                'lang':input['lang'],
-                'text':input['text'],
-                'kwargs':str(kwargs),
-                'result':result,
+                'lang': input['lang'],
+                'text': input['text'],
+                'kwargs': str(kwargs),
+                'result': result,
                 })
 
     # write the tests to the golden_file
     with open(golden_file, 'wt', encoding='utf-8', newline='\n') as f:
-        writer = csv.DictWriter(f, fieldnames=['lang','text','kwargs','result'])
+        writer = csv.DictWriter(f, fieldnames=['lang', 'text', 'kwargs', 'result'])
         writer.writeheader()
         for test in tests:
             writer.writerow(test)
 
     # write postgres-level tests
     for lang in pspacy.valid_langs:
-        with open('expected/test_'+lang+'.out','wt'):
+        with open('expected/test_' + lang + '.out', 'wt'):
             pass
-        with open('sql/test_'+lang+'.sql', 'wt', encoding='utf-8', newline='\n') as f:
+        with open('sql/test_' + lang + '.sql', 'wt', encoding='utf-8', newline='\n') as f:
             f.write('\set ON_ERROR_STOP on\n')
             f.write('CREATE EXTENSION IF NOT EXISTS pspacy;\n')
 
             # a utility function for escaping sql strings safely
             def escape_str(x):
-                return x.replace("'","''")
+                return x.replace("'", "''")
 
             # generate unit tests for spacy_lemmatize
-            tests_lang = [ test for test in tests if test['lang']==lang ]
+            tests_lang = [test for test in tests if test['lang'] == lang]
             for test in tests_lang:
                 kwargs = ast.literal_eval(test['kwargs'])
-                sql = "SELECT spacy_lemmatize('"+lang+"','"+escape_str(test['text'])+"'"
-                for k,v in kwargs.items():
-                    sql += ' , '+k+'=>'+str(v)
+                sql = "SELECT spacy_lemmatize('" + lang + "','" + escape_str(test['text']) + "'"
+                for k, v in kwargs.items():
+                    sql += ' , ' + k + '=>' + str(v)
                 sql += ');'
-                f.write(sql+'\n')
+                f.write(sql + '\n')
 
             # generate unit tests for spacy_tsvector
-            inputs_lang = [ input for input in inputs if input['lang']==lang ]
+            inputs_lang = [input for input in inputs if input['lang'] == lang]
             for input in inputs_lang:
-                f.write("SELECT spacy_tsvector('"+lang+"','"+escape_str(test['text'])+"');\n")
+                f.write("SELECT spacy_tsvector('" + lang + "','" + escape_str(test['text']) + "');\n")
 
             # generate integration tests;
             # these tests ensure that the entire pipeline of loading data and querying work
             # first we create a table and insert some dummy data
-            create_table = ''' 
+            create_table = '''
 CREATE TEMPORARY TABLE test_data (
     id SERIAL PRIMARY KEY,
     lang TEXT,
@@ -139,7 +138,7 @@ INSERT INTO test_data (lang,text) VALUES'''
             for test in tests:
                 create_table += f'''
     ('{escape_str(test['lang'])}','{escape_str(test['text'])}'),'''
-            create_table += f''' 
+            create_table += f'''
     ('bad_language','this is a test'),
     ('','four score and seven years ago'),
     ('en',''),
@@ -162,6 +161,7 @@ SELECT id FROM test_data WHERE
             '''
             f.write(create_table)
 
+
 # running this file directly will generate new golden tests
-if __name__=='__main__':
+if __name__ == '__main__':
     make_golden_tests()
