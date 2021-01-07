@@ -54,4 +54,4 @@ jobs:
       run: |
         docker-compose up -d --build
         # docker exec pspacy_pspacy_db_1 make installcheck
-        docker down
+        docker-compose down
