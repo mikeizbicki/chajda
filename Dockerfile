@@ -22,7 +22,8 @@ RUN sh install_dependencies.sh
 
 # copy over the project and run tests
 COPY . /tmp/pspacy
-RUN flake8 --ignore=E501,E123,E402 . \
- && python3 -m pytest \
+RUN pip3 install flake8==3.8.4 \
+ && flake8 --ignore=E501,E123,E402 .
+RUN python3 -m pytest \
  && make USE_PGXS=1 \
  && make USE_PGXS=1 install

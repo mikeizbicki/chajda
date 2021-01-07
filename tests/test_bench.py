@@ -23,6 +23,8 @@ pspacy.load_all_langs(langs)
 
 ################################################################################
 # test cases
+################################################################################
+
 
 @pytest.mark.parametrize('test', inputs, ids=[input['lang'] for input in inputs])
 def test__lemmatize(test, benchmark):

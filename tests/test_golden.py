@@ -102,7 +102,7 @@ def make_golden_tests(input_file='tests/input.csv', golden_file='tests/golden.cs
         with open('expected/test_' + lang + '.out', 'wt'):
             pass
         with open('sql/test_' + lang + '.sql', 'wt', encoding='utf-8', newline='\n') as f:
-            f.write('\set ON_ERROR_STOP on\n')
+            f.write('\\set ON_ERROR_STOP on\n')
             f.write('CREATE EXTENSION IF NOT EXISTS pspacy;\n')
 
             # a utility function for escaping sql strings safely
@@ -138,7 +138,7 @@ INSERT INTO test_data (lang,text) VALUES'''
             for test in tests:
                 create_table += f'''
     ('{escape_str(test['lang'])}','{escape_str(test['text'])}'),'''
-            create_table += f'''
+            create_table += '''
     ('bad_language','this is a test'),
     ('','four score and seven years ago'),
     ('en',''),
