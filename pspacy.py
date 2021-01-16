@@ -192,7 +192,16 @@ def lemmatize(
         else:
             return True
 
-    lemmas = [format_token(token, i) for i, token in enumerate(doc) if include_token(token)]
+    # NOTE:
+    # in the code below, we take only the first 500 characters of each token;
+    # this is because the postgresql btree implementation throws an error when
+    # used on an input field with more than 2000 bytes;
+    # all unicode characters take at most 4 bytes per character,
+    # so by truncating to length 500, 
+    # we are guaranteed that the number of bytes will be less than 2000.
+    # From a practical perspective, no real words should ever be this long,
+    # so this won't effect precision/recall.
+    lemmas = [format_token(token, i)[:500] for i, token in enumerate(doc) if include_token(token)]
     lemmas_joined = ' '.join(lemmas)
 
     # NOTE:
