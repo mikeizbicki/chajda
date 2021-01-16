@@ -36,9 +36,7 @@ if 'pspacy' not in GD:
     import pspacy
     GD['pspacy']=pspacy
 $$ 
-LANGUAGE plpython3u
-IMMUTABLE
-RETURNS NULL ON NULL INPUT;
+LANGUAGE plpython3u STRICT IMMUTABLE PARALLEL SAFE;
 
 
 CREATE FUNCTION spacy_lemmatize(
@@ -60,9 +58,7 @@ return GD['pspacy'].lemmatize(
     add_positions
     )
 $$ 
-LANGUAGE plpython3u
-IMMUTABLE
-RETURNS NULL ON NULL INPUT;
+LANGUAGE plpython3u STRICT IMMUTABLE PARALLEL SAFE;
 
 
 CREATE FUNCTION spacy_lemmatize_query(
@@ -82,24 +78,18 @@ return GD['pspacy'].lemmatize_query(
     remove_stop_words
     )
 $$ 
-LANGUAGE plpython3u
-IMMUTABLE
-RETURNS NULL ON NULL INPUT;
+LANGUAGE plpython3u STRICT IMMUTABLE PARALLEL SAFE;
 
 
 CREATE FUNCTION spacy_tsvector(lang TEXT, text TEXT)
 RETURNS tsvector AS $$
     SELECT spacy_lemmatize(lang,text) :: tsvector
 $$
-LANGUAGE SQL 
-IMMUTABLE
-RETURNS NULL ON NULL INPUT;
+LANGUAGE SQL STRICT IMMUTABLE PARALLEL SAFE;
 
 
 CREATE FUNCTION spacy_tsquery(lang TEXT, text TEXT)
 RETURNS tsquery AS $$
     SELECT to_tsquery('simple', spacy_lemmatize_query(lang,text))
 $$
-LANGUAGE SQL 
-IMMUTABLE
-RETURNS NULL ON NULL INPUT;
+LANGUAGE SQL STRICT IMMUTABLE PARALLEL SAFE;
