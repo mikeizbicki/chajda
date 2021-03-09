@@ -197,7 +197,7 @@ def lemmatize(
     # this is because the postgresql btree implementation throws an error when
     # used on an input field with more than 2000 bytes;
     # all unicode characters take at most 4 bytes per character,
-    # so by truncating to length 500, 
+    # so by truncating to length 500,
     # we are guaranteed that the number of bytes will be less than 2000.
     # From a practical perspective, no real words should ever be this long,
     # so this won't effect precision/recall.
