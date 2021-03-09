@@ -44,14 +44,20 @@ jobs:
     - name: Test with postgres
       run: |
         make install
-        make installcheck
+        make installcheck # FIXME: <-- this is the only failing line; can't connect to pg?
 
   docker:
+    strategy:
+      matrix:
+        POSTGRES_VERSION: [12, 13]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: docker
       run: |
+        docker-compose build --build-arg BASE_IMAGE_VERSION=${{matrix.POSTGRES_VERSION}}
         docker-compose up -d --build
+        sleep 20
+        docker-compose exec -T pspacy_db make installcheck
         # docker exec pspacy_pspacy_db_1 make installcheck
         docker-compose down

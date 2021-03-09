@@ -1,7 +1,4 @@
-\echo Use "CREATE EXTENSION nvlfunc" to load this file. \quit
-
-CREATE OR REPLACE LANGUAGE plpython3u;
-
+\echo Use "CREATE EXTENSION pspacy" to load this file. \quit
 
 CREATE FUNCTION spacy_load()
 RETURNS VOID AS $$
