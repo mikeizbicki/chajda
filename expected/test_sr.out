@@ -1,5 +1,7 @@
+\set ON_ERROR_STOP on
+SET client_min_messages TO WARNING;
+CREATE OR REPLACE LANGUAGE plpython3u;
 CREATE EXTENSION IF NOT EXISTS pspacy;
-NOTICE:  extension "pspacy" already exists, skipping
 SELECT spacy_lemmatize('sr',' "Ово је мој пример тестне реченице коју стављам у Гоогле Транслате да бих генерисао тест случајеве."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
                                            spacy_lemmatize                                           
 -----------------------------------------------------------------------------------------------------
@@ -102,7 +104,6 @@ SELECT spacy_tsvector('sr',' "Ово је мој пример тестне ре�
  'генерисати':15 'гоогле':11 'пример':5 'реченице':7 'случајеве':17 'стављати':9 'тест':16 'тестни':6 'транслате':12
 (1 row)
 
- 
 CREATE TEMPORARY TABLE test_data (
     id SERIAL PRIMARY KEY,
     lang TEXT,
@@ -1036,7 +1037,7 @@ INSERT INTO test_data (lang,text) VALUES
     ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'),
     ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'),
     ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'),
-    ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'), 
+    ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'),
     ('bad_language','this is a test'),
     ('','four score and seven years ago'),
     ('en',''),
@@ -1044,7 +1045,6 @@ INSERT INTO test_data (lang,text) VALUES
     ('',NULL),
     (NULL,NULL);
 CREATE EXTENSION IF NOT EXISTS btree_gin;
-NOTICE:  extension "btree_gin" already exists, skipping
 CREATE INDEX test_data_idx1 ON test_data USING gin(spacy_tsvector('sr',text));
 SELECT id FROM test_data WHERE
     spacy_tsquery('xx','this is a test with Abraham Lincoln') @@ spacy_tsvector('sr', text);

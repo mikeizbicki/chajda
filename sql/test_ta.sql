@@ -1,3 +1,6 @@
+\set ON_ERROR_STOP on
+SET client_min_messages TO WARNING;
+CREATE OR REPLACE LANGUAGE plpython3u;
 CREATE EXTENSION IF NOT EXISTS pspacy;
 SELECT spacy_lemmatize('ta',' "சோதனை நிகழ்வுகளை உருவாக்க நான் Google மொழிபெயர்ப்பில் இடும் எனது எடுத்துக்காட்டு சோதனை வாக்கியம் இது."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
 SELECT spacy_lemmatize('ta',' "சோதனை நிகழ்வுகளை உருவாக்க நான் Google மொழிபெயர்ப்பில் இடும் எனது எடுத்துக்காட்டு சோதனை வாக்கியம் இது."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
@@ -16,7 +19,7 @@ SELECT spacy_lemmatize('ta',' "சோதனை நிகழ்வுகளை �
 SELECT spacy_lemmatize('ta',' "சோதனை நிகழ்வுகளை உருவாக்க நான் Google மொழிபெயர்ப்பில் இடும் எனது எடுத்துக்காட்டு சோதனை வாக்கியம் இது."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
 SELECT spacy_lemmatize('ta',' "சோதனை நிகழ்வுகளை உருவாக்க நான் Google மொழிபெயர்ப்பில் இடும் எனது எடுத்துக்காட்டு சோதனை வாக்கியம் இது."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
 SELECT spacy_tsvector('ta',' "சோதனை நிகழ்வுகளை உருவாக்க நான் Google மொழிபெயர்ப்பில் இடும் எனது எடுத்துக்காட்டு சோதனை வாக்கியம் இது."');
- 
+
 CREATE TEMPORARY TABLE test_data (
     id SERIAL PRIMARY KEY,
     lang TEXT,
@@ -950,7 +953,7 @@ INSERT INTO test_data (lang,text) VALUES
     ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'),
     ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'),
     ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'),
-    ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'), 
+    ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'),
     ('bad_language','this is a test'),
     ('','four score and seven years ago'),
     ('en',''),

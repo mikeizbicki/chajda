@@ -1,3 +1,6 @@
+\set ON_ERROR_STOP on
+SET client_min_messages TO WARNING;
+CREATE OR REPLACE LANGUAGE plpython3u;
 CREATE EXTENSION IF NOT EXISTS pspacy;
 SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
 SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>False);
@@ -16,7 +19,7 @@ SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya mas
 SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>True);
 SELECT spacy_lemmatize('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."' , lower_case=>False , remove_special_chars=>False , remove_stop_words=>False , add_positions=>False);
 SELECT spacy_tsvector('id',' "Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji."');
- 
+
 CREATE TEMPORARY TABLE test_data (
     id SERIAL PRIMARY KEY,
     lang TEXT,
@@ -950,7 +953,7 @@ INSERT INTO test_data (lang,text) VALUES
     ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'),
     ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'),
     ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'),
-    ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'), 
+    ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'),
     ('bad_language','this is a test'),
     ('','four score and seven years ago'),
     ('en',''),

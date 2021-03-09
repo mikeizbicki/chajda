@@ -1,5 +1,7 @@
+\set ON_ERROR_STOP on
+SET client_min_messages TO WARNING;
+CREATE OR REPLACE LANGUAGE plpython3u;
 CREATE EXTENSION IF NOT EXISTS pspacy;
-NOTICE:  extension "pspacy" already exists, skipping
 SELECT spacy_lemmatize('mr',' "हे माझे उदाहरण चाचणी वाक्य आहे जे मी चाचणी प्रकरणे व्युत्पन्न करण्यासाठी Google भाषांतर मध्ये टाकत आहे."' , lower_case=>True , remove_special_chars=>True , remove_stop_words=>True , add_positions=>True);
                                                spacy_lemmatize                                               
 -------------------------------------------------------------------------------------------------------------
@@ -102,7 +104,6 @@ SELECT spacy_tsvector('mr',' "हे माझे उदाहरण चाच�
  'google':14 'उदाहरण':4 'करण्यासाठी':13 'चाचणी':5,10 'टाकत':17 'प्रकरणे':11 'भाषांतर':15 'मध्ये':16 'माझे':3 'वाक्य':6 'व्युत्पन्न':12
 (1 row)
 
- 
 CREATE TEMPORARY TABLE test_data (
     id SERIAL PRIMARY KEY,
     lang TEXT,
@@ -1036,7 +1037,7 @@ INSERT INTO test_data (lang,text) VALUES
     ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'),
     ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'),
     ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'),
-    ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'), 
+    ('yo',' "Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo."'),
     ('bad_language','this is a test'),
     ('','four score and seven years ago'),
     ('en',''),
@@ -1044,7 +1045,6 @@ INSERT INTO test_data (lang,text) VALUES
     ('',NULL),
     (NULL,NULL);
 CREATE EXTENSION IF NOT EXISTS btree_gin;
-NOTICE:  extension "btree_gin" already exists, skipping
 CREATE INDEX test_data_idx1 ON test_data USING gin(spacy_tsvector('mr',text));
 SELECT id FROM test_data WHERE
     spacy_tsquery('xx','this is a test with Abraham Lincoln') @@ spacy_tsvector('mr', text);

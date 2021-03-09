@@ -103,6 +103,8 @@ def make_golden_tests(input_file='tests/input.csv', golden_file='tests/golden.cs
             pass
         with open('sql/test_' + lang + '.sql', 'wt', encoding='utf-8', newline='\n') as f:
             f.write('\\set ON_ERROR_STOP on\n')
+            f.write('SET client_min_messages TO WARNING;\n')
+            f.write('CREATE OR REPLACE LANGUAGE plpython3u;\n')
             f.write('CREATE EXTENSION IF NOT EXISTS pspacy;\n')
 
             # a utility function for escaping sql strings safely

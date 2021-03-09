@@ -5,7 +5,7 @@ FROM postgres:$BASE_IMAGE_VERSION
 RUN export PG_MAJOR=`apt list --installed 2>&1 | sed -n "s/^postgresql-\([0-9.]*\)\/.*/\1/p"`             \
  && export PG_MINOR=`apt list --installed 2>&1 | sed -n "s/^postgresql-$PG_MAJOR\/\S*\s\(\S*\)\s.*/\1/p"` \
  && apt-get update \
- && apt-get install -y --no-install-recommends --allow-downgrades \
+ && apt-get install -y \
 	autoconf \
     gcc \
     git \
