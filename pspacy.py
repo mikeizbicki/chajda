@@ -229,19 +229,11 @@ query_grammar = Lark(r"""
     op_not: sym_not q
     op_bool: q (sym_and | sym_or) q
 
-
-    token: filter | query_term
     filter: str ":" str
-
-    query_term: conjunction | term | "(" query_term+ ")"
-
-    term: sym_not? str 
-
-    conjunction: (sym_and | sym_or)? query_term
     
-    sym_not: "NOT"i
-    sym_and: "AND"i
-    sym_or: "OR"i
+    sym_not: "NOT"i | "!"
+    sym_and: "AND"i | "&"+
+    sym_or: "OR"i | "|"+
 
     ?str: ESCAPED_STRING | STRING
 
@@ -253,10 +245,21 @@ query_grammar = Lark(r"""
     """)
 
 
+Query = namedtuple('Query', ['filters', 'terms', 'tsquery'])
+Term = namedtuple('Term', ['raw', 'lemmatized'])
+
+
 class QueryTransformer(Transformer):
 
+    def __init__(self, lang, lower_case=True, remove_stop_words=True, remove_special_chars=True):
+        self.filters = {}
+        self.terms = {}
+        self.lang=lang
+        self.lower_case=lower_case
+        self.remove_stop_words=remove_stop_words
+        self.remove_special_chars=remove_special_chars
+
     def start(self, t):
-        #return t
         return ' & '.join(t)
 
     def q(self, t):
@@ -274,9 +277,7 @@ class QueryTransformer(Transformer):
         return '!'
 
     def op_bool(self, t):
-        print("type(t)=",type(t),"t=",t)
-        #return t
-        return ' '.join(t)
+        return '(' + ' '.join(t) + ')'
 
     def sym_or(self, t):
         return '|'
@@ -284,33 +285,29 @@ class QueryTransformer(Transformer):
     def sym_and(self, t):
         return '&'
 
-    '''
-    def conjunction(self, t):
-        if len(t) == 1:
-            return '& '+t[0]
-        else:
-            return ' '.join(t)
-
-    def term(self, t):
-        return ''.join(t)
-
-    def query_term(self, t):
-        print("t=",t)
-        return ' '.join(t)
-    '''
-
     def STRING(self, t):
-        return str(t)
+        return self.ESCAPED_STRING(t)
 
     def ESCAPED_STRING(self, t):
         raw_term = str(t)
         if raw_term[0] == '"' and raw_term[-1] == '"':
             raw_term = raw_term[1:-1]
-        return '(' + ' <-> '.join(raw_term.split()) + ')'
+        term = lemmatize(
+            self.lang,
+            raw_term,
+            lower_case=self.lower_case,
+            remove_stop_words=self.remove_stop_words,
+            remove_special_chars=self.remove_special_chars,
+            add_positions=False,
+            )
+
+        terms = term.split()
+        if len(terms) > 1:
+            return '(' + ' <-> '.join(terms) + ')'
+        else:
+            return term
 
 
-Query = namedtuple('Query', ['filters', 'terms'])
-Term = namedtuple('Term', ['raw', 'lemmatized'])
 def parse_query(lang, query, lower_case=True, remove_stop_words=True, remove_special_chars=True):
     '''
     parse_query('en', 'key1:value1 key2:value2 key3:"a b" "k1 k2":value this is a test "this is a test"')
@@ -319,8 +316,9 @@ def parse_query(lang, query, lower_case=True, remove_stop_words=True, remove_spe
 
     '''
     tree = query_grammar.parse(query)
-    print("tree=",tree)
-    qqqq = QueryTransformer().transform(tree)
+    qtrans = QueryTransformer(lang, lower_case, remove_stop_words, remove_special_chars)
+    tsquery = qtrans.transform(tree)
+    return Query(qtrans.filters, qtrans.terms, tsquery)
     print("qqqq=",qqqq)
     print()
     return qqqq
@@ -338,41 +336,11 @@ def parse_query(lang, query, lower_case=True, remove_stop_words=True, remove_spe
         term = lemmatize(
             lang,
             raw_term,
-            lower_case,
-            remove_special_chars,
-            remove_stop_words,
+            self.lower_case,
+            self.remove_special_chars,
+            self.remove_stop_words,
             add_positions=False
             )
-        terms.append(Term(raw_term,term))
-
-    return Query(filters, terms)
-
-
-def parse_query_simple(lang, query, lower_case=True, remove_stop_words=True, remove_special_chars=True):
-    '''
-    parse_query_simple('en', 'key1:value1 key2:value2 key3:"a b" "k1 k2":value this is a test "this is a test"')
-    '''
-    tree = query_grammar.parse(query)
-    filters = {}
-    for t in tree.find_data('filter'):
-        k,v = t.children
-        filters[str(k)]=str(v)
-
-    terms = []
-    for t in tree.find_data('query_term'):
-        raw_term, = t.children
-        raw_term = str(raw_term)
-        if raw_term[0] == '"' and raw_term[-1] == '"':
-            raw_term = raw_term[1:-1]
-        term = lemmatize(
-            lang,
-            raw_term,
-            lower_case,
-            remove_special_chars,
-            remove_stop_words,
-            add_positions=False
-            )
-
         terms.append(Term(raw_term,term))
 
     return Query(filters, terms)
