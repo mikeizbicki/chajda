@@ -1,5 +1,5 @@
-EXTENSION = pspacy
-DATA = pspacy--1.0.sql pspacy.py
+EXTENSION = chajda
+DATA = chajda--1.0.sql
 DOCS = README.md 
 REGRESS = $(shell sh -c "ls sql | sed 's/\..*//' | sed 's;sql/;;' | xargs echo" )
 

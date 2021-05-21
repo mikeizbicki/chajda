@@ -6,7 +6,7 @@ import re
 # the sys import is needed so that we can import from the current project
 import sys
 sys.path.append('.')
-import pspacy
+from chajda.tsvector import lemmatize, Config, valid_langs
 
 
 ################################################################################
@@ -28,7 +28,9 @@ def get_golden_tests():
 @pytest.mark.parametrize('test', get_golden_tests())
 def test__lemmatize(test):
     kwargs = ast.literal_eval(test['kwargs'])
-    assert pspacy.lemmatize(test['lang'], test['text'], **kwargs) == test['result']
+    add_positions = kwargs['add_positions']
+    del kwargs['add_positions']
+    assert lemmatize(test['lang'], test['text'], add_positions, Config(**kwargs)) == test['result']
 
 
 ################################################################################
@@ -82,7 +84,9 @@ def make_golden_tests(input_file='tests/input.csv', golden_file='tests/golden.cs
     tests = []
     for input in inputs:
         for kwargs in kwargss:
-            result = pspacy.lemmatize(input['lang'], input['text'], **kwargs)
+            add_positions = kwargs['add_positions']
+            del kwargs['add_positions']
+            result = lemmatize(input['lang'], input['text'], add_positions, Config(**kwargs))
             tests.append({
                 'lang': input['lang'],
                 'text': input['text'],
@@ -98,14 +102,14 @@ def make_golden_tests(input_file='tests/input.csv', golden_file='tests/golden.cs
             writer.writerow(test)
 
     # write postgres-level tests
-    for lang in pspacy.valid_langs:
+    for lang in valid_langs:
         with open('expected/test_' + lang + '.out', 'wt'):
             pass
         with open('sql/test_' + lang + '.sql', 'wt', encoding='utf-8', newline='\n') as f:
             f.write('\\set ON_ERROR_STOP on\n')
             f.write('SET client_min_messages TO WARNING;\n')
             f.write('CREATE OR REPLACE LANGUAGE plpython3u;\n')
-            f.write('CREATE EXTENSION IF NOT EXISTS pspacy;\n')
+            f.write('CREATE EXTENSION IF NOT EXISTS chajda;\n')
 
             # a utility function for escaping sql strings safely
             def escape_str(x):

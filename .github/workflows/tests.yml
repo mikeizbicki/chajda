@@ -19,12 +19,13 @@ jobs:
         python -m pip install --upgrade pip 
         sh install_dependencies.sh
         pip install flake8 pytest
-    - name: Lint with flake8
-      run: |
-        flake8 --ignore=E501,E123,E402 .
+        #- name: Lint with flake8
+        #run: |
+        #flake8 --ignore=E501,E123,E402 .
     - name: Test with pytest
       run: |
-        pytest
+        pytest tests
+        pytest chajda --doctest-modules
 
   docker:
     strategy:

@@ -1,5 +1,5 @@
 CREATE LANGUAGE plpython3u;
-CREATE EXTENSION pspacy;
+CREATE EXTENSION chajda;
 
 CREATE TABLE example (
     id SERIAL PRIMARY KEY,
@@ -69,4 +69,4 @@ INSERT INTO example (lang_iso, lang_name, doc) VALUES
     ('yo', 'yoruba', 'Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo.')
     ;
 
-SELECT lang_iso, lang_name, spacy_tsvector(lang_iso,doc) from example;
+SELECT lang_iso, lang_name, chajda_tsvector(lang_iso,doc) from example;

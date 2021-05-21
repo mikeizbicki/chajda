@@ -1,10 +1,10 @@
 version: '3.3'
 
 services:
-  pspacy_db:
+  db:
     build: .
     volumes:
-      - .:/tmp/pspacy
+      - .:/tmp/chajda
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=pass

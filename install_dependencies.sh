@@ -4,6 +4,7 @@ set -e
 working_dir=$(pwd)
 
 pip3 install -r requirements.txt
+pip3 install .
 sudachipy link -t full
 
 # The Ukranian language needs a modified version of pymorphy2 installed

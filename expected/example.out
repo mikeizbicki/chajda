@@ -1,0 +1,131 @@
+CREATE LANGUAGE plpython3u;
+CREATE EXTENSION chajda;
+CREATE TABLE example (
+    id SERIAL PRIMARY KEY,
+    lang_iso TEXT,
+    lang_name TEXT,
+    doc TEXT
+);
+INSERT INTO example (lang_iso, lang_name, doc) VALUES
+    ('ar', 'arabic', 'هذا هو جملتي التجريبية التي أقوم بوضعها في ترجمة Google لإنشاء حالات اختبار.'),
+    ('da', 'danish', 'Dette er mit eksempel test sætning, som jeg lægger i Google Translate for at generere testsager.'),
+    ('de', 'german', 'Dies ist mein Beispiel-Testsatz, den ich in Google Translate einfüge, um Testfälle zu generieren.'),
+    ('el', 'greek', 'Αυτή είναι η παραδειγματική δοκιμαστική πρόταση που βάζω στη Μετάφραση Google για τη δημιουργία δοκιμαστικών περιπτώσεων.'),
+    ('en', 'english', 'This is my example test sentence that I''m putting into Google Translate to generate test cases.'),
+    ('es', 'spanish', 'Esta es mi oración de prueba de ejemplo que estoy poniendo en Google Translate para generar casos de prueba.'),
+    ('fr', 'french', 'Ceci est mon exemple de phrase de test que je mets dans Google Translate pour générer des cas de test.'),
+    ('it', 'italian', 'Questa è la mia frase di prova di esempio che sto inserendo in Google Translate per generare casi di test.'),
+    ('ja', 'japanese', 'これは、テストケースを生成するためにGoogle翻訳に入力する私のテスト文の例です。'),
+    ('ko', 'korean', '이것은 테스트 케이스를 생성하기 위해 Google Translate에 넣은 예제 테스트 문장입니다.'),
+    ('lt', 'lithuanian', 'Tai yra mano bandomo sakinio pavyzdys, kurį dedu į „Google“ vertėją norėdamas sugeneruoti bandomuosius atvejus.'),
+    ('nb', 'norwegian bokmal', 'Dette er mitt eksempel test setning som jeg legger i Google Translate for å generere testsaker.'),
+    ('nl', 'dutch', 'Dit is mijn voorbeeldtestzin die ik in Google Translate zet om testcases te genereren.'),
+    ('pl', 'polish', 'To jest moje przykładowe zdanie testowe, które umieszczam w Tłumaczu Google, aby wygenerować przypadki testowe.'),
+    ('pt', 'portuguese', 'Esta é a minha frase de teste de exemplo que estou colocando no Google Translate para gerar casos de teste.'),
+    ('ro', 'romanian', 'Acesta este exemplul meu de propoziție pe care îl introduc în Google Translate pentru a genera cazuri de testare.'),
+    ('ru', 'russian', 'Это мое примерное тестовое предложение, которое я помещаю в Google Translate для создания тестовых случаев.'),
+    ('uk', 'ukranian', 'Це мій приклад тестового речення, яке я вкладаю в Google Translate для створення тестових випадків.'),
+    ('zh', 'chinese', '这是我输入Google Translate生成测试用例的示例测试语句。'),
+    ('zh', 'chinese', '這是我輸入Google Translate生成測試用例的示例測試語句。'),
+    ('af', 'afrikaans', 'Dit is my voorbeeldse toetssin wat ek in Google Translate plaas om toetsgevalle te genereer.'),
+    ('sq', 'albanian', 'Kjo është fjalia ime e provës që po e vë në Google Translate për të gjeneruar raste testimi.'),
+    ('hy', 'armenian', 'Սա իմ օրինակելի թեստային նախադասությունն է, որը ես դնում եմ Google Translate- ում ՝ թեստային դեպքեր առաջացնելու համար:'),
+    ('eu', 'basque', 'Hau da Google Translate bertsioan jartzen ari naizen testeko esaldia. Test kasuak sortzeko.'),
+    ('bn', 'bengali', 'এটি আমার উদাহরণ পরীক্ষার বাক্য যা পরীক্ষার কেসগুলি উত্পন্ন করার জন্য আমি গুগল অনুবাদে রাখছি।'),
+    ('bg', 'bulgarian', 'Това е моето примерно изпитателно изречение, което вкарвам в Google Translate, за да генерирам тестови случаи.'),
+    ('ca', 'catalan', 'Aquest és el meu exemple de frase de prova que vaig publicant a Google Translate per generar casos de prova.'),
+    ('hr', 'croatian', 'Ovo je moja testna rečenica koju stavljam u Google Translate za generiranje testnih slučajeva.'),
+    ('cs', 'czech', 'Toto je můj příklad zkušební věty, kterou vkládám do Překladače Google, abych generoval testovací případy.'),
+    ('et', 'estonian', 'See on minu näidislause, mille panen testversioonide genereerimiseks Google''i tõlki.'),
+    ('fi', 'finnish', 'Tämä on esimerkki testilauseestani, jonka laitan Google Translate -sovellukseen testitapausten luomiseksi.'),
+    ('gu', 'gujarati', 'આ મારું ઉદાહરણ પરીક્ષણ વાક્ય છે કે જે હું પરીક્ષણનાં કેસો પેદા કરવા માટે Google અનુવાદમાં મૂકી રહ્યો છું.'),
+    ('he', 'hebrew', 'זהו משפט המבחן הדוגמא שלי שאני מכניס ל- Google Translate כדי ליצור מקרי מבחן.'),
+    ('hi', 'hindi', 'यह मेरा उदाहरण परीक्षण वाक्य है जो मैं परीक्षण मामलों को उत्पन्न करने के लिए Google अनुवाद में डाल रहा हूं।'),
+    ('hu', 'hungarian', 'Ez a példakénti tesztmondat, amelyet a Google Fordítóba teszteket hozok létre.'),
+    ('is', 'icelandic', 'Þetta er dæmi setningarpróf sem ég set í Google Translate til að búa til prófatilvik.'),
+    ('id', 'indonesian', 'Ini adalah contoh kalimat pengujian yang saya masukkan ke Google Terjemahan untuk menghasilkan kasus uji.'),
+    ('ga', 'irish', 'Is í seo mo phianbhreith tástála samplach atá á cur agam ar Google Translate chun cásanna tástála a ghiniúint.'),
+    ('kn', 'kannada', 'ಪರೀಕ್ಷಾ ಪ್ರಕರಣಗಳನ್ನು ರಚಿಸಲು ನಾನು Google ಅನುವಾದಕ್ಕೆ ಹಾಕುತ್ತಿರುವ ನನ್ನ ಉದಾಹರಣೆ ಪರೀಕ್ಷಾ ವಾಕ್ಯ ಇದು.'),
+    ('lv', 'latvian', 'Šis ir mans testa teikuma piemērs, kuru es ievietoju Google Translate, lai ģenerētu testa gadījumus.'),
+    ('lb', 'luxembourgish', 'Dëst ass mäi Beispill Testsaz deen ech a Google Translate setzen fir Testfäll ze generéieren.'),
+    ('ml', 'malayalam', 'ടെസ്റ്റ് കേസുകൾ സൃഷ്ടിക്കുന്നതിനായി ഞാൻ Google വിവർത്തനത്തിലേക്ക് ഇടുന്ന എന്റെ ഉദാഹരണ പരീക്ഷണ വാക്യമാണിത്.'),
+    ('mr', 'marathi', 'हे माझे उदाहरण चाचणी वाक्य आहे जे मी चाचणी प्रकरणे व्युत्पन्न करण्यासाठी Google भाषांतर मध्ये टाकत आहे.'),
+    ('fa', 'farsi', 'این جمله آزمایشی نمونه ای است که من برای تولید موارد آزمایشی در Google Translate قرار می دهم.'),
+    ('sr', 'sanskrit', 'Ово је мој пример тестне реченице коју стављам у Гоогле Транслате да бих генерисао тест случајеве.'),
+    ('si', 'sinhala', 'පරීක්ෂණ අවස්ථා උත්පාදනය කිරීම සඳහා මම ගූගල් පරිවර්තනයට ඇතුළත් කරන මගේ උදාහරණ පරීක්ෂණ වාක්‍යය මෙයයි.'),
+    ('sk', 'slovak', 'Toto je môj príklad testovacej vety, ktorú vkladám do služby Prekladač Google, aby som vygeneroval testovacie prípady.'),
+    ('sl', 'slovenian', 'To je moj primer testnega stavka, ki ga vstavljam v Google Translate za ustvarjanje preskusnih primerov.'),
+    ('sv', 'swedish', 'Detta är mitt exempel på testmeningen som jag lägger in i Google Translate för att generera testfall.'),
+    ('tl', 'tagalog', 'Ito ang aking halimbawang pangungusap na pagsubok na inilalagay ko sa Google Translate upang makabuo ng mga kaso ng pagsubok.'),
+    ('ta', 'tamil', 'சோதனை நிகழ்வுகளை உருவாக்க நான் Google மொழிபெயர்ப்பில் இடும் எனது எடுத்துக்காட்டு சோதனை வாக்கியம் இது.'),
+    ('tt', 'tatar', 'Бу минем сынау үрнәкләрен ясау өчен Google Translate''ка куйган сынау җөмләсе.'),
+    ('te', 'telugu', 'పరీక్ష కేసులను రూపొందించడానికి నేను గూగుల్ ట్రాన్స్‌లేట్‌లో పెడుతున్న నా ఉదాహరణ పరీక్ష వాక్యం ఇది.'),
+    ('th', 'thai', 'นี่คือประโยคทดสอบตัวอย่างของฉันที่ฉันใส่ลงใน Google Translate เพื่อสร้างกรณีทดสอบ'),
+    ('tr', 'turkish', 'Bu, test senaryoları oluşturmak için Google Çeviri''ye koyduğum örnek test cümledim.'),
+    ('ur', 'urdu', 'یہ میرا مثال آزمائشی جملہ ہے جو میں گوگل کے ترجمے میں ٹیسٹ کے معاملات پیدا کرنے کے لئے ڈال رہا ہوں۔'),
+    ('vi', 'vietnamese', 'Đây là câu kiểm tra mẫu của tôi mà tôi đang đưa vào Google Dịch để tạo các trường hợp kiểm tra.'),
+    ('yo', 'yoruba', 'Eyi ni idajọ idanwo mi ti Mo n fi sinu Tumọ-ọrọ Google lati ṣe agbekalẹ awọn ọran idanwo.')
+    ;
+SELECT lang_iso, lang_name, chajda_tsvector(lang_iso,doc) from example;
+ lang_iso |    lang_name     |                                                                  chajda_tsvector                                                                  
+----------+------------------+---------------------------------------------------------------------------------------------------------------------------------------------------
+ ar       | arabic           | 'google':10 'أقوم':6 'اختبار':13 'التجريبية':4 'بوضعها':7 'ترجمة':9 'جملتي':3 'حالات':12 'لإنشاء':11
+ da       | danish           | 'eksempel':4 'generere':15 'google':11 'lægge':9 'sætning':6 'test':5 'testsager':16 'translate':12
+ de       | german           | 'beispieltestsatz':4 'einfügen':10 'generieren':14 'google':8 'testfälle':12 'translate':9
+ el       | greek            | 'google':11 'βάζω':8 'δημιουργία':14 'δοκιμαστική':5 'δοκιμαστικών':15 'μετάφραση':10 'παραδειγματική':4 'περιπτώσεων':16 'πρόταση':6
+ en       | english          | 'be':9 'case':17 'example':4 'generate':15 'google':12 'putt':10 'sentence':6 'test':5,16 'translate':13
+ es       | spanish          | 'caso':17 'generar':16 'google':13 'oración':4 'poner':11 'probar':6,19 'translate':14
+ fr       | french           | 'cas':18 'exemple':4 'google':13 'générer':16 'mets':11 'phrase':6 'test':8,20 'translate':14
+ it       | italian          | 'caso':18 'essere':2 'frase':5 'generare':17 'google':14 'inserire':12 'provare':7 'test':20 'translate':15
+ ja       | japanese         | 'google':10 'ケース':4 'テスト':3,17 '例':20 '入力':13 '文':18 '生成':6 '私':15 '翻訳':11
+ ko       | korean           | 'google':10 'translate':11 '넣':13 '문장':17 '생성':6 '예제':15 '위하':9 '이':18 '케이스':4 '테스트':3,16
+ lt       | lithuanian       | 'atvejis':15 'bandomas':14 'bandomo':4 'dėti':8 'google':10 'irti':2 'norėdamas':12 'pavyzdys':6 'sakinys':5 'sugeneruoti':13 'vertėjas':11
+ nb       | norwegian bokmal | 'eksempel':4 'generere':15 'google':11 'legger':9 'min':3 'setning':6 'test':5 'testsaker':16 'translate':12
+ nl       | dutch            | 'genereren':14 'google':8 'testcase':12 'translate':9 'voorbeeldtestzin':4 'zet':10
+ pl       | polish           | 'google':11 'przykładowe':4 'przypadki':14 'testowe':6,15 'tłumaczu':10 'umieszczam':8 'wygenerować':13 'zdanie':5
+ pt       | portuguese       | 'caso':18 'colocar':12 'frase':5 'gerar':17 'google':14 'o':3 'testar':7,20 'translate':15
+ ro       | romanian         | 'caz':17 'exemplu':3 'genera':16 'google':12 'introduce':10 'propoziție':6 'testare':19 'translate':13
+ ru       | russian          | 'google':10 'translate':11 'помещать':8 'предложение':5 'примерное':3 'случай':15 'создания':13 'тестовое':4 'тестовых':14
+ uk       | ukranian         | 'google':10 'translate':11 'випадок':15 'вкладати':8 'приклад':3 'речення':5 'створення':13 'тестових':14 'тестового':4 'яке':6
+ zh       | chinese          | 'google':5 'translate':6 '测试':11 '测试用例':8 '生成':7 '示例':10 '语句':12 '输入':4
+ zh       | chinese          | 'google':4 'translate':5 '測試':7,11 '生成':6 '用例':8 '示例':10 '語句':12 '輸入':3 '這是':1
+ af       | afrikaans        | 'genereer':15 'google':9 'plaas':11 'toetsgevalle':13 'toetssin':5 'translate':10 'voorbeeldse':4
+ sq       | albanian         | 'fjalia':3 'gjeneruar':16 'google':12 'ime':4 'në':11 'provës':6 'për':14 'që':7 'raste':17 'testimi':18 'translate':13 'të':15 'vë':10 'është':2
+ hy       | armenian         | 'google':11 'translate':12 'առաջացնելու':17 'դեպքեր':16 'դնում':9 'թեստային':4,15 'իմ':2 'նախադասությունն':5 'օրինակելի':3
+ eu       | basque           | 'ari':7 'bertsioan':5 'esaldia':10 'google':3 'jartzen':6 'kasuak':12 'naizen':8 'sortzeko':13 'test':11 'testeko':9 'translate':4
+ bn       | bengali          | 'অনুবাদে':14 'উত্পন্ন':9 'উদাহরণ':3 'কেসগুলি':8 'গুগল':13 'পরীক্ষার':4,7 'বাক্য':5 'রাখছি':15
+ bg       | bulgarian        | 'google':10 'translate':11 'вкарвам':8 'генерирам':14 'изпитателно':5 'изречение':6 'моето':3 'примерно':4 'случаи':16 'тестови':15
+ ca       | catalan          | 'cas':18 'exemple':5 'frase':7 'generar':17 'google':14 'provar':9,20 'publicar':12 'translate':15
+ hr       | croatian         | 'generiranje':12 'google':9 'ovaj':1 'rečenica':5 'slučaj':14 'stavljati':7 'testni':4,13 'translate':10
+ cs       | czech            | 'abych':12 'generoval':13 'google':11 'kterou':7 'překladače':10 'příklad':4 'případy':15 'testovací':14 'vkládám':8 'věty':6 'zkušební':5
+ et       | estonian         | 'genereerimiseks':8 'googlei':9 'mille':5 'näidislause':4 'panen':6 'testversioonide':7 'tõlki':10
+ fi       | finnish          | 'esimerkki':3 'google':7 'laitan':6 'luomiseksi':11 'sovellukseen':9 'testilauseestani':4 'testitapausten':10 'translate':8
+ gu       | gujarati         | 'google':15 'અનુવાદમાં':16 'ઉદાહરણ':3 'કરવા':13 'કેસો':11 'છું':19 'પરીક્ષણ':4 'પરીક્ષણનાં':10 'પેદા':12 'મારું':2 'મૂકી':17 'રહ્યો':18 'વાક્ય':5 'હું':9
+ he       | hebrew           | 'google':9 'translate':10 'הדוגמא':4 'המבחן':3 'זהו':1 'כדי':11 'ל':8 'ליצור':12 'מבחן':14 'מכניס':7 'מקרי':13 'משפט':2 'שאני':6
+ hi       | hindi            | 'google':16 'अनुवाद':17 'उत्पन्न':12 'उदाहरण':3 'डाल':19 'परीक्षण':4,9 'मामलों':10 'वाक्य':5 'हूं':21
+ hu       | hungarian        | 'fordítóba':8 'google':7 'hoz':10 'lét':11 'példakénti':3 'teszteket':9 'tesztmondat':4
+ is       | icelandic        | 'að':12 'búa':13 'dæmi':3 'er':2 'google':9 'prófatilvik':15 'set':7 'setningarpróf':4 'translate':10 'ég':6 'í':8
+ id       | indonesian       | 'contoh':3 'google':10 'hasil':13 'kalimat':4 'masukkan':8 'terjemah':11 'uji':5,15
+ ga       | irish            | 'agam':11 'atá':8 'cur':10 'cásanna':16 'ghiniúint':19 'google':13 'phianbhreith':5 'samplach':7 'seo':3 'translate':14 'tástála':6,17 'á':9
+ kn       | kannada          | 'google':5 'ಅನುವಾದಕ್ಕೆ':6 'ಉದಾಹರಣೆ':9 'ಪರೀಕ್ಷಾ':1,10 'ಪ್ರಕರಣಗಳನ್ನು':2 'ರಚಿಸಲು':3 'ವಾಕ್ಯ':11 'ಹಾಕುತ್ತಿರುವ':7
+ lv       | latvian          | 'es':8 'gadījumus':15 'google':10 'ievietoju':9 'kuru':7 'mans':3 'piemērs':6 'teikuma':5 'testa':4,14 'translate':11 'ģenerētu':13 'šis':1
+ lb       | luxembourgish    | 'beispill':4 'dëst':1 'generéieren':15 'google':9 'mäin':3 'setzen':11 'testfäll':13 'testsaz':5 'translate':10
+ ml       | malayalam        | 'google':5 'ഇടുന്ന':7 'ഉദാഹരണ':9 'എന്റെ':8 'കേസുകൾ':2 'ഞാൻ':4 'ടെസ്റ്റ്':1 'പരീക്ഷണ':10 'വാക്യമാണിത്':11 'വിവർത്തനത്തിലേക്ക്':6 'സൃഷ്ടിക്കുന്നതിനായി':3
+ mr       | marathi          | 'google':13 'उदाहरण':3 'करण्यासाठी':12 'चाचणी':4,9 'टाकत':16 'प्रकरणे':10 'भाषांतर':14 'मध्ये':15 'माझे':2 'वाक्य':5 'व्युत्पन्न':11
+ fa       | farsi            | 'google':14 'translate':15 'آزمایشی':3,12 'ای':5 'تولید':10 'جمله':2 'دهم':18 'قرار':16 'موارد':11 'نمونه':4
+ sr       | sanskrit         | 'генерисати':14 'гоогле':10 'пример':4 'реченице':6 'случајеве':16 'стављати':8 'тест':15 'тестни':5 'транслате':11
+ si       | sinhala          | 'අවස්ථා':2 'ඇතුළත්':9 'උත්පාදනය':3 'උදාහරණ':12 'කරන':10 'කිරීම':4 'ගූගල්':7 'පරිවර්තනයට':8 'පරීක්ෂණ':1,13 'මගේ':11 'මම':6 'මෙයයි':15 'වාක්යය':14 'සඳහා':5
+ sk       | slovak           | 'google':12 'prekladač':11 'príklad':4 'prípady':17 'služby':10 'testovacej':5 'testovacie':16 'vety':6 'vkladám':8 'vygeneroval':15
+ sl       | slovenian        | 'google':11 'preskusnih':15 'primerov':16 'stavka':6 'testnega':5 'translate':12 'ustvarjanje':14 'vstavljam':9
+ sv       | swedish          | 'exempel':4 'generera':16 'google':12 'lägga':9 'testfall':17 'testmeningen':6 'translate':13 'vara':2
+ tl       | tagalog          | 'google':12 'halimbawang':4 'inilalagay':9 'kaso':18 'makabuo':15 'pagsubok':7,20 'pangungusap':5 'translate':13 'upang':14
+ ta       | tamil            | 'google':5 'இடும்':7 'உருவாக்க':3 'எடுத்துக்காட்டு':9 'எனது':8 'சோதனை':1,10 'நிகழ்வுகளை':2 'மொழிபெயர்ப்பில்':6 'வாக்கியம்':11
+ tt       | tatar            | 'google':7 'translateка':8 'куйган':9 'сынау':3,10 'ясау':5 'җөмләсе':11 'үрнәкләрен':4
+ te       | telugu           | 'ఇది':12 'ఉదాహరణ':9 'కేసులను':2 'గూగుల్':5 'ట్రాన్స్లేట్లో':6 'నా':8 'నేను':4 'పరీక్ష':1,10 'పెడుతున్న':7 'రూపొందించడానికి':3 'వాక్యం':11
+ th       | thai             | 'google':14 'translate':16 'กรณี':20 'ตัวอย่าง':5 'ทดสอบ':4,21 'ประโยค':3 'สร้าง':19 'ใส่':10
+ tr       | turkish          | 'cümledim':11 'google':6 'koy':8 'oluş':4 'senaryo':3 'test':2,10 'çeviri':7 'örnek':9
+ ur       | urdu             | 'آزمائشی':4 'ترجمہ':11 'جملہ':5 'جو':7 'رہنا':21 'مثال':3 'معاملات':15 'میرا':2 'میں':8,12 'ٹیسٹ':13 'پیدا':16 'ڈالنا':20 'کرنا':17 'گوگل':9
+ vi       | vietnamese       | 'câu':3 'dịch':14 'google':13 'kiểm_tra':4,19 'mẫu':5 'trường_hợp':18
+ yo       | yoruba           | 'agbekalẹ':15 'awọn':16 'eyi':1 'fi':9 'google':12 'idajọ':3 'idanwo':4,18 'lati':13 'sinu':10 'tumọọrọ':11 'ọran':17
+(58 rows)
+

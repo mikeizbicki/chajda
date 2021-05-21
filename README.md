@@ -1,6 +1,6 @@
-# pspacy
+# chajda
 
-This is a postgres extension and corresponding python library for highly multi-lingual full text search in postgres.
+Chajda (from the Korean 찾다, meaning to find) is a postgres extension and corresponding python library for highly multi-lingual full text search in postgres.
 It has 3 primary goals:
 1. support a large number of languages
 1. correct, including maintain ACID-compliance

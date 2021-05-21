@@ -4,7 +4,7 @@ import pytest
 # the sys import is needed so that we can import from the current project
 import sys
 sys.path.append('.')
-import pspacy
+from chajda.tsvector import load_all_langs, lemmatize
 
 # load the input lang/text pairs
 inputs = []
@@ -19,7 +19,7 @@ if test_langs is not None:
 # pre-loading all languages ensures that the benchmark times accurately reflect
 # the performance of the model's execution time, and not load time
 langs = [input['lang'] for input in inputs]
-pspacy.load_all_langs(langs)
+load_all_langs(langs)
 
 ################################################################################
 # test cases
@@ -28,4 +28,4 @@ pspacy.load_all_langs(langs)
 
 @pytest.mark.parametrize('test', inputs, ids=[input['lang'] for input in inputs])
 def test__lemmatize(test, benchmark):
-    benchmark(pspacy.lemmatize, test['lang'], test['text'])
+    benchmark(lemmatize, test['lang'], test['text'])
