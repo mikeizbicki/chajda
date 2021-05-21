@@ -27,6 +27,7 @@ RUN sh install_dependencies.sh
 
 # copy over the project and run tests
 COPY . /tmp/chajda
+RUN pip3 install .
 #RUN pip3 install flake8==3.8.4 \
  #&& flake8 --ignore=E501,E123,E402 .
 #RUN python3 -m pytest
