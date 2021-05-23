@@ -39,5 +39,5 @@ jobs:
         docker-compose build --build-arg BASE_IMAGE_VERSION=${{matrix.POSTGRES_VERSION}}
         docker-compose up -d --build
         sleep 20
-        docker-compose exec -T pspacy_db make installcheck
+        docker-compose exec -T db make installcheck
         docker-compose down
