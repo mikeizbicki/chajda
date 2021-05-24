@@ -1,10 +1,11 @@
-# chajda
+# Chajda: multilingual full text search in postgres
 
 Chajda (from the Korean 찾다, meaning to find) is a postgres extension and corresponding python library for highly multi-lingual full text search in postgres.
-It has 3 primary goals:
+It has 4 primary goals:
 1. support a large number of languages
-1. correct, including maintain ACID-compliance
-1. fast
+1. support advanced queries based on synonyms
+1. maintain ACID-guarantees
+1. be fast
 
 Currently 58 languages are supported, which is significantly more than other full text search engines like:
 ElasticSearch ([35](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-lang-analyzer.html)),
@@ -13,9 +14,9 @@ Lucene ([37](https://lucene.apache.org/core/8_3_1/analyzers-common/index.html)),
 Groonga (),
 and native postgres (23).
 In particular, native postgres has no support for full text search in Chinese, Japanese or Korean languages,
-but the pspacy extension provides this functionality.
+but the chajda extension provides this functionality.
 
-Pspacy adds support for these languages by using the popular [spacy](https://spacy.io/) python library to handle all language-specific parsing,
+Chajda adds support for these languages by using the popular [spacy](https://spacy.io/) python library to handle all language-specific parsing,
 and then reusing Postgres's language agnostic full text search features (e.g. [GIST]()/[GIN]()/[RUM]() indexes) to perform the actual searching.
 Spacy is under active development, and as more languages are added to spacy (and language support for the existing languages improves),
 these improvements can be automatically reused within postgres.
@@ -23,7 +24,7 @@ No python code is called during a full text search query,
 and so there is no query-time performance penalty for using a python library to parse the languages.
 
 <!--
-Pspacy requires postgres version >= 12 and python >= 3.6.
+Chajda requires postgres version >= 12 and python >= 3.6.
 -->
 
 1. [Installation](#Installation)
@@ -33,21 +34,21 @@ Pspacy requires postgres version >= 12 and python >= 3.6.
 
 ## Installation
 
-Pspacy has a lot of dependencies, about 3GB in total.
+Chajda has a lot of dependencies, about 3GB in total.
 This is due to the fact that each language has its own set of dependencies and models that must be downloaded and installed,
 and some of these models are quite large.
 Additionally many of the dependencies require careful tuning in order to get the correct, deterministic performance needed for use in a database.
 
 Due to the complex nature of installing this library, it is recommended to use docker and the provided `Dockerfile`.
-A working postgres 13 instance with pspacy installed can be created with the following commands:
+A working postgres 13 instance with chajda installed can be created with the following commands:
 ```
-$ git clone https://github.com/mikeizbicki/pspacy
-$ cd pspacy
+$ git clone https://github.com/mikeizbicki/chajda
+$ cd chajda
 $ docker-compose up -d --build
 ```
 You can then connect to the database via psql with the command
 ```
-$ docker-compose exec pspacy_db psql
+$ docker-compose exec chajda_db psql
 ```
 
 The `Dockerfile` internally uses the script `install_dependencies.sh` to download and install all of the needed dependencies.
@@ -58,7 +59,7 @@ $ make
 $ make install
 ```
 Note that the versions of the installed libraries should be modified only with extreme care,
-as modifying these dependencies can cause the same version of pspacy to parse text differently.
+as modifying these dependencies can cause the same version of chajda to parse text differently.
 It is strongly recommended that you run the test cases to ensure that language parsing is working correctly:
 ```
 $ python3 -m pytest     # ensures that the python correctly parses each language
@@ -67,12 +68,12 @@ $ make installcheck     # ensures that the library correcyly integrates with pos
 
 ## Example
 
-The following code loads the pspacy in a postgres database:
+The following code loads the chajda in a postgres database:
 ```
 psql> CREATE LANGUAGE plpython3u;
-psql> CREATE EXTENSION pspacy;
+psql> CREATE EXTENSION chajda;
 ```
-Installing the `plpython3u` language must be done before loading pspacy.
+Installing the `plpython3u` language must be done before loading chajda.
 
 Next, we create a table and populate it with some multilingual text.
 ```
@@ -149,7 +150,7 @@ The first is `tsvector`, which represents the documents being searched over.
 
 ### tsvector
 
-The following examples show the results of calling `pspacy_tsvector` on English, Spanish, Korean, and Chinese texts.
+The following examples show the results of calling `chajda_tsvector` on English, Spanish, Korean, and Chinese texts.
 ```
 psql> select spacy_tsvector('en', $$This is my example test sentence that I'm putting into Google Translate to generate test cases.$$);
                                               spacy_tsvector                                              
@@ -222,7 +223,7 @@ The reason for this is that:
 ## Performance
 
 Each language supported by spacy takes a different amount of time to parse,
-but they all parse fast enough that pspacy can be used in realtime search applications (such as web search).
+but they all parse fast enough that chajda can be used in realtime search applications (such as web search).
 
 The benchmarks below measure the runtime of the following code
 ```
@@ -306,4 +307,4 @@ Note that due to the lazy loading of language models, the first time you use a l
 
 # Limitations
 
-Dedicated full text search engines like ElasticSearch/Lucene/Solr/Groonga currently provide a number of features that pspacy does not.
+Dedicated full text search engines like ElasticSearch/Lucene/Solr/Groonga currently provide a number of features that chajda does not.

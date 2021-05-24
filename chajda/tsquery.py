@@ -30,6 +30,13 @@ grammar = Lark(r"""
 
 def to_tsquery(lang, query, augment_with=None, config=Config()):
     '''
+    A simple wrapper around the parse function that returns only the tsquery.
+    '''
+    return parse(lang, query, augment_with, config)['tsquery']
+
+
+def parse(lang, query, augment_with=None, config=Config()):
+    '''
     IMPLEMENTATION DETAILS:
     Parsing is done using the Lark library in a two step process.
     First, a grammar defines how to convert an input string into an AST.
@@ -74,8 +81,19 @@ def to_tsquery(lang, query, augment_with=None, config=Config()):
     tree = _stage_lemmatize(tree, lang, config)
     tree, augments = _stage_augment(tree, lang, augment_with, config)
     tsquery = _stage_tsquery(tree, bool(augment_with))
+    filtertree = _stage_filtertree(tree)
 
-    return tsquery
+    # return the dictionary of results
+    return {
+        'tsquery': tsquery,
+        'augments': augments,
+        'filtertree': filtertree,
+        }
+
+
+################################################################################
+# compilation stages
+################################################################################
 
 
 def _stage_simplify(tree):
@@ -224,6 +242,15 @@ def _stage_tsquery(tree, weighted):
     '''
     Flattens the AST into a string that can be cast into postgresql's `tsvector` type.
     For example, we replace all `sym_and` nodes with the `&` character and ensure that parentheses get added appropriately.
+
+    >>> parse('en', 'this is a test united states')['tsquery']
+    'test & unite & state'
+
+    >>> parse('en', 'this is a test "united states"')['tsquery']
+    'test & (unite <1> state)'
+
+    >>> parse('en', '"the a test":a')['tsquery']
+    ''
     '''
     class Transformer_tsvector(Transformer):
 
@@ -289,7 +316,7 @@ def _stage_tsquery(tree, weighted):
     
     # if the result is wrapped in unnecessary parentheses,
     # remove them before returning
-    if tsvector[0] == '(' and tsvector[-1] == ')':
+    if len(tsvector) > 0 and tsvector[0] == '(' and tsvector[-1] == ')':
         tsvector = tsvector[1:-1]
     return tsvector
 
@@ -297,47 +324,69 @@ def _stage_tsquery(tree, weighted):
 def _stage_filtertree(tree):
     '''
     This function extracts all of the filter objects from the AST and returns a tree representing these filters.
-    '''
-    '''
 
-    >>> Query('en', '"the a test":a b c').to_filtertree()
+    >>> parse('en', '"the a test":a b c')['filtertree']
     Tree('and', [Tree('filter', ['the a test', 'a'])])
 
-    >>> Query('en', '"the a test":a').to_filtertree()
-    Tree('and', [Tree('filter', ['the a test', 'a'])])
+    >>> parse('en', '"the a test":a')['filtertree']
+    Tree('filter', ['the a test', 'a'])
 
-    >>> Query('en', 'k1:v1 k2:v2 (k3:v3 or k4:v4) !k5:v5').to_filtertree()
+    >>> parse('en', 'k1:v1 k2:v2 (k3:v3 or k4:v4) !k5:v5')['filtertree']
     Tree('and', [Tree('filter', ['k1', 'v1']), Tree('filter', ['k2', 'v2']), Tree('or', [Tree('filter', ['k3', 'v3']), Tree('filter', ['k4', 'v4'])]), Tree('not', Tree('filter', ['k5', 'v5']))])
 
-    >>> Query('en', 't1 t2 & t3 t4 and t5').to_filtertree()
+    >>> parse('en', 't1 t2 & t3 t4 and t5')['filtertree']
     Tree('and', [])
     '''
     class Transformer_filtertree(Transformer):
 
         def exp(self, t):
-            return Tree('or', list(filter(lambda x: type(x) not in(str,Token), t)))
+            return Tree('or', t)
 
         def term(self, t):
-            return Tree('and', list(filter(lambda x: type(x) not in(str,Token), t)))
+            return Tree('and', t)
 
         def factor(self, t):
             if len(t) == 2:
                 return Tree('not', t[1])
-            return Tree('factor', list(filter(lambda x: type(x) not in(str,Token), t)))
+            else:
+                return Tree('factor', t)
 
         def sym_and(self, t):
-            return Token('sym_and','&')
+            raise Discard
 
         def sym_or(self, t):
-            return Token('sym_or','|')
+            raise Discard
 
-    filtertree = Transformer_filtertree().transform(tree)
-    if filtertree.data != 'and':
-        filtertree = Tree('and', [filtertree])
-    return filtertree
+        def str(self, t):
+            raise Discard
+
+    try:
+        return Transformer_filtertree().transform(tree)
+    
+    # the filtertree transformation discards lots of nodes in the tree;
+    # if there are no filter commands in the input, this will result in an empty tree;
+    # Lark does not catch the Discard error in this event, so we must explicitly do so;
+    # we return None in this event to indicate there are no filters
+    except Discard:
+        return None
+
+
+################################################################################
+# helper functions
+################################################################################
 
 
 def _lemmatize_rawterm(lang, rawterm, config):
+    '''
+    A helper function for calling spacy to lemmatize a given rawterm.
+    This function is called internally in several different stages
+
+    >>> _lemmatize_rawterm('en', 'United', Config())
+    Tree('str', ['unite'])
+
+    >>> _lemmatize_rawterm('en', 'the United States of America', Config())
+    Tree('phrase', ['unite', 'state', '_', 'america'])
+    '''
     # if there were quotations around the original input rawterm, remove them
     if rawterm[0] == '"' and rawterm[-1] == '"':
         rawterm = rawterm[1:-1]
