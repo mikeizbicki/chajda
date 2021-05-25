@@ -2,6 +2,7 @@
 '''
 
 import copy
+import lark
 from lark import Lark, Transformer, Token, Tree, Discard
 from chajda.tsvector import lemmatize, Config
 
@@ -45,6 +46,9 @@ def parse(lang, query, augment_with=None, config=Config()):
     it's probably a good idea to first go through Lark's JSON parsing tutorial:
     https://lark-parser.readthedocs.io/en/latest/json_tutorial.html
 
+    >>> to_tsquery('xx', '')
+    ''
+
     >>> to_tsquery('xx', 'word_or word_and word_not or_word and_word not_word _and_ _or_ _not_')
     'wordor & wordand & wordnot & orword & andword & notword & and & or & not'
 
@@ -74,7 +78,13 @@ def parse(lang, query, augment_with=None, config=Config()):
     '''
 
     # parse the query into an AST
-    tree = grammar.parse(query)
+    try:
+        tree = grammar.parse(query)
+
+    # Lark throws the Unexpected EOF when the input query is empty;
+    # we create a simple empty tree with no terms so that the remaining processing stages will behave sanely
+    except lark.exceptions.UnexpectedEOF:
+        tree = Tree('exp', [])
 
     # apply the transformation stages
     tree = _stage_simplify(tree)
