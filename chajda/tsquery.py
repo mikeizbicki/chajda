@@ -81,7 +81,7 @@ def parse(lang, query, augment_with=None, config=Config()):
     tree = _stage_lemmatize(tree, lang, config)
     tree, augments = _stage_augment(tree, lang, augment_with, config)
     tsquery = _stage_tsquery(tree, bool(augment_with))
-    termtree = _stage_termtree(tree)
+    termtree, terms = _stage_termtree(tree)
     filtertree = _stage_filtertree(tree)
 
     # return the dictionary of results
@@ -90,6 +90,7 @@ def parse(lang, query, augment_with=None, config=Config()):
         'augments': augments,
         'filtertree': filtertree,
         'termtree': termtree,
+        'terms': terms,
         }
 
 
@@ -327,16 +328,22 @@ def _stage_termtree(tree):
     '''
     The termtree contains all of the search terms with no tsquery-style decorations.
 
-    >>> parse('en', '"The United States of America" korea ')['termtree']
+    >>> parse('en', '"The United States of America" korea')['terms']
+    ['unite state _ america', 'korea']
+
+    >>> parse('en', '"The United States of America" korea')['termtree']
     Tree('and', ['unite state _ america', 'korea'])
 
-    >>> parse('en', '"The United States of America" or korea ')['termtree']
+    >>> parse('en', '"The United States of America" or korea')['termtree']
     Tree('or', ['unite state _ america', 'korea'])
 
     >>> parse('en', '"The United States of America" and ((cuba or korea) and !iran)')['termtree']
     Tree('and', ['unite state _ america', Tree('or', ['cuba', 'korea']), Tree('not', 'iran')])
     '''
     class Transformer_termtree(Transformer):
+
+        def __init__(self):
+            self.terms = []
 
         def exp(self, t):
             return Tree('or', t)
@@ -357,13 +364,19 @@ def _stage_termtree(tree):
             raise Discard
 
         def str(self, t):
-            return t[0]
+            term = t[0]
+            self.terms.append(term)
+            return term
 
         def phrase(self, t):
-            return ' '.join(t)
+            term = ' '.join(t)
+            self.terms.append(term)
+            return term
 
     try:
-        return Transformer_termtree().transform(tree)
+        trans = Transformer_termtree()
+        termtree = trans.transform(tree)
+        return termtree, trans.terms
     
     # the termtree transformation discards lots of nodes in the tree;
     # if there are no terms in the input, this will result in an empty tree;
