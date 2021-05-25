@@ -81,6 +81,7 @@ def parse(lang, query, augment_with=None, config=Config()):
     tree = _stage_lemmatize(tree, lang, config)
     tree, augments = _stage_augment(tree, lang, augment_with, config)
     tsquery = _stage_tsquery(tree, bool(augment_with))
+    termtree = _stage_termtree(tree)
     filtertree = _stage_filtertree(tree)
 
     # return the dictionary of results
@@ -88,6 +89,7 @@ def parse(lang, query, augment_with=None, config=Config()):
         'tsquery': tsquery,
         'augments': augments,
         'filtertree': filtertree,
+        'termtree': termtree,
         }
 
 
@@ -319,6 +321,56 @@ def _stage_tsquery(tree, weighted):
     if len(tsvector) > 0 and tsvector[0] == '(' and tsvector[-1] == ')':
         tsvector = tsvector[1:-1]
     return tsvector
+
+
+def _stage_termtree(tree):
+    '''
+    The termtree contains all of the search terms with no tsquery-style decorations.
+
+    >>> parse('en', '"The United States of America" korea ')['termtree']
+    Tree('and', ['unite state _ america', 'korea'])
+
+    >>> parse('en', '"The United States of America" or korea ')['termtree']
+    Tree('or', ['unite state _ america', 'korea'])
+
+    >>> parse('en', '"The United States of America" and ((cuba or korea) and !iran)')['termtree']
+    Tree('and', ['unite state _ america', Tree('or', ['cuba', 'korea']), Tree('not', 'iran')])
+    '''
+    class Transformer_termtree(Transformer):
+
+        def exp(self, t):
+            return Tree('or', t)
+
+        def term(self, t):
+            return Tree('and', t)
+
+        def factor(self, t):
+            if len(t) == 2:
+                return Tree('not', t[1])
+            else:
+                return Tree('factor', t)
+
+        def sym_and(self, t):
+            raise Discard
+
+        def sym_or(self, t):
+            raise Discard
+
+        def str(self, t):
+            return t[0]
+
+        def phrase(self, t):
+            return ' '.join(t)
+
+    try:
+        return Transformer_termtree().transform(tree)
+    
+    # the termtree transformation discards lots of nodes in the tree;
+    # if there are no terms in the input, this will result in an empty tree;
+    # Lark does not catch the Discard error in this event, so we must explicitly do so;
+    # we return None in this event to indicate there are no filters
+    except Discard:
+        return None
 
 
 def _stage_filtertree(tree):
