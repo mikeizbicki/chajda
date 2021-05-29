@@ -20,3 +20,6 @@ venv
 regression.diffs
 regression.out
 results
+
+chajda/tsquery/annoy/
+chajda/tsquery/fasttext/
