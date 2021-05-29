@@ -2,7 +2,7 @@
 '''
 
 from chajda.tsvector import lemmatize, Config
-from chajda.tsquery import to_tsquery
+from chajda.tsquery.__init__ import to_tsquery
 
 
 def augments_gensim(lang, word, config=Config(), n=5):
