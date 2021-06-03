@@ -5,6 +5,19 @@ from chajda.tsvector import lemmatize, Config
 from chajda.tsquery.__init__ import to_tsquery
 
 
+from contextlib import contextmanager,redirect_stderr,redirect_stdout
+from os import devnull
+
+@contextmanager
+def suppress_stdout_stderr():
+    """A context manager that redirects stdout and stderr to devnull"""
+    with open(devnull, 'w') as fnull:
+        with redirect_stderr(fnull) as err, redirect_stdout(fnull) as out:
+            yield (err, out)
+
+
+
+
 def augments_gensim(lang, word, config=Config(), n=5):
     '''
     Returns n words that are "similar" to the input word in the target language.
@@ -29,6 +42,14 @@ def augments_gensim(lang, word, config=Config(), n=5):
     ['explosive', 'weaponry', 'gun', 'ammunition', 'device']
     '''
 
+    # load the model if it's not already loaded
+    try:
+        augments_gensim.model
+    except AttributeError:
+        import gensim.downloader
+        with suppress_stdout_stderr():
+            augments_gensim.model = gensim.downloader.load("glove-wiki-gigaword-50")
+
     # find the most similar words;
     try:
         topn = augments_gensim.model.most_similar(word, topn=n+1)
@@ -46,14 +67,6 @@ def augments_gensim(lang, word, config=Config(), n=5):
     return words
 
 
-# load the model if it's not already loaded
-try:
-    augments_gensim.model
-except AttributeError:
-    import gensim.downloader
-    augments_gensim.model = gensim.downloader.load("glove-wiki-gigaword-50")
-
-
 import fasttext
 import fasttext.util
 
@@ -65,68 +78,42 @@ def augments_fasttext(lang, word, config=Config(), n=5):
     These words can be used to augment a search with the Query class.
 
     >>> to_tsquery('en', 'baby boy', augment_with=augments_fasttext)
-    '(baby:A | newborn:B | infant:B | babytobe:B | babya:B | babythe:B) & (boy:A | girl:B | boyhe:B | boyit:B | boybut:B | boythis:B)'
+    '(baby:A | newborn:B | infant:B) & (boy:A | girl:B | boyhe:B | boyit:B)'
+
     >>> to_tsquery('en', '"baby boy"', augment_with=augments_fasttext)
     'baby:A <1> boy:A'
 
     >>> to_tsquery('en', '"baby boy" (school | home) !weapon', augment_with=augments_fasttext)
-    '(baby:A <1> boy:A) & ((school:A | schoo:B | schoolthe:B | schoool:B | kindergarten:B | shcool:B) | (home:A | house:B | homethe:B | homewhen:B | homethis:B | homee:B)) & !(weapon:A | weaponthe:B | weopon:B | weaponit:B | weaponry:B | wepon:B)'
+    '(baby:A <1> boy:A) & ((school:A | schoo:B | schoolthe:B | schoool:B | kindergarten:B) | (home:A | house:B | homethe:B | homewhen:B | homethis:B)) & !(weapon:A | weaponthe:B | weopon:B)'
 
     >>> augments_fasttext('ja','さようなら', n=5)
     ['さよなら', 'バイバイ', 'サヨウナラ', 'さらば', 'おしまい']
 
     >>> augments_fasttext('es','escuela', n=5)
-    ['escuelala', 'academia', 'universidad', 'laescuela', 'escula']
+    ['escuelala', 'academia', 'universidad', 'laescuela']
 
     >>> augments_fasttext('en','weapon', n=5)
-    ['weaponthe', 'weopon', 'weaponit', 'weaponry', 'wepon']
+    ['weaponthe', 'weopon']
     '''
-
-
-    #load the model based on lang if it's not already loaded
-   # if lang not in fasttext_models:
-   #     fasttext.util.download_model(lang, if_exists='ignore')
-   #     fasttext_models[lang] = fasttext.load_model('cc.{0}.300.bin'.format(lang))
 
     try:
         fasttext_models[lang]
     except:
-        fasttext.util.download_model(lang, if_exists='ignore')
+        with suppress_stdout_stderr():
+            fasttext.util.download_model(lang, if_exists='ignore')
         fasttext_models[lang] = fasttext.load_model('cc.{0}.300.bin'.format(lang))
-
-   # print('fasttext dimension =', augments_fasttext.model.get_dimension())
-
-   # print('fasttext similar words =', augments_fasttext.model.get_nearest_neighbors(word, k=n+1))
 
     #find the most similar words
     try:
-        topn = fasttext_models[lang].get_nearest_neighbors(word, k=n+5)
+        topn = fasttext_models[lang].get_nearest_neighbors(word, k=n)
         words = ' '.join([ word for (rank, word) in topn ])
-       # print('fasttext words bf lemma = ', words)
     except KeyError:
         return []
 
     # lemmatize the results so that they'll be in the search document's vocabulary
     words = lemmatize(lang, words, add_positions=False, config=config).split()
-
-    #todo: figure out a better way to filter through the typo words that fasttext produces:
     words = list(filter(lambda w: len(w)>1 and w != word, words))[:n]
 
 
-   # print('returned fasttext words = ', words)
     return words
-
-
-#print('tsquery fasttext baby boy = ', to_tsquery('en', '"baby boy"', augment_with=augments_fasttext)
-#print('tsquery fasttext baby boy school home !weapon = ', to_tsquery('en', '"baby boy" (school | home) !weapon', augment_with=augments_fasttext))
-
-     
-
-     
-     
-
-
-
-
-
 
