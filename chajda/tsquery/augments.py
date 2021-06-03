@@ -80,14 +80,14 @@ def augments_fasttext(lang, word, config=Config(), n=5):
     >>> to_tsquery('en', 'baby boy', augment_with=augments_fasttext)
     '(baby:A | newborn:B | infant:B) & (boy:A | girl:B | boyhe:B | boyit:B)'
 
-   # >>> to_tsquery('en', '"baby boy"', augment_with=augments_fasttext)
-   # 'baby:A <1> boy:A'
+    >>> to_tsquery('en', '"baby boy"', augment_with=augments_fasttext)
+    'baby:A <1> boy:A'
 
-   # >>> to_tsquery('en', '"baby boy" (school | home) !weapon', augment_with=augments_fasttext)
-   # '(baby:A <1> boy:A) & ((school:A | schoo:B | schoolthe:B | schoool:B | kindergarten:B) | (home:A | house:B | homethe:B | homewhen:B | homethis:B)) & !(weapon:A | weaponthe:B | weopon:B)'
+    >>> to_tsquery('en', '"baby boy" (school | home) !weapon', augment_with=augments_fasttext)
+    '(baby:A <1> boy:A) & ((school:A | schoo:B | schoolthe:B | schoool:B | kindergarten:B) | (home:A | house:B | homethe:B | homewhen:B | homethis:B)) & !(weapon:A | weaponthe:B | weopon:B)'
 
-   # >>> augments_fasttext('ja','さようなら', n=5)
-   # ['さよなら', 'バイバイ', 'サヨウナラ', 'さらば', 'おしまい']
+    >>> augments_fasttext('ja','さようなら', n=5)
+    ['さよなら', 'バイバイ', 'サヨウナラ', 'さらば', 'おしまい']
 
    # >>> augments_fasttext('es','escuela', n=5)
    # ['escuelala', 'academia', 'universidad', 'laescuela']
