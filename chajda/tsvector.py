@@ -265,7 +265,6 @@ def tsvector_to_ngrams(tsv, n, uniq=True):
         # there are some items without colons, causing the split() call to fail;
         # this should never happen, and I don't know why it is
         except ValueError:
-            plpy.warning('tsvector_to_ngrams item='+item+' tsv='+tsv)
             pass
 
 
