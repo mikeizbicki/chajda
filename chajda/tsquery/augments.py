@@ -10,7 +10,7 @@ from os import devnull
 
 @contextmanager
 def suppress_stdout_stderr():
-    """A context manager that redirects stdout and stderr to devnull"""
+    """Context manager that redirects stdout and stderr to devnull"""
     with open(devnull, 'w') as fnull:
         with redirect_stderr(fnull) as err, redirect_stdout(fnull) as out:
             yield (err, out)
