@@ -95,26 +95,30 @@ def augments_fasttext(lang, word, config=Config(), n=5):
     >>> augments_fasttext('en','king', n=5)
     ['queen', 'kingthe']
     '''
-
+    
+    #load the fasttext model if it's not already loaded
     try:
         fasttext_models[lang]
     except:
         with suppress_stdout_stderr():
             fasttext.util.download_model(lang, if_exists='ignore')
         fasttext_models[lang] = fasttext.load_model('cc.{0}.300.bin'.format(lang))
-    #print(fasttext_models[lang].words)
+    
+    #create AnnoyIndex 
     index = AnnoyIndex(300, 'angular')
-    #populating AnnoyIndex with vectors from fasttext model
-    i = 0
-    for j in fasttext_models[lang].words:
-        v = fasttext_models[lang][j]
-        index.add_item(i,v)
-        i += 1
 
-    index.build(10)
-    index.save('test.ann')
-    index.save('test.ann')
-    index.load('test.ann')
+    #If annoy index has not been created for this language yet, populate with vectors from corresponding fasttext model 
+    try:
+        index.load('{0}.ann'.format(lang))
+    except:
+        i = 0
+        for j in fasttext_models[lang].words:
+            v = fasttext_models[lang][j]
+            index.add_item(i,v)
+            i += 1
+        index.build(10)
+        index.save('{0}.ann'.format(lang))
+        index.load('{0}.ann'.format(lang))
 
     #find the most similar words using annoy index
     try:
@@ -126,9 +130,6 @@ def augments_fasttext(lang, word, config=Config(), n=5):
         print("words = ", words)
     except KeyError:
         return []
-
-
-
 
     #find the most similar words
    # try:
