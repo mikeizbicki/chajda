@@ -69,6 +69,7 @@ def augments_gensim(lang, word, config=Config(), n=5):
 
 import fasttext
 import fasttext.util
+from annoy import AnnoyIndex
 
 fasttext_models = {}
 
@@ -101,13 +102,40 @@ def augments_fasttext(lang, word, config=Config(), n=5):
         with suppress_stdout_stderr():
             fasttext.util.download_model(lang, if_exists='ignore')
         fasttext_models[lang] = fasttext.load_model('cc.{0}.300.bin'.format(lang))
+    #print(fasttext_models[lang].words)
+    index = AnnoyIndex(300, 'angular')
+    #populating AnnoyIndex with vectors from fasttext model
+    i = 0
+    for j in fasttext_models[lang].words:
+        v = fasttext_models[lang][j]
+        index.add_item(i,v)
+        i += 1
 
-    #find the most similar words
+    index.build(10)
+    index.save('test.ann')
+    index.save('test.ann')
+    index.load('test.ann')
+
+    #find the most similar words using annoy index
     try:
-        topn = fasttext_models[lang].get_nearest_neighbors(word, k=n)
-        words = ' '.join([ word for (rank, word) in topn ])
+        n_nearest_neighbor_indices = index.get_nns_by_vector(fasttext_models[lang][word], n)
+        n_nearest_neighbors = []
+        for i in range(n):
+            n_nearest_neighbors.append(fasttext_models[lang].words[n_nearest_neighbor_indices[i]])
+        words = ' '.join([ word for word in n_nearest_neighbors ])
+        print("words = ", words)
     except KeyError:
         return []
+
+
+
+
+    #find the most similar words
+   # try:
+   #     topn = fasttext_models[lang].get_nearest_neighbors(word, k=n)
+   #     words = ' '.join([ word for (rank, word) in topn ])
+   # except KeyError:
+   #     return []
 
     # lemmatize the results so that they'll be in the search document's vocabulary
     words = lemmatize(lang, words, add_positions=False, config=config).split()
