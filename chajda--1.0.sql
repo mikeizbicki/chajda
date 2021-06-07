@@ -56,6 +56,14 @@ $$
 LANGUAGE SQL STRICT IMMUTABLE PARALLEL SAFE;
 
 
+CREATE OR REPLACE FUNCTION tsvector_to_ngrams(tsv tsvector, n INTEGER DEFAULT 3, uniq BOOLEAN DEFAULT TRUE)
+RETURNS TEXT[] LANGUAGE plpython3u IMMUTABLE STRICT PARALLEL SAFE 
+AS $$
+import chajda.tsvector
+return list(chajda.tsvector.tsvector_to_ngrams(tsv, n, uniq))
+$$;
+ 
+
 CREATE FUNCTION chajda_tsquery(
     lang TEXT,
     text TEXT,
@@ -91,5 +99,7 @@ BEGIN
     -- the purpose of this test is merely to ensure that postgres can connect to the python library
     assert (chajda_tsquery('en', 'united states') = 'unite & state');
     assert (chajda_lemmatize('en', 'this is a test') = 'test:4');
+    assert (chajda_tsvector('en', 'this is a test') = 'test:4');
+    assert (tsvector_to_ngrams(chajda_tsvector('en', 'united states'), uniq=>False) = ARRAY['unite', 'state', 'unite state']);
 END
 $$ LANGUAGE plpgsql;

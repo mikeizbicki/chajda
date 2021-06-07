@@ -50,6 +50,7 @@ unicode_CPS = dict.fromkeys(i for i in range(0, sys.maxunicode + 1) if unicodeda
 from collections import defaultdict
 nlp = defaultdict(lambda: None)
 
+
 ################################################################################
 # function definitions
 ################################################################################
@@ -123,10 +124,11 @@ class Config:
     the `tsvector` and `tsquery` objects need to be created with the same configuration settings and the same language.
     '''
 
-    def __init__(self, lower_case=True, remove_special_chars=True, remove_stop_words=True):
+    def __init__(self, lower_case=True, remove_special_chars=True, remove_stop_words=True, max_lemma_size=20):
         self.lower_case=lower_case
         self.remove_special_chars=remove_special_chars
         self.remove_stop_words=remove_stop_words
+        self.max_lemma_size = max_lemma_size
 
 
 def lemmatize(
@@ -147,6 +149,9 @@ def lemmatize(
 
     >>> lemmatize('xx', 'The United States of America is a country.', add_positions=False)
     'the united states of america is a country'
+
+    >>> lemmatize('xx', 'reallybigword1 verybigword2 reallyreallyreallybigword3', config=Config(max_lemma_size=5))
+    'reall:1 veryb:2 reall:3'
 
     There are extensive tests for all configuration options and languages in the `tests/` folder.
     '''
@@ -189,13 +194,14 @@ def lemmatize(
         return None
 
     def format_token(token, i):
+        lemma = token.lemma_[:config.max_lemma_size]
         if add_positions:
-            if token.lemma_ == ' ':
+            if lemma == ' ':
                 return ' '
             else:
-                return token.lemma_ + ':' + str(i + 1)
+                return lemma + ':' + str(i + 1)
         else:
-            return token.lemma_
+            return lemma
 
     def include_token(token):
         if config.remove_stop_words:
@@ -203,16 +209,7 @@ def lemmatize(
         else:
             return True
 
-    # NOTE:
-    # in the code below, we take only the first 500 characters of each token;
-    # this is because the postgresql btree implementation throws an error when
-    # used on an input field with more than 2000 bytes;
-    # all unicode characters take at most 4 bytes per character,
-    # so by truncating to length 500,
-    # we are guaranteed that the number of bytes will be less than 2000.
-    # From a practical perspective, no real words should ever be this long,
-    # so this won't effect precision/recall.
-    lemmas = [format_token(token, i)[:500] for i, token in enumerate(doc) if include_token(token)]
+    lemmas = [format_token(token, i) for i, token in enumerate(doc) if include_token(token)]
     lemmas_joined = ' '.join(lemmas)
 
     # NOTE:
@@ -224,41 +221,65 @@ def lemmatize(
     return lemmas_joined
 
 
-
-def lemmatize_query(
-        lang,
-        text,
-        lower_case=True,
-        remove_special_chars=True,
-        remove_stop_words=True,
-        ):
+def tsvector_to_ngrams(tsv, n, uniq=True):
     '''
-    >>> lemmatize_query('xx', 'Abraham Lincoln was president of the United States')
-    'abraham & lincoln & was & president & of & the & united & states'
-    >>> lemmatize_query('en', 'Abraham Lincoln was president of the United States')
-    'abraham & lincoln & president & unite & state'
-    >>> lemmatize_query('en', '      Abraham Lincoln was president of   the     United     States   ')
-    'abraham & lincoln & president & unite & state'
+    Groups the ordered lexemes in a tsvector into an unordered set of n-grams.
+    The results are intended to be used for computing statistics about the use of n-grams in a corpus of documents.
 
+    The following examples show the output when combined with chajda's lemmatize function:
 
-    FIXME:
-    we should add quotations like in the following examples
+    >>> tsvector_to_ngrams(lemmatize('en', 'fancy apple pie crust is the most delicious fancy pie that I have ever eaten; I love pie.'), 1, False)
+    ['fancy', 'apple', 'pie', 'crust', 'delicious', 'fancy', 'pie', 'eat', 'love', 'pie']
 
-    #>>> lemmatize_query('en', '"Abraham Lincoln" was president of the United States')
-    #'abraham <1> lincoln & president & united & state'
-    #>>> lemmatize_query('en', '"Abraham Lincoln" was "president of the United States"')
-    #'abraham <1> lincoln & president <2> united <1> state'
+    >>> tsvector_to_ngrams(lemmatize('en', 'fancy apple pie crust is the most delicious fancy pie that I have ever eaten; I love pie.'), 2, False)
+    ['fancy', 'apple', 'fancy apple', 'pie', 'apple pie', 'crust', 'pie crust', 'delicious', 'fancy', 'delicious fancy', 'pie', 'fancy pie', 'eat', 'love', 'pie', 'love pie']
+    >>> tsvector_to_ngrams(lemmatize('en', 'fancy apple pie crust is the most delicious fancy pie that I have ever eaten; I love pie.'), 3, False)
+    ['fancy', 'apple', 'fancy apple', 'pie', 'apple pie', 'fancy apple pie', 'crust', 'pie crust', 'apple pie crust', 'delicious', 'fancy', 'delicious fancy', 'pie', 'fancy pie', 'delicious fancy pie', 'eat', 'love', 'pie', 'love pie']
+
+    These test cases use the same example string above, but tsv was generated from the postgres function to_tsvector,
+    which lemmatizes differently than chajda's lemmatize function.
+
+    >>> tsvector_to_ngrams("'appl':2 'crust':4 'delici':8 'eaten':15 'ever':14 'fanci':1,9 'love':17 'pie':3,10,18", 1, False)
+    ['fanci', 'appl', 'pie', 'crust', 'delici', 'fanci', 'pie', 'ever', 'eaten', 'love', 'pie']
+    >>> tsvector_to_ngrams("'appl':2 'crust':4 'delici':8 'eaten':25 'ever':14 'fanci':1,9 'love':17 'pie':3,10,18", 2, False)
+    ['fanci', 'appl', 'fanci appl', 'pie', 'appl pie', 'crust', 'pie crust', 'delici', 'fanci', 'delici fanci', 'pie', 'fanci pie', 'ever', 'love', 'pie', 'love pie', 'eaten']
+    >>> tsvector_to_ngrams("'appl':2 'crust':4 'delici':8 'eaten':25 'ever':14 'fanci':1,9 'love':17 'pie':3,10,18", 3, False)
+    ['fanci', 'appl', 'fanci appl', 'pie', 'appl pie', 'fanci appl pie', 'crust', 'pie crust', 'appl pie crust', 'delici', 'fanci', 'delici fanci', 'pie', 'fanci pie', 'delici fanci pie', 'ever', 'love', 'pie', 'love pie', 'eaten']
+
+    NOTE:
+    Test cases specify that `uniq=False` because the output with `uniq=True` is non-deterministic.
+    In practice inside postgres, we'll be using `uniq=True`.
     '''
-    lemmas = lemmatize(
-        lang,
-        text,
-        add_positions=False,
-        config = Config(
-            lower_case=lower_case,
-            remove_special_chars=remove_special_chars,
-            remove_stop_words=remove_stop_words,
-            )
-        )
-    return ' & '.join(lemmas.split())
+    positioned_lexemes = []
+    for item in tsv.split():
+        try:
+            lexeme, positions = item.split(':')
+            for position in positions.split(','):
+                try:
+                    position = int(position)
+                    positioned_lexemes.append((position,lexeme.strip("'")))
+                except ValueError:
+                    pass
+
+        # FIXME: 
+        # there are some items without colons, causing the split() call to fail;
+        # this should never happen, and I don't know why it is
+        except ValueError:
+            pass
 
 
+    positioned_lexemes.sort()
+    ngrams = []
+    for i,(pos,lexeme) in enumerate(positioned_lexemes):
+        ngrams.append(lexeme)
+        ngram = lexeme
+        for j in range(1, min(n,i+1)):
+            prev_pos,prev_lexeme = positioned_lexemes[i-j]
+            if prev_pos == pos - j:
+                ngram = prev_lexeme + ' ' + ngram
+                ngrams.append(ngram)
+            else:
+                break
+    if uniq:
+        ngrams = set(ngrams)
+    return ngrams
