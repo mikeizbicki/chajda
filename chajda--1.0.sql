@@ -62,6 +62,14 @@ AS $$
 import chajda.tsvector
 return list(chajda.tsvector.tsvector_to_ngrams(tsv, n, uniq))
 $$;
+
+
+CREATE OR REPLACE FUNCTION tsvector_to_wordcontext(tsv tsvector, n INTEGER DEFAULT 3, windowsize INTEGER DEFAULT 5)
+RETURNS TABLE(a TEXT,b TEXT,c INTEGER) LANGUAGE plpython3u IMMUTABLE STRICT PARALLEL SAFE 
+AS $$
+import chajda.tsvector
+return chajda.tsvector.tsvector_to_wordcontext(tsv, n, windowsize)
+$$;
  
 
 CREATE FUNCTION chajda_tsquery(
@@ -101,5 +109,6 @@ BEGIN
     assert (chajda_lemmatize('en', 'this is a test') = 'test:4');
     assert (chajda_tsvector('en', 'this is a test') = 'test:4');
     assert (tsvector_to_ngrams(chajda_tsvector('en', 'united states'), uniq=>False) = ARRAY['unite', 'state', 'unite state']);
+    assert (select count(*) from tsvector_to_wordcontext(chajda_tsvector('en', 'the united states is a country'), 2, 1) ) = 6;
 END
 $$ LANGUAGE plpgsql;

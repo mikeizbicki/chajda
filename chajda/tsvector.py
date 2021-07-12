@@ -47,7 +47,7 @@ unicode_CPS = dict.fromkeys(i for i in range(0, sys.maxunicode + 1) if unicodeda
 # the nlp dictionary will hold the loaded spacy models;
 # it is populated by the load_lang function;
 # an entry of None indicates that the model still needs to be loaded
-from collections import defaultdict
+from collections import defaultdict,Counter
 nlp = defaultdict(lambda: None)
 
 
@@ -250,25 +250,7 @@ def tsvector_to_ngrams(tsv, n, uniq=True):
     Test cases specify that `uniq=False` because the output with `uniq=True` is non-deterministic.
     In practice inside postgres, we'll be using `uniq=True`.
     '''
-    positioned_lexemes = []
-    for item in tsv.split():
-        try:
-            lexeme, positions = item.split(':')
-            for position in positions.split(','):
-                try:
-                    position = int(position)
-                    positioned_lexemes.append((position,lexeme.strip("'")))
-                except ValueError:
-                    pass
-
-        # FIXME: 
-        # there are some items without colons, causing the split() call to fail;
-        # this should never happen, and I don't know why it is
-        except ValueError:
-            pass
-
-
-    positioned_lexemes.sort()
+    positioned_lexemes = _get_positioned_lexemes(tsv)
     ngrams = []
     for i,(pos,lexeme) in enumerate(positioned_lexemes):
         ngrams.append(lexeme)
@@ -283,3 +265,72 @@ def tsvector_to_ngrams(tsv, n, uniq=True):
     if uniq:
         ngrams = set(ngrams)
     return ngrams
+
+
+def tsvector_to_wordcontext(tsv, n, windowsize):
+    '''
+    Converts a document into a dictionary of (focus_word, context_words) pairs suitable for word2vec type training.
+    The context_words are dictionaries of (word, count) pairs.
+
+    FIXME:
+    tsvectors do not contain any information about sentence boundaries;
+    therefore, we cannot limit the context to include only text from the same sentence
+
+    params:
+        tsv: a tsvector (represented as a str in python)
+        n: the length of ngrams for focus words; contexts will only use 1-grams
+        windowsize: the size of the context to the left and right of the focus word
+
+    >>> tsvector_to_wordcontext(lemmatize('en', 'fancy apple pie crust is the most delicious fancy pie that I have ever eaten; I love pie.'), 2, 2)
+    [('fancy', 'apple', 1), ('fancy', 'pie', 2), ('fancy', 'crust', 1), ('fancy', 'delicious', 1), ('fancy', 'eat', 1), ('fancy apple', 'pie', 1), ('fancy apple', 'crust', 1), ('apple', 'fancy', 1), ('apple', 'pie', 1), ('apple', 'crust', 1), ('apple pie', 'fancy', 1), ('apple pie', 'crust', 1), ('apple pie', 'delicious', 1), ('pie', 'fancy', 2), ('pie', 'apple', 1), ('pie', 'crust', 1), ('pie', 'delicious', 2), ('pie', 'eat', 3), ('pie', 'love', 3), ('pie crust', 'fancy', 2), ('pie crust', 'apple', 1), ('pie crust', 'delicious', 1), ('crust', 'apple', 1), ('crust', 'pie', 1), ('crust', 'delicious', 1), ('crust', 'fancy', 1), ('crust delicious', 'apple', 1), ('crust delicious', 'pie', 2), ('crust delicious', 'fancy', 1), ('delicious', 'pie', 2), ('delicious', 'crust', 1), ('delicious', 'fancy', 1), ('delicious fancy', 'pie', 2), ('delicious fancy', 'crust', 1), ('delicious fancy', 'eat', 1), ('fancy pie', 'crust', 1), ('fancy pie', 'delicious', 1), ('fancy pie', 'eat', 1), ('fancy pie', 'love', 1), ('pie eat', 'delicious', 1), ('pie eat', 'fancy', 1), ('pie eat', 'love', 1), ('pie eat', 'pie', 1), ('eat', 'fancy', 1), ('eat', 'pie', 2), ('eat', 'love', 1), ('eat love', 'fancy', 1), ('eat love', 'pie', 2), ('love', 'pie', 2), ('love', 'eat', 1), ('love pie', 'pie', 1), ('love pie', 'eat', 1)]
+    '''
+    positioned_lexemes = _get_positioned_lexemes(tsv)
+    positioned_lexemes.sort()
+    ordered_lexemes = [lexeme for position,lexeme in positioned_lexemes]
+
+    # wordcontext is a dictionary of dictionaries;
+    # the outer key is the focus word, the inner key is the context word, and the inner value is the count
+    wordcontext = defaultdict(lambda: Counter())
+    for i,lexeme in enumerate(ordered_lexemes):
+        for j in range(n):
+            word = ' '.join(ordered_lexemes[i:i+j+1])
+            context_left = ordered_lexemes[max(0,i-windowsize):i]
+            context_right = ordered_lexemes[i+j+1:i+j+1+windowsize]
+            wordcontext[word] += Counter(context_left + context_right)
+
+    # convert the dictionary of dictionaries into a flat list suitable for storing in a SQL table
+    output = []
+    for focusword,context in wordcontext.items():
+        for contextword,count in context.items():
+            output.append((focusword,contextword,count))
+    return output
+
+
+def _get_positioned_lexemes(tsv):
+    '''
+    This helper functions converts a tsvector input into the original stream of words that generated the tsvector.
+    Since stop words are removed when creating a tsvector, the words are labelled with their position in the original text.
+
+    >>> _get_positioned_lexemes(lemmatize('en', 'fancy apple pie crust is the most delicious fancy pie that I have ever eaten; I love pie.'))
+    [(1, 'fancy'), (2, 'apple'), (3, 'pie'), (4, 'crust'), (8, 'delicious'), (9, 'fancy'), (10, 'pie'), (15, 'eat'), (17, 'love'), (18, 'pie')]
+    '''
+    positioned_lexemes = []
+    for item in tsv.split():
+        try:
+            lexeme, positions = item.split(':')
+            for position in positions.split(','):
+                try:
+                    position = int(position)
+                    positioned_lexemes.append((position,lexeme.strip("'")))
+                except ValueError:
+                    logger.error('ValueError: position not an int')
+
+        # FIXME: 
+        # there are some items without colons, causing the split() call to fail;
+        # this should never happen, and I don't know why it is;
+        # we must catch this error so that postgres doesn't crash when the error is thrown
+        except ValueError:
+            logger.error('ValueError: malformed tsvector lexeme')
+
+    positioned_lexemes.sort()
+    return positioned_lexemes
