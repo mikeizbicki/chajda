@@ -24,7 +24,11 @@ jobs:
         #flake8 --ignore=E501,E123,E402 .
     - name: Test with pytest
       run: |
-        pytest tests
+        export test_level=2
+        export nval_lang=github
+        pytest tests/test_augments.py
+        pytest tests/test_bench.py
+        pytest tests/test_golden.py
         pytest chajda --doctest-modules
 
   docker:
