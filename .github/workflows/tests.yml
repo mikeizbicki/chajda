@@ -24,6 +24,8 @@ jobs:
         #flake8 --ignore=E501,E123,E402 .
     - name: Test with pytest
       run: |
+        export test_level=2
+        export nval_lang=github
         pytest tests
         pytest chajda --doctest-modules
 

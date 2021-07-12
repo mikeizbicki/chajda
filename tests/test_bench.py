@@ -4,7 +4,7 @@ import pytest
 # the sys import is needed so that we can import from the current project
 import sys
 sys.path.append('.')
-from chajda.tsvector import load_all_langs, lemmatize
+from chajda.tsvector import lemmatize, load_lang, destroy_lang
 
 # load the input lang/text pairs
 inputs = []
@@ -16,10 +16,19 @@ test_langs = None  # ['en','ko','ja','zh']
 if test_langs is not None:
     inputs = [input for input in inputs if input['lang'] in test_langs]
 
-# pre-loading all languages ensures that the benchmark times accurately reflect
-# the performance of the model's execution time, and not load time
 langs = [input['lang'] for input in inputs]
-load_all_langs(langs)
+
+@pytest.fixture(scope='function', autouse=True)
+def setup_and_teardown(test):
+    # setup
+    load_lang(test['lang'])
+
+    # run test
+    yield setup_and_teardown
+
+    # teardown
+    destroy_lang(test['lang'])
+
 
 ################################################################################
 # test cases

@@ -102,6 +102,15 @@ def load_lang(lang_iso):
     # this will speedup calculations and save memory
     return nlp_constructor(disable=['ner', 'parser'])
 
+def destroy_lang(lang):
+    '''
+    removes loaded spacy model from memory
+    '''
+    try:
+        del nlp[lang]
+    except KeyError:
+        pass
+
 
 def load_all_langs(langs=None):
     '''
