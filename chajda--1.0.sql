@@ -65,7 +65,7 @@ $$;
 
 
 CREATE OR REPLACE FUNCTION tsvector_to_wordcontext(tsv tsvector, n INTEGER DEFAULT 3, windowsize INTEGER DEFAULT 5)
-RETURNS TABLE(a TEXT,b TEXT,c INTEGER) LANGUAGE plpython3u IMMUTABLE STRICT PARALLEL SAFE 
+RETURNS TABLE(focus TEXT,context TEXT,count INTEGER) LANGUAGE plpython3u IMMUTABLE STRICT PARALLEL SAFE 
 AS $$
 import chajda.tsvector
 return chajda.tsvector.tsvector_to_wordcontext(tsv, n, windowsize)
