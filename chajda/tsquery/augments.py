@@ -35,7 +35,7 @@ def augments_gensim(lang, word, config=Config(), n=5):
     except AttributeError:
         import gensim.downloader
         with suppress_stdout_stderr():
-            augments_gensim.model = gensim.downloader.load("glove-wiki-gigaword-50")
+            augments_gensim.model = gensim.downloader.load("glove-wiki-gigaword-300")
 
     # find the most similar words;
     try:
