@@ -267,6 +267,36 @@ def tsvector_to_ngrams(tsv, n, uniq=True):
     return ngrams
 
 
+import gensim.downloader
+vectormodel = gensim.downloader.load("glove-wiki-gigaword-300")
+
+def tsvector_to_contextvectors(lang, tsv, n=3, windowsize=10):
+    '''
+    FIXME:
+    this entire function is a huge hack at this point;
+    at the very least, we should be reusing the models from the augments portion of the code
+
+    >>> sorted(tsvector_to_contextvectors('en', lemmatize('en', 'fancy apple pie crust is the most delicious fancy pie that I have ever eaten; I love pie.'), 2, 2).keys())
+    ['apple', 'apple pie', 'crust', 'crust delicious', 'delicious', 'delicious fancy', 'eat', 'eat love', 'fancy', 'fancy apple', 'fancy pie', 'love', 'love pie', 'pie', 'pie crust', 'pie eat']
+    '''
+
+    # compute contextvectors from wordcontext
+    wordcontext = tsvector_to_wordcontext(tsv, n, windowsize)
+    contextvectors = defaultdict(lambda: 0.0)
+    count_total = defaultdict(lambda: 0)
+    for word,context,count in wordcontext:
+        try:
+            contextvector = vectormodel[context]
+            contextvectors[word] += contextvector*count
+            count_total[word] += count
+        except KeyError:
+            pass
+    for word in count_total.keys():
+        contextvectors[word] /= count_total[word]
+
+    return contextvectors
+
+
 def tsvector_to_wordcontext(tsv, n, windowsize):
     '''
     Converts a document into a dictionary of (focus_word, context_words) pairs suitable for word2vec type training.
