@@ -274,8 +274,8 @@ def tsvector_to_contextvectors(lang, tsv, n=3, windowsize=10):
     at the very least, we should be reusing the models from the augments portion of the code;
     we should also be returning the number of times that a word is used; possibly also its stddev?
 
-    >>> sorted(tsvector_to_contextvectors('en', lemmatize('en', 'fancy apple pie crust is the most delicious fancy pie that I have ever eaten; I love pie.'), 2, 2).keys())
-    ['apple', 'apple pie', 'crust', 'crust delicious', 'delicious', 'delicious fancy', 'eat', 'eat love', 'fancy', 'fancy apple', 'fancy pie', 'love', 'love pie', 'pie', 'pie crust', 'pie eat']
+    #>>> sorted(tsvector_to_contextvectors('en', lemmatize('en', 'fancy apple pie crust is the most delicious fancy pie that I have ever eaten; I love pie.'), 2, 2).keys())
+    #['apple', 'apple pie', 'crust', 'crust delicious', 'delicious', 'delicious fancy', 'eat', 'eat love', 'fancy', 'fancy apple', 'fancy pie', 'love', 'love pie', 'pie', 'pie crust', 'pie eat']
     '''
     
     # load the model if it's not already loaded
