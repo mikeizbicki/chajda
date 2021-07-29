@@ -267,6 +267,35 @@ def tsvector_to_ngrams(tsv, n, uniq=True):
     return ngrams
 
 
+def make_projectionvector(pos_words, neg_words):
+    '''
+    FIXME:
+    this needs to use the same model as the contextvectors function,
+    and we need a way to dynamically specify the model
+
+    >>> all(make_projectionvector(['happy'],['sad'])[0] == -make_projectionvector(['sad'],['happy'])[0])
+    True
+    >>> make_projectionvector(['happy'],['sad'])[1]
+    []
+    >>> make_projectionvector(['happytypo'],['sad'])[1]
+    ['happytypo']
+    >>> make_projectionvector(['happy'],['sadtypo'])[1]
+    ['sadtypo']
+    '''
+    # load the model if it's not already loaded
+    from chajda.tsquery.augments import augments_gensim
+    try:
+        augments_gensim.model
+    except AttributeError:
+        augments_gensim('en','school', n=5)
+
+    # compute projectionvector
+    pos_vectors = [augments_gensim.model[word] for word in pos_words if word in augments_gensim.model]
+    neg_vectors = [augments_gensim.model[word] for word in neg_words if word in augments_gensim.model]
+    unknown_words = [word for word in pos_words+neg_words if word not in augments_gensim.model]
+    return (sum(pos_vectors) - sum(neg_vectors), unknown_words)
+
+
 def tsvector_to_contextvectors(lang, tsv, n=3, windowsize=10):
     '''
     FIXME:
