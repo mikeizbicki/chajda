@@ -7,6 +7,7 @@ The main user-facing function is `lemmatize`.
 import pkgutil
 import importlib
 import inspect
+import numpy as np
 import spacy
 from chajda.embeddings import get_test_embedding
 
@@ -268,28 +269,7 @@ def tsvector_to_ngrams(tsv, n, uniq=True):
     return ngrams
 
 
-def make_projectionvector(embedding, pos_words, neg_words):
-    '''
-    FIXME:
-    this needs to use the same model as the contextvectors function,
-    and we need a way to dynamically specify the model
-
-    >>> all(make_projectionvector(get_test_embedding('en'), ['happy'],['sad'])[0] == -make_projectionvector(get_test_embedding('en'), ['sad'],['happy'])[0])
-    True
-    >>> make_projectionvector(get_test_embedding('en'), ['happy'],['sad'])[1]
-    []
-    >>> make_projectionvector(get_test_embedding('en'), ['happytypo'],['sad'])[1]
-    ['happytypo']
-    >>> make_projectionvector(get_test_embedding('en'), ['happy'],['sadtypo'])[1]
-    ['sadtypo']
-    '''
-    pos_vectors = [embedding.kv[word] for word in pos_words if word in embedding.kv]
-    neg_vectors = [embedding.kv[word] for word in neg_words if word in embedding.kv]
-    unknown_words = [word for word in pos_words+neg_words if word not in embedding.kv]
-    return (sum(pos_vectors) - sum(neg_vectors), unknown_words)
-
-
-def tsvector_to_contextvectors(embedding, tsv, n=3, windowsize=10, method='weighted', a=1e-3):
+def tsvector_to_contextvectors(embedding, tsv, n=3, windowsize=10, method='weighted', a=1e-3, normalize=False):
     '''
 
     >>> assert(tsvector_to_contextvectors(get_test_embedding('en'), lemmatize('en','war and peace')))
@@ -312,8 +292,9 @@ def tsvector_to_contextvectors(embedding, tsv, n=3, windowsize=10, method='weigh
             count_total[word] += count
         except KeyError:
             pass
-    for word in count_total.keys():
-        contextvectors[word] /= count_total[word]
+    if normalize:
+        for word in count_total.keys():
+            contextvectors[word] /= count_total[word]
 
     return dict(contextvectors)
 
