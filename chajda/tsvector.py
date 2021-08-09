@@ -8,6 +8,7 @@ import pkgutil
 import importlib
 import inspect
 import spacy
+from chajda.embeddings import get_test_embedding
 
 ################################################################################
 # global variables
@@ -267,52 +268,35 @@ def tsvector_to_ngrams(tsv, n, uniq=True):
     return ngrams
 
 
-def make_projectionvector(pos_words, neg_words):
+def make_projectionvector(embedding, pos_words, neg_words):
     '''
     FIXME:
     this needs to use the same model as the contextvectors function,
     and we need a way to dynamically specify the model
 
-    >>> all(make_projectionvector(['happy'],['sad'])[0] == -make_projectionvector(['sad'],['happy'])[0])
+    >>> all(make_projectionvector(get_test_embedding('en'), ['happy'],['sad'])[0] == -make_projectionvector(get_test_embedding('en'), ['sad'],['happy'])[0])
     True
-    >>> make_projectionvector(['happy'],['sad'])[1]
+    >>> make_projectionvector(get_test_embedding('en'), ['happy'],['sad'])[1]
     []
-    >>> make_projectionvector(['happytypo'],['sad'])[1]
+    >>> make_projectionvector(get_test_embedding('en'), ['happytypo'],['sad'])[1]
     ['happytypo']
-    >>> make_projectionvector(['happy'],['sadtypo'])[1]
+    >>> make_projectionvector(get_test_embedding('en'), ['happy'],['sadtypo'])[1]
     ['sadtypo']
     '''
-    # load the model if it's not already loaded
-    from chajda.tsquery.augments import augments_gensim
-    try:
-        augments_gensim.model
-    except AttributeError:
-        augments_gensim('en','school', n=5)
-
-    # compute projectionvector
-    pos_vectors = [augments_gensim.model[word] for word in pos_words if word in augments_gensim.model]
-    neg_vectors = [augments_gensim.model[word] for word in neg_words if word in augments_gensim.model]
-    unknown_words = [word for word in pos_words+neg_words if word not in augments_gensim.model]
+    pos_vectors = [embedding.kv[word] for word in pos_words if word in embedding.kv]
+    neg_vectors = [embedding.kv[word] for word in neg_words if word in embedding.kv]
+    unknown_words = [word for word in pos_words+neg_words if word not in embedding.kv]
     return (sum(pos_vectors) - sum(neg_vectors), unknown_words)
 
 
-def tsvector_to_contextvectors(lang, tsv, n=3, windowsize=10):
+def tsvector_to_contextvectors(embedding, tsv, n=3, windowsize=10, method='weighted', a=1e-3):
     '''
-    FIXME:
-    this entire function is a huge hack at this point;
-    at the very least, we should be reusing the models from the augments portion of the code;
-    we should also be returning the number of times that a word is used; possibly also its stddev?
 
-    #>>> sorted(tsvector_to_contextvectors('en', lemmatize('en', 'fancy apple pie crust is the most delicious fancy pie that I have ever eaten; I love pie.'), 2, 2).keys())
-    #['apple', 'apple pie', 'crust', 'crust delicious', 'delicious', 'delicious fancy', 'eat', 'eat love', 'fancy', 'fancy apple', 'fancy pie', 'love', 'love pie', 'pie', 'pie crust', 'pie eat']
+    >>> assert(tsvector_to_contextvectors(get_test_embedding('en'), lemmatize('en','war and peace')))
+
+    FIXME:
+    we should also be returning the number of times that a word is used; possibly also its stddev?
     '''
-    
-    # load the model if it's not already loaded
-    from chajda.tsquery.augments import augments_gensim
-    try:
-        augments_gensim.model
-    except AttributeError:
-        augments_gensim('en','school', n=5)
 
     # compute contextvectors from wordcontext
     wordcontext = tsvector_to_wordcontext(tsv, n, windowsize)
@@ -320,15 +304,18 @@ def tsvector_to_contextvectors(lang, tsv, n=3, windowsize=10):
     count_total = defaultdict(lambda: 0)
     for word,context,count in wordcontext:
         try:
-            contextvector = augments_gensim.model[context]
-            contextvectors[word] += contextvector*count
+            contextvector = embedding.kv[context]
+            updatevector = contextvector*count
+            if method == 'weighted':
+                updatevector *= a/(a + embedding.word_frequency(word))
+            contextvectors[word] += updatevector
             count_total[word] += count
         except KeyError:
             pass
     for word in count_total.keys():
         contextvectors[word] /= count_total[word]
 
-    return contextvectors
+    return dict(contextvectors)
 
 
 def tsvector_to_wordcontext(tsv, n, windowsize):
@@ -345,8 +332,27 @@ def tsvector_to_wordcontext(tsv, n, windowsize):
         n: the length of ngrams for focus words; contexts will only use 1-grams
         windowsize: the size of the context to the left and right of the focus word
 
+    The following examples show how the wordcontexts are derived: 
+    >>> tsvector_to_wordcontext(lemmatize('en', 'aaa'), 5, 1)
+    []
+    >>> tsvector_to_wordcontext(lemmatize('en', 'aaa bbb'), 5, 1)
+    [('aaa', 'bbb', 1), ('bbb', 'aaa', 1)]
+    >>> tsvector_to_wordcontext(lemmatize('en', 'aaa bbb ccc ddd eee'), 1, 2)
+    [('aaa', 'bbb', 1), ('aaa', 'ccc', 1), ('bbb', 'aaa', 1), ('bbb', 'ccc', 1), ('bbb', 'ddd', 1), ('ccc', 'aaa', 1), ('ccc', 'bbb', 1), ('ccc', 'ddd', 1), ('ccc', 'eee', 1), ('ddd', 'bbb', 1), ('ddd', 'ccc', 1), ('ddd', 'eee', 1), ('eee', 'ccc', 1), ('eee', 'ddd', 1)]
+    >>> tsvector_to_wordcontext(lemmatize('en', 'aaa bbb ccc ddd eee'), 2, 2)
+    [('aaa', 'bbb', 1), ('aaa', 'ccc', 1), ('aaa bbb', 'ccc', 1), ('aaa bbb', 'ddd', 1), ('bbb', 'aaa', 1), ('bbb', 'ccc', 1), ('bbb', 'ddd', 1), ('bbb ccc', 'aaa', 1), ('bbb ccc', 'ddd', 1), ('bbb ccc', 'eee', 1), ('ccc', 'aaa', 1), ('ccc', 'bbb', 1), ('ccc', 'ddd', 1), ('ccc', 'eee', 1), ('ccc ddd', 'aaa', 1), ('ccc ddd', 'bbb', 1), ('ccc ddd', 'eee', 1), ('ddd', 'bbb', 1), ('ddd', 'ccc', 1), ('ddd', 'eee', 1), ('ddd eee', 'bbb', 1), ('ddd eee', 'ccc', 1), ('eee', 'ccc', 1), ('eee', 'ddd', 1)]
+
+    Note that stop words are removed before any processing and have no effect on the results:
+
+    >>> tsvector_to_wordcontext(lemmatize('en', 'aaa ccc ddd eee'), 2, 2)
+    [('aaa', 'ccc', 1), ('aaa', 'ddd', 1), ('aaa ccc', 'ddd', 1), ('aaa ccc', 'eee', 1), ('ccc', 'aaa', 1), ('ccc', 'ddd', 1), ('ccc', 'eee', 1), ('ccc ddd', 'aaa', 1), ('ccc ddd', 'eee', 1), ('ddd', 'aaa', 1), ('ddd', 'ccc', 1), ('ddd', 'eee', 1), ('ddd eee', 'aaa', 1), ('ddd eee', 'ccc', 1), ('eee', 'ccc', 1), ('eee', 'ddd', 1)]
+    >>> tsvector_to_wordcontext(lemmatize('en', 'aaa and ccc ddd eee'), 2, 2)
+    [('aaa', 'ccc', 1), ('aaa', 'ddd', 1), ('aaa ccc', 'ddd', 1), ('aaa ccc', 'eee', 1), ('ccc', 'aaa', 1), ('ccc', 'ddd', 1), ('ccc', 'eee', 1), ('ccc ddd', 'aaa', 1), ('ccc ddd', 'eee', 1), ('ddd', 'aaa', 1), ('ddd', 'ccc', 1), ('ddd', 'eee', 1), ('ddd eee', 'aaa', 1), ('ddd eee', 'ccc', 1), ('eee', 'ccc', 1), ('eee', 'ddd', 1)]
+
+    Here's a more realistic example:
+
     >>> tsvector_to_wordcontext(lemmatize('en', 'fancy apple pie crust is the most delicious fancy pie that I have ever eaten; I love pie.'), 2, 2)
-    [('fancy', 'apple', 1), ('fancy', 'pie', 2), ('fancy', 'crust', 1), ('fancy', 'delicious', 1), ('fancy', 'eat', 1), ('fancy apple', 'pie', 1), ('fancy apple', 'crust', 1), ('apple', 'fancy', 1), ('apple', 'pie', 1), ('apple', 'crust', 1), ('apple pie', 'fancy', 1), ('apple pie', 'crust', 1), ('apple pie', 'delicious', 1), ('pie', 'fancy', 2), ('pie', 'apple', 1), ('pie', 'crust', 1), ('pie', 'delicious', 2), ('pie', 'eat', 3), ('pie', 'love', 3), ('pie crust', 'fancy', 2), ('pie crust', 'apple', 1), ('pie crust', 'delicious', 1), ('crust', 'apple', 1), ('crust', 'pie', 1), ('crust', 'delicious', 1), ('crust', 'fancy', 1), ('crust delicious', 'apple', 1), ('crust delicious', 'pie', 2), ('crust delicious', 'fancy', 1), ('delicious', 'pie', 2), ('delicious', 'crust', 1), ('delicious', 'fancy', 1), ('delicious fancy', 'pie', 2), ('delicious fancy', 'crust', 1), ('delicious fancy', 'eat', 1), ('fancy pie', 'crust', 1), ('fancy pie', 'delicious', 1), ('fancy pie', 'eat', 1), ('fancy pie', 'love', 1), ('pie eat', 'delicious', 1), ('pie eat', 'fancy', 1), ('pie eat', 'love', 1), ('pie eat', 'pie', 1), ('eat', 'fancy', 1), ('eat', 'pie', 2), ('eat', 'love', 1), ('eat love', 'fancy', 1), ('eat love', 'pie', 2), ('love', 'pie', 2), ('love', 'eat', 1), ('love pie', 'pie', 1), ('love pie', 'eat', 1)]
+    [('fancy', 'apple', 1), ('fancy', 'pie', 2), ('fancy', 'crust', 1), ('fancy', 'delicious', 1), ('fancy', 'eat', 1), ('fancy apple', 'pie', 1), ('fancy apple', 'crust', 1), ('apple', 'fancy', 1), ('apple', 'pie', 1), ('apple', 'crust', 1), ('apple pie', 'fancy', 1), ('apple pie', 'crust', 1), ('apple pie', 'delicious', 1), ('pie', 'fancy', 2), ('pie', 'apple', 1), ('pie', 'crust', 1), ('pie', 'delicious', 2), ('pie', 'eat', 2), ('pie', 'love', 2), ('pie crust', 'fancy', 2), ('pie crust', 'apple', 1), ('pie crust', 'delicious', 1), ('crust', 'apple', 1), ('crust', 'pie', 1), ('crust', 'delicious', 1), ('crust', 'fancy', 1), ('crust delicious', 'apple', 1), ('crust delicious', 'pie', 2), ('crust delicious', 'fancy', 1), ('delicious', 'pie', 2), ('delicious', 'crust', 1), ('delicious', 'fancy', 1), ('delicious fancy', 'pie', 2), ('delicious fancy', 'crust', 1), ('delicious fancy', 'eat', 1), ('fancy pie', 'crust', 1), ('fancy pie', 'delicious', 1), ('fancy pie', 'eat', 1), ('fancy pie', 'love', 1), ('pie eat', 'delicious', 1), ('pie eat', 'fancy', 1), ('pie eat', 'love', 1), ('pie eat', 'pie', 1), ('eat', 'fancy', 1), ('eat', 'pie', 2), ('eat', 'love', 1), ('eat love', 'fancy', 1), ('eat love', 'pie', 2), ('love', 'pie', 2), ('love', 'eat', 1), ('love pie', 'pie', 1), ('love pie', 'eat', 1)]
     '''
     positioned_lexemes = _get_positioned_lexemes(tsv)
     positioned_lexemes.sort()
@@ -356,7 +362,7 @@ def tsvector_to_wordcontext(tsv, n, windowsize):
     # the outer key is the focus word, the inner key is the context word, and the inner value is the count
     wordcontext = defaultdict(lambda: Counter())
     for i,lexeme in enumerate(ordered_lexemes):
-        for j in range(n):
+        for j in range(min(n, len(ordered_lexemes)-i)):
             word = ' '.join(ordered_lexemes[i:i+j+1])
             context_left = ordered_lexemes[max(0,i-windowsize):i]
             context_right = ordered_lexemes[i+j+1:i+j+1+windowsize]
@@ -375,6 +381,14 @@ def _get_positioned_lexemes(tsv):
     This helper functions converts a tsvector input into the original stream of words that generated the tsvector.
     Since stop words are removed when creating a tsvector, the words are labelled with their position in the original text.
 
+    >>> _get_positioned_lexemes(lemmatize('en', 'aaa'))
+    [(1, 'aaa')]
+    >>> _get_positioned_lexemes(lemmatize('en', 'aaa bbb'))
+    [(1, 'aaa'), (2, 'bbb')]
+    >>> _get_positioned_lexemes(lemmatize('en', 'aaa bbb ccc'))
+    [(1, 'aaa'), (2, 'bbb'), (3, 'ccc')]
+    >>> _get_positioned_lexemes(lemmatize('en', 'aaa bbb ccc aaa'))
+    [(1, 'aaa'), (2, 'bbb'), (3, 'ccc'), (4, 'aaa')]
     >>> _get_positioned_lexemes(lemmatize('en', 'fancy apple pie crust is the most delicious fancy pie that I have ever eaten; I love pie.'))
     [(1, 'fancy'), (2, 'apple'), (3, 'pie'), (4, 'crust'), (8, 'delicious'), (9, 'fancy'), (10, 'pie'), (15, 'eat'), (17, 'love'), (18, 'pie')]
     '''

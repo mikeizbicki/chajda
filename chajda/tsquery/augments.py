@@ -1,4 +1,6 @@
 '''
+FIXME:
+This code has been deprecated by the code in chajda/embeddings.py
 '''
 
 from chajda.tsvector import lemmatize, Config

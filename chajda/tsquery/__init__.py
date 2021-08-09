@@ -5,25 +5,28 @@ import copy
 import lark
 from lark import Lark, Transformer, Token, Tree, Discard
 from chajda.tsvector import lemmatize, Config
+from chajda.embeddings import get_test_embedding
 
 # defines the grammar of our queries
 grammar = Lark(r"""
     ?exp: term (sym_or term)*
     ?term: factor (sym_and? factor)*
-    ?factor: sym_not factor | filter | str | "(" exp ")"
+    ?factor: sym_not factor | filter | str str_knn? | "(" exp ")"
     
     sym_not: /NOT\b/i | "!"
     sym_and: /AND\b/i | "&"+
     sym_or: /OR\b/i | "|"+
 
+    str_knn: "+" INT
     str: ESCAPED_STRING | STRING
 
     filter: str_raw ":" str_raw
     str_raw: ESCAPED_STRING | STRING
 
-    STRING: /(?!(NOT|AND|OR)\b)[^!&|\s:"()]+/i
+    STRING: /(?!(NOT|AND|OR)\b)[^+!&|\s:"()]+/i
 
     %import common.ESCAPED_STRING
+    %import common.INT
     %import common.WS
     %ignore WS
     """, start='exp')
@@ -60,6 +63,9 @@ def parse(lang, query, augment_with=None, config=Config()):
 
     >>> to_tsquery('xx', 'not not not ((((t1))) t2 t3) (t4 t5 (t6 t7))')
     '!(t1 & t2 & t3) & t4 & t5 & t6 & t7'
+
+    >>> to_tsquery('en', 'baby')
+    'baby'
 
     >>> to_tsquery('en', 'baby')
     'baby'
@@ -496,3 +502,50 @@ def _lemmatize_rawterm(lang, rawterm, config):
             children.extend(['_']*(diff-1))
             children.append(t1)
         return Tree('phrase', children)
+
+
+def augment_word(embedding, word, config=Config(), n=5):
+    '''
+    Returns a list of at most n lemmatized words that are similar to the input word according to the embedding.
+    The list will be shorter than n when the nearest neighbors get lemmatized into the same word.
+
+    >>> augment_word(get_test_embedding('en'), 'weapon', n=5)
+    ['warhead', 'crossbow', 'grenade', 'handgun', 'sword']
+
+    >>> augment_word(get_test_embedding('en'), 'school', n=5)
+    ['kindergarten', 'student', 'enroll']
+
+    >>> to_tsquery('en', 'baby boy', augment_with=lambda lang,word,config: augment_word(get_test_embedding(lang),word,config,5))
+    '(baby:A | mom:B | toddler:B | pregnant:B | grandma:B | child:B) & (boy:A | girl:B | schoolgirl:B | prodigy:B | sidekick:B)'
+
+    >>> to_tsquery('en', '"baby boy"', augment_with=lambda lang,word,config: augment_word(get_test_embedding(lang),word,config,5))
+    'baby:A <1> boy:A'
+
+    >>> to_tsquery('en', '"baby boy" (school | home) !weapon', augment_with=lambda lang,word,config: augment_word(get_test_embedding(lang),word,config,5))
+    '(baby:A <1> boy:A) & ((school:A | kindergarten:B | student:B | enroll:B) | (home:A | hometown:B | nurse:B | daycare:B | homecoming:B | dinner:B)) & !(weapon:A | warhead:B | crossbow:B | grenade:B | handgun:B | sword:B)'
+
+    '''
+
+    # find the most similar words;
+    try:
+        topn = embedding.most_similar(word, topn=n+1)
+        words = ' '.join([ word for (word,similarity) in topn ])
+
+    # gensim raises a KeyError when the input word is not in the vocabulary;
+    # we return an empty list to indicate that there are no similar words
+    except KeyError:
+        return []
+
+    # lemmatize the results so that they'll be in the search document's vocabulary
+    words = lemmatize(embedding.lang, words, add_positions=False, config=config).split()
+    words = list(filter(lambda w: len(w)>1 and w != word, words))[:n]
+
+    # see: https://www.peterbe.com/plog/uniqifiers-benchmark
+    def remove_duplicates_keep_order(seq):
+        seen = set()
+        seen_add = seen.add
+        return [x for x in seq if not (x in seen or seen_add(x))]
+    words = remove_duplicates_keep_order(words)
+
+    return words
+
