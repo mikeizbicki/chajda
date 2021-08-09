@@ -64,7 +64,7 @@ def get_embedding(**kwargs):
     '''
     embedding = Embedding(**kwargs)
     if embedding.internal_name not in _embeddings_loaded:
-        embedding.load_gensim()
+        embedding.load_kv()
         embedding.load_annoy()
         _embeddings_loaded[embedding.internal_name] = embedding
     return _embeddings_loaded[embedding.internal_name]
@@ -221,10 +221,6 @@ class Embedding():
 
     def make_projectionvector(this, pos_words, neg_words):
         '''
-        FIXME:
-        this needs to use the same model as the contextvectors function,
-        and we need a way to dynamically specify the model
-
         >>> all(make_projectionvector(get_test_embedding('en'), ['happy'],['sad'])[0] == -make_projectionvector(get_test_embedding('en'), ['sad'],['happy'])[0])
         True
         >>> make_projectionvector(get_test_embedding('en'), ['happy'],['sad'])[1]

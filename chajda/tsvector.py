@@ -272,7 +272,7 @@ def tsvector_to_ngrams(tsv, n, uniq=True):
 def tsvector_to_contextvectors(embedding, tsv, n=3, windowsize=10, method='weighted', a=1e-3, normalize=False):
     '''
 
-    >>> assert(tsvector_to_contextvectors(get_test_embedding('en'), lemmatize('en','war and peace')))
+    >>> assert len(tsvector_to_contextvectors(get_test_embedding('en'), lemmatize('en','war and peace'))) == 2
 
     FIXME:
     we should also be returning the number of times that a word is used; possibly also its stddev?
