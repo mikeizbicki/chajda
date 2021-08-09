@@ -116,6 +116,8 @@ class Embedding():
         if storage_dir is None:
             this.storage_dir = os.path.join(os.path.dirname(__file__), 'embeddings')
             os.makedirs(this.storage_dir, exist_ok=True)
+        else:
+            this.storage_dir = storage_dir
 
 
     def load_kv(this, force_reload=False, allow_download=True):
