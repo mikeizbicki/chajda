@@ -42,10 +42,10 @@ _embeddings_loaded = LRUCache(maxitems=10)
 
 
 def get_test_embedding(lang):
-    return get_embedding(lang=lang, max_n=50000)
+    return get_embedding(lang=lang, max_n=50000, annoy=False)
 
 
-def get_embedding(**kwargs):
+def get_embedding(annoy=True, **kwargs):
     '''
     Return an Embedding class has been loaded into memory.
 
@@ -66,7 +66,8 @@ def get_embedding(**kwargs):
     embedding = Embedding(**kwargs)
     if embedding.internal_name not in _embeddings_loaded:
         embedding.load_kv()
-        embedding.load_annoy()
+        if annoy:
+            embedding.load_annoy()
         _embeddings_loaded[embedding.internal_name] = embedding
     return _embeddings_loaded[embedding.internal_name]
 
