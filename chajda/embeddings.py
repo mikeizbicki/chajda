@@ -225,13 +225,13 @@ class Embedding():
 
     def make_projectionvector(this, pos_words, neg_words):
         '''
-        >>> all(make_projectionvector(get_test_embedding('en'), ['happy'],['sad'])[0] == -make_projectionvector(get_test_embedding('en'), ['sad'],['happy'])[0])
+        >>> all(get_test_embedding('en').make_projectionvector(['happy'],['sad'])[0] == -get_test_embedding('en').make_projectionvector(['sad'],['happy'])[0])
         True
-        >>> make_projectionvector(get_test_embedding('en'), ['happy'],['sad'])[1]
+        >>> get_test_embedding('en').make_projectionvector(['happy'],['sad'])[1]
         []
-        >>> make_projectionvector(get_test_embedding('en'), ['happytypo'],['sad'])[1]
+        >>> get_test_embedding('en').make_projectionvector(['happytypo'],['sad'])[1]
         ['happytypo']
-        >>> make_projectionvector(get_test_embedding('en'), ['happy'],['sadtypo'])[1]
+        >>> get_test_embedding('en').make_projectionvector(['happy'],['sadtypo'])[1]
         ['sadtypo']
         '''
         pos_vectors = [this.kv[word] for word in pos_words if word in this.kv]

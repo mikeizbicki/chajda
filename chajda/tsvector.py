@@ -273,6 +273,8 @@ def tsvector_to_contextvectors(embedding, tsv, n=3, windowsize=10, method='weigh
     '''
 
     >>> assert len(tsvector_to_contextvectors(get_test_embedding('en'), lemmatize('en','war and peace'))) == 2
+    >>> assert len(tsvector_to_contextvectors(get_test_embedding('en'), lemmatize('en','war and peace'), method='unweighted')) == 2
+    >>> assert len(tsvector_to_contextvectors(get_test_embedding('en'), lemmatize('en','war and peace'), normalize=True)) == 2
 
     FIXME:
     we should also be returning the number of times that a word is used; possibly also its stddev?
@@ -280,21 +282,20 @@ def tsvector_to_contextvectors(embedding, tsv, n=3, windowsize=10, method='weigh
 
     # compute contextvectors from wordcontext
     wordcontext = tsvector_to_wordcontext(tsv, n, windowsize)
-    contextvectors = defaultdict(lambda: 0.0)
-    count_total = defaultdict(lambda: 0)
+    contextvectors = defaultdict(lambda: [0.0, 0])
     for word,context,count in wordcontext:
         try:
             contextvector = embedding.kv[context]
             updatevector = contextvector*count
             if method == 'weighted':
                 updatevector *= a/(a + embedding.word_frequency(word))
-            contextvectors[word] += updatevector
-            count_total[word] += count
+            contextvectors[word][0] += updatevector
+            contextvectors[word][1] += count
         except KeyError:
             pass
     if normalize:
-        for word in count_total.keys():
-            contextvectors[word] /= count_total[word]
+        for word in contextvectors.keys():
+            contextvectors[word][0] /= contextvectors[word][1]
 
     return dict(contextvectors)
 
