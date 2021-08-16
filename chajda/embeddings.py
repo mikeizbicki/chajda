@@ -150,7 +150,7 @@ class Embedding():
                 logger.info(f'downloading {this.url}')
                 logger.info('these urls are large (multiple gigabytes) and so download may take a while')
                 urllib.request.urlretrieve(this.url, name_path+'.tmp')
-                shutil.copyfile(name_path + '.tmp', name_path)
+                shutil.move(name_path + '.tmp', name_path)
 
             # the unmodified embedding file is guaranteed to exist on disk,
             # so create the internal_name file from it if needed
@@ -196,7 +196,7 @@ class Embedding():
 
                 # internal_name file successfully created,
                 # so move it to correct location
-                shutil.copy(internal_name_path + '.tmp', internal_name_path)
+                shutil.move(internal_name_path + '.tmp', internal_name_path)
 
         # the internal_name file is guaranteed to exist,
         # so load it into memory
