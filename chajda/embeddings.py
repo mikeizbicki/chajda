@@ -78,12 +78,13 @@ class Embedding():
     It is not meant to be constructed directly, but instead created using the get_embedding function.
     '''
 
-    def __init__(this, name=None, lang=None, max_n=None, max_d=None, storage_dir=None):
+    def __init__(this, name=None, lang=None, max_n=None, max_d=None, projection='svd_vh.npy', storage_dir=None):
         assert name is not None or lang is not None
         this.max_n = max_n
         this.max_d = max_d
         this.kv = None
         this.annoy_index = None
+        this.projection = projection
 
         # remove locale information from language;
         # e.g. convert 'en-us' into 'en'
@@ -111,6 +112,8 @@ class Embedding():
             this.internal_name += f'-max_n={max_n}'
         if max_d:
             this.internal_name += f'-max_d={max_d}'
+            if projection:
+                this.internal_name += f'-projection={projection}'
 
         # FIXME:
         # we're currently using the python file's path as a temporary storage dir;
@@ -166,6 +169,8 @@ class Embedding():
                         d = int(d_str)
                     else:
                         d = min(this.max_d, int(d_str))
+                        if this.projection:
+                            vh = np.load(os.path.join(this.storage_dir, 'svd_vh.npy'))
                     if this.max_n is None:
                         n = int(n_str)
                     else:
@@ -177,7 +182,15 @@ class Embedding():
                         if this.max_d is None:
                             fout.write(line)
                         else:
-                            fout.write(' '.join(line.split(' ')[:d+1])+'\n')
+                            if this.projection:
+                                line_list = line.split(' ')
+                                word = line_list[0]
+                                x = np.array([float(d) for d in line_list[1:]])
+                                x_proj = vh[:this.max_d] @ x
+                                newline = ' '.join([ str(d) for d in x_proj ])
+                                fout.write(word+' '+newline+'\n')
+                            else:
+                                fout.write(' '.join(line.split(' ')[:d+1])+'\n')
                         if i>n:
                             break
 
@@ -242,7 +255,26 @@ class Embedding():
         return (projectionvector, unknown_words)
 
 
+def get_top_dimensions(embedding_name, d):
+    '''
+    '''
 
+    # if we're working with the aligned embeddings,
+    # then the top dimensions will be taken from english;
+    # this ensures that the embeddings remain aligned;
+    # for embeddings not aligned with the English embedding,
+    # we just use the specified embedding
+    aligned_names = [ name for name, lang, url in _embeddings_fasttext_aligned ]
+    if embedding_name in aligned_names:
+        embedding_name = 'wiki.en.align.vec'
+    embedding = get_embedding('embedding_name')
+
+    # FIXME:
+    # we compute all singular vectors here, but we only need the top-d;
+    # the computation is already expensive, and this makes it much more expensive when d is small
+    u, s, vh = np.linalg.svd(embedding.kv.vectors)
+
+    top_dimensions = vh[:d]
 
 # the code below is used for computing word frequencies;
 # see: https://stackoverflow.com/questions/58735585/gensim-any-chance-to-get-word-frequency-in-word2vec-format
