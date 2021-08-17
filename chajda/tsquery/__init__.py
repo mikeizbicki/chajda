@@ -509,20 +509,20 @@ def augment_word(embedding, word, config=Config(), n=5):
     Returns a list of at most n lemmatized words that are similar to the input word according to the embedding.
     The list will be shorter than n when the nearest neighbors get lemmatized into the same word.
 
-    >>> augment_word(get_test_embedding('en'), 'weapon', n=5)
-    ['warhead', 'crossbow', 'grenade', 'handgun', 'sword']
-
     >>> augment_word(get_test_embedding('en'), 'school', n=5)
-    ['kindergarten', 'student', 'enroll']
+    ['elementary', 'preparatory', 'highschool', 'kindergarten', 'student']
+
+    >>> augment_word(get_test_embedding('en'), 'weapon', n=5)
+    ['weaponry', 'projectile', 'warhead']
 
     >>> to_tsquery('en', 'baby boy', augment_with=lambda lang,word,config: augment_word(get_test_embedding(lang),word,config,5))
-    '(baby:A | mom:B | toddler:B | pregnant:B | grandma:B | child:B) & (boy:A | girl:B | schoolgirl:B | prodigy:B | sidekick:B)'
+    '(baby:A | newborn:B | mom:B | toddler:B | mommy:B | pregnant:B) & (boy:A | girl:B | kid:B | teenager:B | teenage:B | toddler:B)'
 
     >>> to_tsquery('en', '"baby boy"', augment_with=lambda lang,word,config: augment_word(get_test_embedding(lang),word,config,5))
     'baby:A <1> boy:A'
 
     >>> to_tsquery('en', '"baby boy" (school | home) !weapon', augment_with=lambda lang,word,config: augment_word(get_test_embedding(lang),word,config,5))
-    '(baby:A <1> boy:A) & ((school:A | kindergarten:B | student:B | enroll:B) | (home:A | hometown:B | nurse:B | daycare:B | homecoming:B | dinner:B)) & !(weapon:A | warhead:B | crossbow:B | grenade:B | handgun:B | sword:B)'
+    '(baby:A <1> boy:A) & ((school:A | elementary:B | preparatory:B | highschool:B | kindergarten:B | student:B) | (home:A | away:B | hometown:B | cottage:B | upstairs:B | clubhouse:B)) & !(weapon:A | weaponry:B | projectile:B | warhead:B)'
 
     '''
 

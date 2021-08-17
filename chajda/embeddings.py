@@ -170,7 +170,8 @@ class Embedding():
                     else:
                         d = min(this.max_d, int(d_str))
                         if this.projection:
-                            vh = np.load(os.path.join(this.storage_dir, 'svd_vh.npy'))
+                            projections_dir = os.path.join(os.path.dirname(__file__), 'embeddings')
+                            vh = np.load(os.path.join(projections_dir, 'svd_vh.npy'))
                     if this.max_n is None:
                         n = int(n_str)
                     else:
