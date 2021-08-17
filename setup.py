@@ -25,5 +25,6 @@ setup(
     author_email='mike@izbicki.me',
     keywords='postgresql, postgres, spacy',
     packages=find_packages(),
+    include_package_data=True,
     python_requires='>=3.6, <4',
 )
