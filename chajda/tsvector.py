@@ -375,7 +375,7 @@ def _get_positioned_lexemes(tsv):
     [(1, 'fancy'), (2, 'apple'), (3, 'pie'), (4, 'crust'), (8, 'delicious'), (9, 'fancy'), (10, 'pie'), (15, 'eat'), (17, 'love'), (18, 'pie')]
     '''
     positioned_lexemes = []
-    for item in tsv.split():
+    for item in tsv.split(' '):
         try:
             lexeme, positions = item.split(':')
             for position in positions.split(','):
@@ -383,7 +383,7 @@ def _get_positioned_lexemes(tsv):
                     position = int(position)
                     positioned_lexemes.append((position,lexeme.strip("'")))
                 except ValueError:
-                    logger.error('ValueError: position not an int')
+                    logger.error(f'ValueError: position={position} not an int; item={item}')
 
         # FIXME: 
         # there are some items without colons, causing the split() call to fail;
