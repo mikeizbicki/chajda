@@ -76,6 +76,17 @@ class Embedding():
     '''
     This class provides a unified interface for working with word embeddings.
     It is not meant to be constructed directly, but instead created using the get_embedding function.
+
+    >>> assert Embedding(lang='en')
+    >>> assert Embedding(lang='ko')
+    >>> assert Embedding(lang='xx')
+    >>> assert Embedding(lang='us')
+    >>> assert Embedding(lang='undefined')
+    >>> assert Embedding(name='wiki.en.align.vec')
+    >>> assert Embedding(name='wiki.ko.align.vec')
+    >>> assert Embedding(name='undefined')
+
+    >>> assert Embedding(lang='en', max_n=50000, max_d=50)
     '''
 
     def __init__(this, name=None, lang=None, max_n=None, max_d=None, projection='svd_vh.npy', storage_dir=None):
@@ -88,7 +99,8 @@ class Embedding():
 
         # remove locale information from language;
         # e.g. convert 'en-us' into 'en'
-        lang = lang.split('-')[0]
+        if lang:
+            lang = lang.split('-')[0]
 
         # if the name is not provided,
         # then use the first name in the embeddings list that matches the language
