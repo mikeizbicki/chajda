@@ -380,7 +380,7 @@ def _get_positioned_lexemes(tsv):
             lexeme, positions = item.split(':')
             for position in positions.split(','):
                 try:
-                    position = int(position)
+                    position = int(position.strip().strip("'"))
                     positioned_lexemes.append((position,lexeme.strip("'")))
                 except ValueError:
                     logger.error(f'ValueError: position={position} not an int; item={item}')
