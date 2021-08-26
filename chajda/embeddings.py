@@ -104,13 +104,14 @@ class Embedding():
             lang = lang.split('-')[0]
 
         # if the name is not provided,
-        # then use the first name in the embeddings list that matches the language
+        # then use the first name in the embeddings list that matches the language;
+        # if no match is found, then use the english word embeddings
+        this.name = 'wiki.en.align.vec'
         if name is None:
             for (tmp_name, tmp_lang, tmp_url) in embeddings:
                 if lang == tmp_lang:
                     name = tmp_name
                     break
-        this.name = str(name)
 
         # find the matching name in the embeddings list to get the lang/url
         for (tmp_name, tmp_lang, tmp_url) in embeddings:

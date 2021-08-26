@@ -373,6 +373,8 @@ def _get_positioned_lexemes(tsv):
     [(1, 'aaa'), (2, 'bbb'), (3, 'ccc'), (4, 'aaa')]
     >>> _get_positioned_lexemes(lemmatize('en', 'fancy apple pie crust is the most delicious fancy pie that I have ever eaten; I love pie.'))
     [(1, 'fancy'), (2, 'apple'), (3, 'pie'), (4, 'crust'), (8, 'delicious'), (9, 'fancy'), (10, 'pie'), (15, 'eat'), (17, 'love'), (18, 'pie')]
+    >>> _get_positioned_lexemes('   paranoid:5    people:9    watch:11      ')
+    [(5, 'paranoid'), (9, 'people'), (11, 'watch')]
     '''
     positioned_lexemes = []
     for item in tsv.split(' '):
@@ -390,7 +392,10 @@ def _get_positioned_lexemes(tsv):
         # this should never happen, and I don't know why it is;
         # we must catch this error so that postgres doesn't crash when the error is thrown
         except ValueError:
-            logger.error(f'ValueError: malformed tsvector lexeme; item={item}, tsv={tsv}')
+            if item=='':
+                pass
+            else:
+                logger.error(f'ValueError: malformed tsvector lexeme; item="{item}", tsv="{tsv}"')
 
     positioned_lexemes.sort()
     return positioned_lexemes
