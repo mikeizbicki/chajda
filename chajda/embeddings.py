@@ -87,6 +87,7 @@ class Embedding():
     >>> assert Embedding(name='undefined')
 
     >>> assert Embedding(lang='en', max_n=50000, max_d=50)
+    >>> assert Embedding(lang='xx', max_n=50000, max_d=50)
     '''
 
     def __init__(this, name=None, lang=None, max_n=None, max_d=None, projection='svd_vh.npy', storage_dir=None):
@@ -109,7 +110,7 @@ class Embedding():
                 if lang == tmp_lang:
                     name = tmp_name
                     break
-        this.name = name
+        this.name = str(name)
 
         # find the matching name in the embeddings list to get the lang/url
         for (tmp_name, tmp_lang, tmp_url) in embeddings:
@@ -119,7 +120,7 @@ class Embedding():
                 break
 
         # internal_name will be used for all file names
-        this.internal_name = name
+        this.internal_name = this.name
         if max_n:
             this.internal_name += f'-max_n={max_n}'
         if max_d:

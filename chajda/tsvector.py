@@ -390,7 +390,7 @@ def _get_positioned_lexemes(tsv):
         # this should never happen, and I don't know why it is;
         # we must catch this error so that postgres doesn't crash when the error is thrown
         except ValueError:
-            logger.error('ValueError: malformed tsvector lexeme')
+            logger.error(f'ValueError: malformed tsvector lexeme; item={item}, tsv={tsv}')
 
     positioned_lexemes.sort()
     return positioned_lexemes
