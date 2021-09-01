@@ -269,12 +269,23 @@ def tsvector_to_ngrams(tsv, n, uniq=True):
     return ngrams
 
 
-def tsvector_to_contextvectors(embedding, tsv, n=3, windowsize=10, method='weighted', a=1e-3, normalize=False):
+def tsvector_to_contextvectors(embedding, tsv, n=3, windowsize=10, method='weighted', a=1e-3, normalize=False, embedding_words_only=False, force_words=[]):
     '''
 
-    >>> assert len(tsvector_to_contextvectors(get_test_embedding('en'), lemmatize('en','war and peace'))) == 2
-    >>> assert len(tsvector_to_contextvectors(get_test_embedding('en'), lemmatize('en','war and peace'), method='unweighted')) == 2
-    >>> assert len(tsvector_to_contextvectors(get_test_embedding('en'), lemmatize('en','war and peace'), normalize=True)) == 2
+    >>> len(tsvector_to_contextvectors(get_test_embedding('en'), lemmatize('en','war and peace')))
+    2
+    >>> len(tsvector_to_contextvectors(get_test_embedding('en'), lemmatize('en','war and peace'), method='unweighted'))
+    2
+    >>> len(tsvector_to_contextvectors(get_test_embedding('en'), lemmatize('en','war and peace'), normalize=True))
+    2
+
+
+    >>> len(tsvector_to_contextvectors(get_test_embedding('en'), lemmatize('en','zzyyxx was at monster truck madness')))
+    8
+    >>> len(tsvector_to_contextvectors(get_test_embedding('en'), lemmatize('en','zzyyxx was at monster truck madness'), embedding_words_only=True))
+    3
+    >>> len(tsvector_to_contextvectors(get_test_embedding('en'), lemmatize('en','zzyyxx was at monster truck madness'), embedding_words_only=True, force_words=['monster truck', 'truck madness']))
+    5
 
     FIXME:
     we should also be returning the number of times that a word is used; possibly also its stddev?
@@ -289,8 +300,9 @@ def tsvector_to_contextvectors(embedding, tsv, n=3, windowsize=10, method='weigh
             updatevector = contextvector*count
             if method == 'weighted':
                 updatevector *= a/(a + embedding.word_frequency(word))
-            contextvectors[word][0] += updatevector
-            contextvectors[word][1] += count
+            if not embedding_words_only or (embedding_words_only and (word in embedding.kv or word in force_words)):
+                contextvectors[word][0] += updatevector
+                contextvectors[word][1] += count
         except KeyError:
             pass
     if normalize:
