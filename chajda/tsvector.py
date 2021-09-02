@@ -295,16 +295,14 @@ def tsvector_to_contextvectors(embedding, tsv, n=3, windowsize=10, method='weigh
     wordcontext = tsvector_to_wordcontext(tsv, n, windowsize)
     contextvectors = defaultdict(lambda: [0.0, 0])
     for word,context,count in wordcontext:
-        try:
-            contextvector = embedding.kv[context]
-            updatevector = contextvector*count
-            if method == 'weighted':
-                updatevector *= a/(a + embedding.word_frequency(word))
-            if not embedding_words_only or (embedding_words_only and (word in embedding.kv or word in force_words)):
+        if not embedding_words_only or (embedding_words_only and (word in embedding.kv or word in force_words)):
+            if context in embedding.kv:
+                contextvector = embedding.kv[context]
+                updatevector = contextvector*count
+                if method == 'weighted':
+                    updatevector *= a/(a + embedding.word_frequency(word))
                 contextvectors[word][0] += updatevector
                 contextvectors[word][1] += count
-        except KeyError:
-            pass
     if normalize:
         for word in contextvectors.keys():
             contextvectors[word][0] /= contextvectors[word][1]
