@@ -78,16 +78,17 @@ class Embedding():
     It is not meant to be constructed directly, but instead created using the get_embedding function.
 
     >>> assert Embedding(lang='en')
-    >>> assert Embedding(lang='ko')
-    >>> assert Embedding(lang='xx')
-    >>> assert Embedding(lang='us')
-    >>> assert Embedding(lang='undefined')
+    >>> assert Embedding(lang='es').lang == 'es'
+    >>> assert Embedding(lang='ko').lang == 'ko'
+    >>> assert Embedding(lang='xx').lang == 'en'
+    >>> assert Embedding(lang='us').lang == 'en'
+    >>> assert Embedding(lang='undefined').lang == 'en'
     >>> assert Embedding(name='wiki.en.align.vec')
     >>> assert Embedding(name='wiki.ko.align.vec')
     >>> assert Embedding(name='undefined')
 
-    >>> assert Embedding(lang='en', max_n=50000, max_d=50)
-    >>> assert Embedding(lang='xx', max_n=50000, max_d=50)
+    >>> assert Embedding(lang='en', max_n=50000, max_d=50).load_kv()
+    >>> assert Embedding(lang='xx', max_n=50000, max_d=50).load_kv()
     '''
 
     def __init__(this, name=None, lang=None, max_n=None, max_d=None, projection='svd_vh.npy', storage_dir=None):
@@ -110,7 +111,7 @@ class Embedding():
         if name is None:
             for (tmp_name, tmp_lang, tmp_url) in embeddings:
                 if lang == tmp_lang:
-                    name = tmp_name
+                    this.name = tmp_name
                     break
 
         # find the matching name in the embeddings list to get the lang/url
