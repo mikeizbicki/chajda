@@ -252,7 +252,7 @@ class Embedding():
             return 0
 
 
-    def make_projectionvector(this, pos_words, neg_words):
+    def make_projectionvector(this, pos_words, neg_words, normalize=True):
         '''
         >>> all(get_test_embedding('en').make_projectionvector(['happy'],['sad'])[0] == -get_test_embedding('en').make_projectionvector(['sad'],['happy'])[0])
         True
@@ -266,7 +266,16 @@ class Embedding():
         pos_vectors = [this.kv[word] for word in pos_words if word in this.kv]
         neg_vectors = [this.kv[word] for word in neg_words if word in this.kv]
         unknown_words = [word for word in pos_words+neg_words if word not in this.kv]
-        projectionvector = sum(pos_vectors) - sum(neg_vectors)
+
+        if not normalize:
+            projectionvector = sum(pos_vectors) - sum(neg_vectors)
+        else:
+            pos_vector = sum(pos_vectors)
+            pos_vector /= np.linalg.norm(pos_vector)
+            neg_vector = sum(neg_vectors)
+            neg_vector /= np.linalg.norm(neg_vector)
+            projectionvector = pos_vector - neg_vector
+
         projectionvector /= np.linalg.norm(projectionvector)
         return (projectionvector, unknown_words)
 
