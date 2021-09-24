@@ -1,4 +1,5 @@
 import gzip
+import math
 import numpy as np
 import os
 import shutil
@@ -278,6 +279,92 @@ class Embedding():
 
         projectionvector /= np.linalg.norm(projectionvector)
         return (projectionvector, unknown_words)
+
+
+    def make_projector(this, pos_words, neg_words, method):
+        '''
+        methods = ['projection_nonorm', 'projection_norm', 'arclen']
+
+        >>> get_test_embedding('en').make_projector(['happy'], [], 'projection_nonorm')[0]('happy')
+        0.0003452669847162036
+        >>> get_test_embedding('en').make_projector(['happy'], [], 'projection_nonorm')[0]('sad')
+        1.1241248104282886
+        >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'projection_nonorm')[0]('happy')
+        0.5329241
+        >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'projection_norm')[0]('happy')
+        0.53292537
+        >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'arclen')[0]('happy')
+        1.0
+        >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'arclen')[0]('sad')
+        -1.0
+
+        >>> get_test_embedding('en').make_projector(['happy'],['sad'], 'arclen')[1]
+        []
+        >>> get_test_embedding('en').make_projector(['happy','happytypo'],['sad'], 'arclen')[1]
+        ['happytypo']
+        >>> get_test_embedding('en').make_projector(['happy'],['sadtypo'], 'arclen')[1]
+        ['sadtypo']
+        '''
+        unknown_words = [word for word in pos_words+neg_words if word not in this.kv]
+
+        pos_vectors = [this.kv[word] for word in pos_words if word in this.kv]
+        pos_vector = sum(pos_vectors)
+        pos_vector /= np.linalg.norm(pos_vector)
+
+        if len(neg_words) == 0:
+            def projector(vector):
+                if isinstance(vector, str):
+                    vector = this.kv[vector]
+                return math.acos(np.dot(pos_vector,vector)/np.linalg.norm(pos_vector)/np.linalg.norm(vector))
+
+        else:
+            neg_vectors = [this.kv[word] for word in neg_words if word in this.kv]
+            neg_vector = sum(neg_vectors)
+            neg_vector /= np.linalg.norm(neg_vector)
+
+            if method == 'projection_nonorm':
+                projectionvector = sum(pos_vectors) - sum(neg_vectors)
+                projectionvector /= np.linalg.norm(projectionvector)
+
+                def projector(vector):
+                    if isinstance(vector, str):
+                        vector = this.kv[vector]
+                    return np.dot(vector, projectionvector)
+
+            elif method == 'projection_norm':
+                projectionvector = pos_vector - neg_vector
+                projectionvector /= np.linalg.norm(projectionvector)
+
+                def projector(vector):
+                    if isinstance(vector, str):
+                        vector = this.kv[vector]
+                    return np.dot(vector, projectionvector)
+
+            else:
+                e1 = pos_vector/np.linalg.norm(pos_vector)
+                v2 = neg_vector - np.dot(e1, neg_vector) * e1
+                e2 = v2 / np.linalg.norm(v2)
+                mat = np.array([e1,e2])
+                zero = (pos_vector+neg_vector)/2
+                zero /= np.linalg.norm(zero)
+                zero = mat @ zero
+                zero /= np.linalg.norm(zero)
+
+                normalizer = math.acos(np.dot(np.array([1,0]),zero))
+
+                def projector(vector):
+                    if isinstance(vector, str):
+                        vector = this.kv[vector]
+                    x = np.dot(mat,vector)
+                    x = mat @ vector
+                    pos_dist = np.linalg.norm(vector - pos_vector)
+                    neg_dist = np.linalg.norm(vector - neg_vector)
+                    if pos_dist > neg_dist:
+                        return -math.acos(np.dot(x,zero)/np.linalg.norm(x)/np.linalg.norm(zero))/normalizer
+                    else:
+                        return math.acos(np.dot(x,zero)/np.linalg.norm(x)/np.linalg.norm(zero))/normalizer
+
+        return (projector, unknown_words)
 
 
 def get_top_dimensions(embedding_name, d):
