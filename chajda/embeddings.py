@@ -327,6 +327,9 @@ class Embedding():
             def projector(word):
                 vector = this.kv[word]
                 # FIXME: max/min good?
+                cos_sim1 = np.dot(pos_vector,vector)/np.linalg.norm(pos_vector)/np.linalg.norm(vector)
+                if cos_sim1 > 1 or cos_sim1 < -1:
+                    logging.error(f'cos_sim1={cos_sim1}; word={word}, pos_words={pos_words}, vector={vector}, pos_vector={pos_vector}')
                 cos_sim = min(max(np.dot(pos_vector,vector)/np.linalg.norm(pos_vector)/np.linalg.norm(vector), 1), -1)
                 arclen = math.acos(cos_sim)
                 score = math.exp(-3*arclen**2)
