@@ -281,9 +281,11 @@ class Embedding():
         return (projectionvector, unknown_words)
 
 
-    def make_projector(this, pos_words, neg_words, method):
+    def make_projector(this, pos_words, neg_words, method='arclen', a=None, clip=None):
         '''
         methods = ['projection_nonorm', 'projection_norm', 'arclen']
+
+        These tests show basic usage works.
 
         >>> get_test_embedding('en').make_projector(['happy'], [], 'projection_nonorm')[0]('happy')
         0.0003452669847162036
@@ -298,6 +300,15 @@ class Embedding():
         >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'arclen')[0]('sad')
         -1.0
 
+        These tests cover the `a` and `clip` parameters.
+
+        >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'arclen', a=1e-3, clip=0.6)[0]('sad')
+        -0.9873144967091857
+        >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'arclen', a=1e-3, clip=0.6)[0]('ball')
+        0.0
+
+        These tests ensure the unknown_words return value works.
+    
         >>> get_test_embedding('en').make_projector(['happy'],['sad'], 'arclen')[1]
         []
         >>> get_test_embedding('en').make_projector(['happy','happytypo'],['sad'], 'arclen')[1]
@@ -305,6 +316,7 @@ class Embedding():
         >>> get_test_embedding('en').make_projector(['happy'],['sadtypo'], 'arclen')[1]
         ['sadtypo']
         '''
+
         unknown_words = [word for word in pos_words+neg_words if word not in this.kv]
 
         pos_vectors = [this.kv[word] for word in pos_words if word in this.kv]
@@ -312,33 +324,49 @@ class Embedding():
         pos_vector /= np.linalg.norm(pos_vector)
 
         if len(neg_words) == 0:
-            def projector(vector):
-                if isinstance(vector, str):
-                    vector = this.kv[vector]
-                return math.acos(np.dot(pos_vector,vector)/np.linalg.norm(pos_vector)/np.linalg.norm(vector))
+            def projector(word):
+                vector = this.kv[word]
+                arclen = math.acos(np.dot(pos_vector,vector)/np.linalg.norm(pos_vector)/np.linalg.norm(vector))
+                score = math.exp(-3*arclen**2)
+                if score < 1e-2:
+                    return 0
+                else:
+                    return score
 
         else:
             neg_vectors = [this.kv[word] for word in neg_words if word in this.kv]
             neg_vector = sum(neg_vectors)
             neg_vector /= np.linalg.norm(neg_vector)
 
+            if clip:
+                num_clips = 20
+                clip_vectors = [ alpha*pos_vector + (1-alpha) * neg_vector for alpha in [i/num_clips for i in range(num_clips+1)] ]
+
+            def mod_result(word, result):
+                if clip:
+                    vector = this.kv[word]
+                    distances = [ np.linalg.norm(clip_vector - vector) for clip_vector in clip_vectors ]
+                    if not any([distance < clip for distance in distances]):
+                        result = 0.0
+                if a:
+                    result *= a/(a+this.word_frequency(word))
+                return result
+
             if method == 'projection_nonorm':
                 projectionvector = sum(pos_vectors) - sum(neg_vectors)
                 projectionvector /= np.linalg.norm(projectionvector)
 
-                def projector(vector):
-                    if isinstance(vector, str):
-                        vector = this.kv[vector]
-                    return np.dot(vector, projectionvector)
+                def projector(word):
+                    vector = this.kv[word]
+                    return mod_result(word, np.dot(vector, projectionvector))
 
             elif method == 'projection_norm':
                 projectionvector = pos_vector - neg_vector
                 projectionvector /= np.linalg.norm(projectionvector)
 
-                def projector(vector):
-                    if isinstance(vector, str):
-                        vector = this.kv[vector]
-                    return np.dot(vector, projectionvector)
+                def projector(word):
+                    vector = this.kv[word]
+                    return mod_result(word, np.dot(vector, projectionvector))
 
             else:
                 e1 = pos_vector/np.linalg.norm(pos_vector)
@@ -352,17 +380,17 @@ class Embedding():
 
                 normalizer = math.acos(np.dot(np.array([1,0]),zero))
 
-                def projector(vector):
-                    if isinstance(vector, str):
-                        vector = this.kv[vector]
+                def projector(word):
+                    vector = this.kv[word]
                     x = np.dot(mat,vector)
                     x = mat @ vector
                     pos_dist = np.linalg.norm(vector - pos_vector)
                     neg_dist = np.linalg.norm(vector - neg_vector)
                     if pos_dist > neg_dist:
-                        return -math.acos(np.dot(x,zero)/np.linalg.norm(x)/np.linalg.norm(zero))/normalizer
+                        projection = -math.acos(np.dot(x,zero)/np.linalg.norm(x)/np.linalg.norm(zero))/normalizer
                     else:
-                        return math.acos(np.dot(x,zero)/np.linalg.norm(x)/np.linalg.norm(zero))/normalizer
+                        projection = math.acos(np.dot(x,zero)/np.linalg.norm(x)/np.linalg.norm(zero))/normalizer
+                    return mod_result(word, projection)
 
         return (projector, unknown_words)
 
