@@ -281,16 +281,16 @@ class Embedding():
         return (projectionvector, unknown_words)
 
 
-    def make_projector(this, pos_words, neg_words, method='arclen', a=None, clip=None):
+    def make_projector(this, pos_words, neg_words, method='arclen', a=None, clip=None, alpha=3, beta=2):
         '''
         methods = ['projection_nonorm', 'projection_norm', 'arclen']
 
         These tests show basic usage works.
 
         >>> get_test_embedding('en').make_projector(['happy'], [], 'projection_nonorm')[0]('happy')
-        0.0003452669847162036
+        1.0
         >>> get_test_embedding('en').make_projector(['happy'], [], 'projection_nonorm')[0]('sad')
-        1.1241248104282886
+        0.022573705006315753
         >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'projection_nonorm')[0]('happy')
         0.5329241
         >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'projection_norm')[0]('happy')
@@ -298,12 +298,12 @@ class Embedding():
         >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'arclen')[0]('happy')
         1.0
         >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'arclen')[0]('sad')
-        -1.0
+        -0.9999998010135039
 
         These tests cover the `a` and `clip` parameters.
 
         >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'arclen', a=1e-3, clip=0.6)[0]('sad')
-        -0.9873144967091857
+        -0.9873143002469335
         >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'arclen', a=1e-3, clip=0.6)[0]('ball')
         0.0
 
@@ -326,13 +326,8 @@ class Embedding():
         if len(neg_words) == 0:
             def projector(word):
                 vector = this.kv[word]
-                # FIXME: max/min good?
-                cos_sim1 = np.dot(pos_vector,vector)/np.linalg.norm(pos_vector)/np.linalg.norm(vector)
-                if cos_sim1 > 1 or cos_sim1 < -1:
-                    logging.error(f'cos_sim1={cos_sim1}; word={word}, pos_words={pos_words}, vector={vector}, pos_vector={pos_vector}')
-                cos_sim = max(min(np.dot(pos_vector,vector)/np.linalg.norm(pos_vector)/np.linalg.norm(vector), 1), -1)
-                arclen = math.acos(cos_sim)
-                score = math.exp(-3*arclen**2)
+                dist = arclen(pos_vector, vector)
+                score = math.exp(-alpha*dist**beta)
                 if score < 1e-2:
                     return 0
                 else:
@@ -383,7 +378,7 @@ class Embedding():
                 zero = mat @ zero
                 zero /= np.linalg.norm(zero)
 
-                normalizer = math.acos(np.dot(np.array([1,0]),zero))
+                normalizer = arclen([1,0], zero)
 
                 def projector(word):
                     vector = this.kv[word]
@@ -391,15 +386,31 @@ class Embedding():
                     x = mat @ vector
                     pos_dist = np.linalg.norm(vector - pos_vector)
                     neg_dist = np.linalg.norm(vector - neg_vector)
-                    # FIXME: why are the max/min needed here?  Is it only minor numerical stability issues or is there a real problem with the formula?
-                    cos_sim = max(min(np.dot(x,zero)/np.linalg.norm(x)/np.linalg.norm(zero), 1), -1)
                     if pos_dist > neg_dist:
-                        projection = -math.acos(cos_sim)/normalizer
+                        projection = -arclen(x,zero)/normalizer
                     else:
-                        projection = math.acos(cos_sim)/normalizer
+                        projection = arclen(x,zero)/normalizer
                     return mod_result(word, projection)
 
         return (projector, unknown_words)
+
+
+def arclen(x,y):
+    '''
+
+    All doctests equal pi/2.
+
+    >>> arclen(np.array([1,0]), np.array([0,1]))
+    1.5707963267948966
+    >>> arclen(np.array([2,0]), np.array([0,1]))
+    1.5707963267948966
+    >>> arclen(np.array([1,0]), np.array([0,2]))
+    1.5707963267948966
+    '''
+    # numerical instability can cause cos_sim to be slightly above 1,
+    # and the min/max ensures that we don't exceed this range
+    cos_sim = max(min(np.dot(x/np.linalg.norm(x),y/np.linalg.norm(y)), 1), -1)
+    return math.acos(cos_sim)
 
 
 def get_top_dimensions(embedding_name, d):
