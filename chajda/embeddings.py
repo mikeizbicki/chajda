@@ -330,7 +330,7 @@ class Embedding():
                 cos_sim1 = np.dot(pos_vector,vector)/np.linalg.norm(pos_vector)/np.linalg.norm(vector)
                 if cos_sim1 > 1 or cos_sim1 < -1:
                     logging.error(f'cos_sim1={cos_sim1}; word={word}, pos_words={pos_words}, vector={vector}, pos_vector={pos_vector}')
-                cos_sim = min(max(np.dot(pos_vector,vector)/np.linalg.norm(pos_vector)/np.linalg.norm(vector), 1), -1)
+                cos_sim = max(min(np.dot(pos_vector,vector)/np.linalg.norm(pos_vector)/np.linalg.norm(vector), 1), -1)
                 arclen = math.acos(cos_sim)
                 score = math.exp(-3*arclen**2)
                 if score < 1e-2:
@@ -392,7 +392,7 @@ class Embedding():
                     pos_dist = np.linalg.norm(vector - pos_vector)
                     neg_dist = np.linalg.norm(vector - neg_vector)
                     # FIXME: why are the max/min needed here?  Is it only minor numerical stability issues or is there a real problem with the formula?
-                    cos_sim = min(max(np.dot(x,zero)/np.linalg.norm(x)/np.linalg.norm(zero), 1), -1)
+                    cos_sim = max(min(np.dot(x,zero)/np.linalg.norm(x)/np.linalg.norm(zero), 1), -1)
                     if pos_dist > neg_dist:
                         projection = -math.acos(cos_sim)/normalizer
                     else:
