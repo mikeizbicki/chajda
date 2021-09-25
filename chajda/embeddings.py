@@ -326,7 +326,9 @@ class Embedding():
         if len(neg_words) == 0:
             def projector(word):
                 vector = this.kv[word]
-                arclen = math.acos(np.dot(pos_vector,vector)/np.linalg.norm(pos_vector)/np.linalg.norm(vector))
+                # FIXME: max/min good?
+                cos_sim = min(max(np.dot(pos_vector,vector)/np.linalg.norm(pos_vector)/np.linalg.norm(vector), 1), -1)
+                arclen = math.acos(cos_sim)
                 score = math.exp(-3*arclen**2)
                 if score < 1e-2:
                     return 0
