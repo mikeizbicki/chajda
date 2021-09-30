@@ -270,119 +270,6 @@ def tsvector_to_ngrams(tsv, n, uniq=True):
     return ngrams
 
 
-FancyContext = namedtuple('FancyContext', ['name', 'pos_words', 'neg_words', 'a', 'clip'])
-fancycontexts = [
-        FancyContext('distance-culture', ['music','film','books','literature','sports','entertainment','culture'], [], 1e-3, 0.6),
-        FancyContext('distance-culture-books', ['books','literature'], [], 1e-3, 0.6),
-        FancyContext('distance-culture-film', ['movie','film','cinema'], [], 1e-3, 0.6),
-        FancyContext('distance-culture-sports', ['baseball','basketball','soccer','football','tennis','sports'], [], 1e-3, 0.6),
-        FancyContext('distance-math', ['algebra','topology','geometry'], [], 1e-3, 0.6),
-        FancyContext('distance-math-algebra', ['algebra'], [], 1e-3, 0.6),
-        FancyContext('distance-math-geometry', ['geometry'], [], 1e-3, 0.6),
-        FancyContext('distance-math-topology', ['topology'], [], 1e-3, 0.6),
-        FancyContext('distance-military', ['military','army','navy','marines','veteran','soldier'], [], 1e-3, 0.6),
-        FancyContext('distance-military-army', ['army','soldier'], [], 1e-3, 0.6),
-        FancyContext('distance-military-gun', ['gun','firearm'], [], 1e-3, 0.6),
-        FancyContext('distance-military-marines', ['marines'], [], 1e-3, 0.6),
-        FancyContext('distance-military-navy', ['navy'], [], 1e-3, 0.6),
-        FancyContext('distance-military-terrorism', ['terrorism'], [], 1e-3, 0.6),
-        FancyContext('distance-military-wmd', ['wmd'], [], 1e-3, 0.6),
-        FancyContext('distance-military-war', ['war','battle','conflict'], [], 1e-3, 0.6),
-        FancyContext('distance-other-badwords', ['fuck','shit','crap','nigger','cock'], [], 1e-3, 0.6),
-        FancyContext('distance-other-pacifism', ['pacifism','peaceful','diplomatic'], [], 1e-3, 0.6),
-        FancyContext('distance-other-protest', ['protest','riot'], [], 1e-3, 0.6),
-        FancyContext('distance-other-sexy', ['sexy','hot','nubile','foxy','bodacious','erotic','sensual'], [], 1e-3, 0.6),
-        FancyContext('distance-other-sick', ['illness','sick','disease'], [], 1e-3, 0.6),
-        FancyContext('distance-policy-crime', ['crime','criminal','jail','police'], [], 1e-3, 0.6),
-        FancyContext('distance-policy-education', ['education','school','student','university'], [], 1e-3, 0.6),
-        FancyContext('distance-policy-healthcare', ['healthcare','doctors','medicine','nurse'], [], 1e-3, 0.6),
-        FancyContext('distance-policy-immigration', ['immigration','immigrant','foreigner'], [], 1e-3, 0.6),
-        FancyContext('distance-policy-politics', ['politics','government','policy','government','mayor','governor','president','voting'], [], 1e-3, 0.6),
-        FancyContext('distance-policy-voting', ['election','voting','suffrage'], [], 1e-3, 0.6),
-        FancyContext('distance-religion', ['christianity','islam','budhism','atheism','god','faith','belief'], [], 1e-3, 0.6),
-        FancyContext('distance-religion-atheism', ['atheism','agnosticism','atheist','agnostic'], [], 1e-3, 0.6),
-        FancyContext('distance-religion-christianity', ['christianity','church','jesus','christ','catholic','protestant','bible'], [], 1e-3, 0.6),
-        FancyContext('distance-religion-islam', ['islam','muslim','muhammad','imam','koran'], [], 1e-3, 0.6),
-        FancyContext('distance-religion-judaism', ['jew','temple','hebrew','torah'], [], 1e-3, 0.6),
-        FancyContext('distance-religion-pagan', ['pagan','spirituality','astrology','wicca','witch','witchcraft','goddess'], [], 1e-3, 0.6),
-        FancyContext('distance-science', ['science','biology','engineering','sociology','psychology','chemistry','physics','medicine'], [], 1e-3, 0.6),
-        FancyContext('distance-science-biology', ['biology'], [], 1e-3, 0.6),
-        FancyContext('distance-science-chemistry', ['chemistry'], [], 1e-3, 0.6),
-        FancyContext('distance-science-engineering', ['engineering'], [], 1e-3, 0.6),
-        FancyContext('distance-science-medicine', ['medicine'], [], 1e-3, 0.6),
-        FancyContext('distance-science-physics', ['physics'], [], 1e-3, 0.6),
-        FancyContext('distance-science-psychology', ['psychology'], [], 1e-3, 0.6),
-        FancyContext('distance-science-sociology', ['sociology'], [], 1e-3, 0.6),
-        FancyContext('distance-technology-internet', ['email','computer','internet'], [], 1e-3, 0.6),
-        FancyContext('distance-technology-nuclear', ['nuclear','fusion','fission'], [], 1e-3, 0.6),
-        FancyContext('distance-technology-space', ['spaceship','satellite','rocket'], [], 1e-3, 0.6),
-        FancyContext('distance-transportation-airplane', ['airplane','airport','helicopter','flight'], [], 1e-3, 0.6),
-        FancyContext('distance-transportation-boat', ['boat','ship','port','harbor'], [], 1e-3, 0.6),
-        FancyContext('distance-transportation-car', ['car','truck','road','van','highway'], [], 1e-3, 0.6),
-        FancyContext('distance-transportation-pedestrian', ['bicycle','bike','walk','run'], [], 1e-3, 0.6),
-        FancyContext('distance-transportation-train', ['train'], [], 1e-3, 0.6),
-        FancyContext('projection-emotions-goodness',  ['good', 'better', 'best'], ['bad', 'worse', 'worst'], 1e-3, 0.6),
-        FancyContext('projection-emotions-happiness1', ['happy','joyful','ecstatic'], ['sad','melancholy','tragic'], 1e-3, 0.6),
-        FancyContext('projection-emotions-happiness2', ['happy'], ['sad'], 1e-3, 0.6),
-        FancyContext('projection-emotions-happiness3', ['joyful'], ['sad'], 1e-3, 0.6),
-        FancyContext('projection-emotions-happiness4', ['happy'], ['angry'], 1e-3, 0.6),
-        FancyContext('projection-emotions-happiness5', ['happy'], ['distressed'], 1e-3, 0.6),
-        FancyContext('projection-emotions-happiness6', ['happy'], ['scared'], 1e-3, 0.6),
-        FancyContext('projection-emotions-happiness7', ['happy'], ['worried'], 1e-3, 0.6),
-        FancyContext('projection-emotions-positive', ['positive'], ['negative'], 1e-3, 0.6),
-        FancyContext('projection-emotions-scary', ['scary','alarming','creepy','terrifying','frightening'], ['calming','comforting','comfort','nonthreatening'], 1e-3, 0.6),
-        FancyContext('projection-other-advanced', ['advanced'], ['primitive'], 1e-3, 0.6),
-        FancyContext('projection-other-big', ['big'], ['small'], 1e-3, 0.6),
-        FancyContext('projection-other-clean', ['clean'], ['dirty'], 1e-3, 0.6),
-        FancyContext('projection-other-healthy', ['healthy','wellness'], ['unhealthy','sick','illness'], 1e-3, 0.6),
-        FancyContext('projection-other-hot', ['hot'], ['cold'], 1e-3, 0.6),
-        FancyContext('projection-other-intelligent', ['intelligent','smart'], ['stupid'], 1e-3, 0.6),
-        FancyContext('projection-other-life', ['alive'], ['dead'], 1e-3, 0.6),
-        FancyContext('projection-other-male', ['male','man','husband','father','king','he'], ['female','woman','wife','mother','queen','she'], 1e-3, 0.6),
-        FancyContext('projection-other-military', ['military'], ['civilian'], 1e-3, 0.6),
-        FancyContext('projection-other-real', ['real'], ['fake'], 1e-3, 0.6),
-        FancyContext('projection-other-rural', ['rural'], ['urban'], 1e-3, 0.6),
-        FancyContext('projection-other-science', ['science','biology','chemistry','physics','medicine'], ['religion','christianity','islam','budhism','church'], 1e-3, 0.6),
-        FancyContext('projection-other-strong', ['strong'], ['weak'], 1e-3, 0.6),
-        FancyContext('projection-threat-dangerous', ['dangerous','danger'], ['safe','safety'], 1e-3, 0.6),
-        FancyContext('projection-threat-enemy', ['enemy','foe','adversary'], ['friend','ally'], 1e-3, 0.6),
-        FancyContext('projection-threat-lie', ['lie','cheat','fib','trick'], ['truth','accurate','authentic','honesty'], 1e-3, 0.6),
-        FancyContext('projection-threat-oppression1', ['oppression'], ['freedom'], 1e-3, 0.6),
-        FancyContext('projection-threat-oppression2', ['oppression','tyranny','dictator'], ['freedom','independence','liberty'], 1e-3, 0.6),
-        FancyContext('projection-threat-war1', ['war'], ['peace'], 1e-3, 0.6),
-        FancyContext('projection-threat-war2', ['war','fight','battle'], ['peace','diplomacy','negotiate'], 1e-3, 0.6),
-        FancyContext('projection-threat-war3', ['war','attack','invade'], ['peace','defend','defense'], 1e-3, 0.6),
-        ]
-
-
-def make_fancycontext_projector(embedding):
-    '''
-    These make good examples for visual inspection:
-
-    make_fancycontext_projector(get_test_embedding('en'))('music')
-    make_fancycontext_projector(get_test_embedding('en'))('books')
-    make_fancycontext_projector(get_test_embedding('en'))('film')
-    make_fancycontext_projector(get_test_embedding('en'))('happy')
-    make_fancycontext_projector(get_test_embedding('en'))('war')
-    make_fancycontext_projector(get_test_embedding('en'))('euclid')
-    make_fancycontext_projector(get_test_embedding('en'))('topological')
-
-
-    This test just ensures that no exceptions are thrown.
-
-    >>> len(make_fancycontext_projector(get_test_embedding('en'))('topological'))==80
-    True
-    '''
-    projectors = []
-    for fancycontext in fancycontexts:
-        projector = embedding.make_projector(fancycontext.pos_words, fancycontext.neg_words, 'arclen', fancycontext.a, 1.0) #fancycontext.clip)
-        projectors.append(projector)
-
-    def fancycontext_projector(word):
-        return np.array([ projector[0](word) for projector in projectors])
-    return fancycontext_projector
-
-
 def tsvector_to_contextvectors(embedding, tsv, n=3, windowsize=10, method='weighted', a=1e-3, normalize=False, embedding_words_only=False, force_words=[], do_fancy=True):
     '''
 
@@ -404,8 +291,6 @@ def tsvector_to_contextvectors(embedding, tsv, n=3, windowsize=10, method='weigh
     FIXME:
     we should also be returning the number of times that a word is used; possibly also its stddev?
     '''
-    if do_fancy:
-        projector = make_fancycontext_projector(embedding)
 
     # compute contextvectors from wordcontext
     wordcontext = tsvector_to_wordcontext(tsv, n, windowsize)
@@ -414,7 +299,7 @@ def tsvector_to_contextvectors(embedding, tsv, n=3, windowsize=10, method='weigh
         if not embedding_words_only or (embedding_words_only and (word in embedding.kv or word in force_words)):
             if context in embedding.kv:
                 if do_fancy:
-                    contextvector = projector(context)
+                    contextvector = embedding.fancycontext_projector(context)
                 else:
                     contextvector = embedding.kv[context]
                 updatevector = contextvector*count
