@@ -2,6 +2,7 @@ import gzip
 import math
 import numpy as np
 import os
+import scipy
 import shutil
 import tempfile
 import urllib
@@ -9,6 +10,7 @@ from collections import namedtuple
 from gensim.models import KeyedVectors
 from gensim.similarities.annoy import AnnoyIndexer
 from chajda.cache import LRUCache
+from sklearn.decomposition import PCA
 
 # initialize logging
 import logging
@@ -141,7 +143,7 @@ def get_test_embedding(lang):
 
 def get_embedding(annoy=True, **kwargs):
     '''
-    Return an Embedding class has been loaded into memory.
+    Return an Embedding class that has been loaded into memory.
 
     The first time this function is run with a particular set of arguments it will be slow,
     but subsequent runs will be fast.
@@ -150,12 +152,14 @@ def get_embedding(annoy=True, **kwargs):
     if the download has not been loaded into memory, it will load it;
     if the model has already been loaded into memory, it will return it instantly.
 
-    >>> get_embedding(lang='en', max_n=50000, max_d=50).word_frequency('hello')
-    1.8072576301422368e-05
-    >>> get_embedding(lang='en', max_n=50000).word_frequency('hello')
-    1.8072576301422368e-05
-    >>> get_embedding(lang='en', max_n=10000, max_d=50).word_frequency('hello')
-    2.1044290373194325e-05
+    In the tests below, we call `.word_frequency` to ensure the model is loaded.
+
+    >>> '%0.3e'% get_embedding(lang='en', max_n=50000, max_d=50).word_frequency('hello')
+    '1.807e-05'
+    >>> '%0.3e'% get_embedding(lang='en', max_n=50000).word_frequency('hello')
+    '1.807e-05'
+    >>> '%0.3e'% get_embedding(lang='en', max_n=10000, max_d=50).word_frequency('hello')
+    '2.104e-05'
     '''
     embedding = Embedding(**kwargs)
     if embedding.internal_name not in _embeddings_loaded:
@@ -163,7 +167,7 @@ def get_embedding(annoy=True, **kwargs):
         if annoy:
             embedding.load_annoy()
         _embeddings_loaded[embedding.internal_name] = embedding
-        embedding.make_fancycontext_projector()
+        #embedding.make_fancycontext_projector()
     return _embeddings_loaded[embedding.internal_name]
 
 
@@ -182,17 +186,23 @@ class Embedding():
     >>> assert Embedding(name='wiki.ko.align.vec')
     >>> assert Embedding(name='undefined')
 
-    >>> Embedding(lang='en', max_n=50000, max_d=50).load_kv()
     >>> Embedding(lang='xx', max_n=50000, max_d=50).load_kv()
+    >>> Embedding(lang='en', max_n=50000, max_d=50).load_kv()
+    >>> Embedding(lang='en', max_n=50000, max_d=50, center=False, whiten=False).load_kv()
+    >>> Embedding(lang='en', max_n=50000, max_d=50, center=False, whiten=True).load_kv()
+    >>> Embedding(lang='en', max_n=50000, max_d=50, center=True, whiten=False).load_kv()
+    >>> Embedding(lang='en', max_n=50000, max_d=50, center=True, whiten=True).load_kv()
     '''
 
-    def __init__(this, name=None, lang=None, max_n=None, max_d=None, projection='svd_vh.npy', storage_dir=None):
+    def __init__(this, name=None, lang=None, max_n=None, max_d=None, projection='svd_vh.npy', center=False, whiten=False, storage_dir=None):
         assert name is not None or lang is not None
         this.max_n = max_n
         this.max_d = max_d
         this.kv = None
         this.annoy_index = None
         this.projection = projection
+        this.center = center
+        this.whiten = whiten
 
         # remove locale information from language;
         # e.g. convert 'en-us' into 'en'
@@ -224,6 +234,10 @@ class Embedding():
             this.internal_name += f'-max_d={max_d}'
             if projection:
                 this.internal_name += f'-projection={projection}'
+        if center:
+            this.internal_name += f'-center={center}'
+        if whiten:
+            this.internal_name += f'-whiten={whiten}'
 
         # FIXME:
         # we're currently using the python file's path as a temporary storage dir;
@@ -305,6 +319,37 @@ class Embedding():
                         if i>n:
                             break
 
+                # transform the data by centering/whitening
+                if this.center:
+                    logger.info(f'centering vectors for {internal_name_path}')
+                    kv = KeyedVectors.load_word2vec_format(internal_name_path + '.tmp')
+                    mu = np.mean(kv.vectors, axis=0)
+                    kv.vectors -= mu
+                    kv.vectors /= np.expand_dims(np.linalg.norm(kv.vectors,axis=1), axis=1)
+                    mu = np.mean(kv.vectors, axis=0)
+                    kv.vectors -= mu
+                    kv.vectors /= np.expand_dims(np.linalg.norm(kv.vectors,axis=1), axis=1)
+                    mu = np.mean(kv.vectors, axis=0)
+                    kv.vectors -= mu
+                    kv.vectors /= np.expand_dims(np.linalg.norm(kv.vectors,axis=1), axis=1)
+                    mu = np.mean(kv.vectors, axis=0)
+                    kv.vectors -= mu
+                    kv.vectors /= np.expand_dims(np.linalg.norm(kv.vectors,axis=1), axis=1)
+                    mu = np.mean(kv.vectors, axis=0)
+                    kv.vectors -= mu
+                    kv.vectors /= np.expand_dims(np.linalg.norm(kv.vectors,axis=1), axis=1)
+                    kv.save_word2vec_format(internal_name_path + '.tmp')
+
+                if this.whiten:
+                    logger.info(f'whitening vectors for {internal_name_path}')
+                    kv = KeyedVectors.load_word2vec_format(internal_name_path + '.tmp')
+                    pca = PCA()
+                    pca.fit(kv.vectors)
+                    W = np.linalg.inv(sqrtm_psd(kv.vectors.T @ kv.vectors))
+                    kv.vectors = kv.vectors @ W
+                    kv.vectors /= np.expand_dims(np.linalg.norm(kv.vectors,axis=1), axis=1)
+                    kv.save_word2vec_format(internal_name_path + '.tmp')
+
                 # internal_name file successfully created,
                 # so move it to correct location
                 shutil.move(internal_name_path + '.tmp', internal_name_path)
@@ -337,14 +382,22 @@ class Embedding():
         '''
         return this.kv.most_similar([target], topn=topn, restrict_vocab=restrict_vocab, indexer=this.annoy_index)
 
-    def word_frequency(this, word):
+    def word_frequency(this, word, base_freq=1e-9):
         '''
         Computes the frequency of the word using zipf's law.
+
+        This test ensures that all word frequencies are between 0 and 1.
+        >>> all([ 0 < get_test_embedding('en').word_frequency(word) < 1 for word in get_test_embedding('en').kv.key_to_index.keys() ])
+        True
+
+        This test ensures that the sum of all word frequencies is approximately 1.
+        >>> '%0.3f' % sum([ get_test_embedding('en').word_frequency(word) for word in get_test_embedding('en').kv.key_to_index.keys() ])
+        '1.000'
         '''
         try:
             return zipf_at(this.kv.key_to_index[word], len(this.kv))
         except KeyError:
-            return 0
+            return base_freq
 
 
     def make_projectionvector(this, pos_words, neg_words, normalize=True):
@@ -381,25 +434,25 @@ class Embedding():
 
         These tests show basic usage works.
 
-        >>> get_test_embedding('en').make_projector(['happy'], [], 'projection_nonorm')[0]('happy')
-        1.0
-        >>> get_test_embedding('en').make_projector(['happy'], [], 'projection_nonorm')[0]('sad')
-        0.022573705006315753
-        >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'projection_nonorm')[0]('happy')
-        0.5329241
-        >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'projection_norm')[0]('happy')
-        0.53292537
-        >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'arclen')[0]('happy')
-        1.0
-        >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'arclen')[0]('sad')
-        -0.9999998010135039
+        >>> '%0.3f'% get_test_embedding('en').make_projector(['happy'], [], 'projection_nonorm')[0]('happy')
+        '1.000'
+        >>> '%0.3f'% get_test_embedding('en').make_projector(['happy'], [], 'projection_nonorm')[0]('sad')
+        '0.023'
+        >>> '%0.3f'% get_test_embedding('en').make_projector(['happy'], ['sad'], 'projection_nonorm')[0]('happy')
+        '0.533'
+        >>> '%0.3f'% get_test_embedding('en').make_projector(['happy'], ['sad'], 'projection_norm')[0]('happy')
+        '0.533'
+        >>> '%0.3f'% get_test_embedding('en').make_projector(['happy'], ['sad'], 'arclen')[0]('happy')
+        '1.000'
+        >>> '%0.3f'% get_test_embedding('en').make_projector(['happy'], ['sad'], 'arclen')[0]('sad')
+        '-1.000'
 
         These tests cover the `a` and `clip` parameters.
 
-        >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'arclen', a=1e-3, clip=0.6)[0]('sad')
-        -0.9873143002469335
-        >>> get_test_embedding('en').make_projector(['happy'], ['sad'], 'arclen', a=1e-3, clip=0.6)[0]('ball')
-        0.0
+        >>> '%0.3f'% get_test_embedding('en').make_projector(['happy'], ['sad'], 'arclen', a=1e-3, clip=0.6)[0]('sad')
+        '-0.987'
+        >>> '%0.3f'% get_test_embedding('en').make_projector(['happy'], ['sad'], 'arclen', a=1e-3, clip=0.6)[0]('ball')
+        '0.000'
 
         These tests ensure the unknown_words return value works.
     
@@ -569,4 +622,32 @@ def digamma_H(s):
     return digamma(s + 1) + euler_gamma
 
 def zipf_at(k_rank, N_total):
-    return 1.0 / (k_rank * digamma_H(N_total))
+    return 1.0 / ((1+k_rank) * digamma_H(N_total))
+
+
+def sqrtm_psd(A, check_finite=True):
+    """
+    Matrix square root of a positive semi-definite matrix.
+    Parameters
+    ----------
+    A : (N, N) array_like
+        Positive semi-definite matrix whose square root to evaluate.
+    check_finite : boolean, optional
+        Whether to check that the input matrices contain only finite numbers.
+        Disabling may give a performance gain, but may result in problems
+        (crashes, non-termination) if the inputs do contain infinities or NaNs.
+    Returns
+    -------
+    sqrtm : (N, N) ndarray
+        Value of the sqrt function at `A`.
+
+    See also
+    --------
+    sqrtm : Matrix square root without the psd restriction.
+    """
+    A = np.asarray(A)
+    if len(A.shape) != 2:
+        raise ValueError("Non-matrix input to matrix function.")
+    w, v = scipy.linalg.eigh(A, check_finite=check_finite)
+    w = np.sqrt(np.maximum(w, 0))
+    return (v * w).dot(v.conj().T)
