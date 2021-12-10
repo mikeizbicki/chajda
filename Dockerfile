@@ -7,7 +7,9 @@ RUN export PG_MAJOR=`apt list --installed 2>&1 | sed -n "s/^postgresql-\([0-9.]*
  && apt-get install -y \
 	autoconf \
     gcc \
+    gfortran \
     git \
+    liblapack-dev \
     make \
     postgresql-server-dev-$PG_MAJOR \
 	postgresql-plpython3-$PG_MAJOR \
