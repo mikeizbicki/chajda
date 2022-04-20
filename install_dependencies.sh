@@ -3,6 +3,9 @@
 set -e
 working_dir=$(pwd)
 
+pip3 --version
+pip3 install pip --upgrade
+pip3 --version
 pip3 install -r requirements.txt
 sudachipy link -t full
 
